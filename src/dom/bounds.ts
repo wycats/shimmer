@@ -1,7 +1,7 @@
 import { userError } from "../assertions";
 import { isObject } from "../utils/predicates";
 import { Cursor } from "./cursor";
-import { SimplestNode, SimplestParentNode } from "./simplest";
+import type { SimplestNode, SimplestParentNode } from "./simplest";
 
 export class Bounds {
   static is(value: unknown): value is Bounds {

@@ -8,4 +8,5 @@ export * from "./glimmer/cache";
 export * from "./glimmer/glimmer";
 export * from "./nodes/public";
 export * from "./reactive/cell";
+export * from "./utils/public";
 export type { dom };

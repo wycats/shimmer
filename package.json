@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@glimmer/destroyable": "^0.73.1",
-    "@glimmer/low-level": "^0.73.1",
     "@simple-dom/interface": "^1.4.0",
     "@snowpack/plugin-sass": "^1.2.0",
     "@snowpack/plugin-typescript": "^1.1.1",
@@ -20,6 +18,7 @@
   },
   "dependencies": {
     "@glimmer/global-context": "^0.73.1",
-    "@glimmer/validator": "^0.73.1"
+    "@glimmer/validator": "^0.73.1",
+    "@glimmer/destroyable": "^0.73.1"
   }
 }

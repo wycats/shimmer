@@ -4,11 +4,11 @@ import {
 } from "@glimmer/destroyable";
 import { Cache, createCache } from "@glimmer/validator";
 import { Bounds } from "../dom/bounds";
-import { Cursor } from "../dom/cursor";
-import { SimplestDocument } from "../dom/simplest";
-import { Effect } from "../glimmer/cache";
-import { Render } from "../glimmer/glimmer";
-import { Content, RenderedContent } from "./content";
+import type { Cursor } from "../dom/cursor";
+import type { SimplestDocument } from "../dom/simplest";
+import type { Effect } from "../glimmer/cache";
+import type { Render } from "../glimmer/glimmer";
+import type { Content, RenderedContent } from "./content";
 
 export class Doc {
   static of(dom: SimplestDocument): Doc {

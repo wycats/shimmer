@@ -4,8 +4,6 @@ import setGlobalContext, {
 } from "@glimmer/global-context";
 import { GLIMMER } from "./glimmer";
 
-console.log("HI");
-
 setGlobalContext({
   scheduleRevalidate() {
     GLIMMER.revalidate();

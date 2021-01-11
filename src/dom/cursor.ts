@@ -1,4 +1,11 @@
-import { SimplestNode, SimplestParentNode } from "./simplest";
+import type {
+  SimplestDocument,
+  SimplestElement,
+  SimplestNode,
+  SimplestParentNode,
+} from "./simplest";
+
+export const HTML_NS = "http://www.w3.org/1999/xhtml";
 
 export class Cursor {
   static at(parent: SimplestParentNode, next: SimplestNode): Cursor {
@@ -20,5 +27,9 @@ export class Cursor {
   insert<N extends SimplestNode>(node: N): N {
     this.#parent.insertBefore(node, this.#next);
     return node;
+  }
+
+  createElement(tag: string, dom: SimplestDocument): SimplestElement {
+    return dom.createElementNS(HTML_NS, tag);
   }
 }

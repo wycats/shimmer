@@ -1,9 +1,14 @@
-import { Cache, createCache, getValue } from "@glimmer/validator";
-import { Maybe } from "../utils/option";
 import { registerDestructor } from "@glimmer/destroyable";
+import { Cache, createCache, getValue } from "@glimmer/validator";
+import { assertDynamicContext } from "../reactive/cell";
+import { Maybe } from "../utils/option";
 import { isObject } from "../utils/predicates";
 
 export class Effect<T> {
+  static is(value: unknown): value is Effect<unknown> {
+    return isObject(value) && value instanceof Effect;
+  }
+
   static of<T>({
     initialize,
     update,
@@ -86,13 +91,19 @@ export class Pure<T> {
     }
   }
 
+  readonly type = "value";
+
   #cache: Cache<T>;
 
   constructor(cache: Cache<T>) {
     this.#cache = cache;
   }
 
-  get current(): T {
+  get now(): T {
+    assertDynamicContext(
+      "getting the current JavaScript value of a reactive value (Derived)"
+    );
+
     return getValue(this.#cache)!;
   }
 }

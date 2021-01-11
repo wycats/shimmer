@@ -1,4 +1,3 @@
-import { associateDestroyableChild } from "@glimmer/destroyable";
 import { Cache, getValue } from "@glimmer/validator";
 
 export interface Render {

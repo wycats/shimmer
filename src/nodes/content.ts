@@ -1,12 +1,18 @@
 import { Bounds } from "../dom/bounds";
-import { Cursor } from "../dom/cursor";
-import { SimplestDocument } from "../dom/simplest";
+import type { Cursor } from "../dom/cursor";
+import type { SimplestDocument } from "../dom/simplest";
 import { Effect } from "../glimmer/cache";
-import { CommentInfo } from "./comment";
-import { FragmentInfo } from "./fragment";
-import { TextInfo } from "./text";
+import type { CommentInfo } from "./comment";
+import type { ElementInfo } from "./element/element";
+import type { FragmentInfo } from "./fragment";
+import type { TextInfo } from "./text";
 
-export type ContentType = "text" | "comment" | "fragment";
+export type ContentType =
+  | "text"
+  | "comment"
+  | "fragment"
+  | "choice"
+  | "element";
 
 export interface StaticContent<
   Type extends ContentType = ContentType,
@@ -143,7 +149,9 @@ export type TemplateContent<Type extends ContentType, Info = unknown> =
 export type Content =
   | TemplateContent<"text", TextInfo>
   | TemplateContent<"comment", CommentInfo>
-  | TemplateContent<"fragment", FragmentInfo>;
+  | TemplateContent<"fragment", FragmentInfo>
+  | TemplateContent<"choice", any>
+  | TemplateContent<"element", ElementInfo>;
 
 export class RenderedContent<C extends UpdatableContent = UpdatableContent> {
   constructor(readonly content: C) {}

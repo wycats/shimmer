@@ -1,7 +1,7 @@
 import { Bounds } from "../dom/bounds";
-import { Cursor } from "../dom/cursor";
-import { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
-import { IntoReactive, Reactive } from "../reactive/cell";
+import type { Cursor } from "../dom/cursor";
+import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
+import { build, IntoReactive, Reactive } from "../reactive/cell";
 import {
   DynamicContent,
   StaticContent,
@@ -14,24 +14,26 @@ export type CommentInfo = Reactive<string>;
 export function comment(
   value: IntoReactive<string>
 ): TemplateContent<"comment", CommentInfo> {
-  let reactive = Reactive.from(value);
+  return build(() => {
+    let reactive = Reactive.from(value);
 
-  if (Reactive.isStatic(reactive)) {
-    return StaticContent.of("comment", reactive, (cursor, dom) => {
-      let text = initialize(reactive, cursor, dom);
+    if (Reactive.isStatic(reactive)) {
+      return StaticContent.of("comment", reactive, (cursor, dom) => {
+        let text = initialize(reactive, cursor, dom);
 
-      return Bounds.single(text);
-    });
-  } else {
-    return DynamicContent.of("comment", reactive, (cursor, dom) => {
-      let text = initialize(reactive, cursor, dom);
+        return Bounds.single(text);
+      });
+    } else {
+      return DynamicContent.of("comment", reactive, (cursor, dom) => {
+        let text = initialize(reactive, cursor, dom);
 
-      return UpdatableContent.of(
-        Bounds.single(text),
-        () => (text.data = reactive.current)
-      );
-    });
-  }
+        return UpdatableContent.of(
+          Bounds.single(text),
+          () => (text.data = reactive.now)
+        );
+      });
+    }
+  });
 }
 
 function initialize(
@@ -39,5 +41,5 @@ function initialize(
   cursor: Cursor,
   dom: SimplestDocument
 ): SimplestCharacterData {
-  return cursor.insert(dom.createComment(value.current));
+  return cursor.insert(dom.createComment(value.now));
 }

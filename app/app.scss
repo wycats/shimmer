@@ -9,3 +9,18 @@ body * {
 body {
   font-family: sans-serif;
 }
+
+p {
+  display: block;
+}
+
+span.count {
+  background-color: turquoise;
+  padding: 0 0.3rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+button {
+  margin-right: 1rem;
+}

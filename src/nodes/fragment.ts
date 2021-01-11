@@ -1,8 +1,9 @@
 import { Bounds } from "../dom/bounds";
-import { Cursor } from "../dom/cursor";
-import { SimplestDocument } from "../dom/simplest";
-import { Effect } from "../glimmer/cache";
-import { PresentArray } from "../utils/type";
+import type { Cursor } from "../dom/cursor";
+import type { SimplestDocument } from "../dom/simplest";
+import type { Effect } from "../glimmer/cache";
+import { build } from "../reactive/cell";
+import type { PresentArray } from "../utils/type";
 import {
   Content,
   DynamicContent,
@@ -21,29 +22,31 @@ export function fragment(
   first: Content,
   ...rest: readonly Content[]
 ): TemplateContent<"fragment", FragmentInfo> {
-  if (first.isStatic && rest.every((c) => c.isStatic)) {
-    return StaticContent.of(
-      "fragment",
-      { children: [first, ...rest] },
-      (cursor, dom) => {
-        return initialize([first, ...rest], cursor, dom).bounds;
-      }
-    );
-  } else {
-    return DynamicContent.of(
-      "fragment",
-      { children: [first, ...rest] },
-      (cursor, dom) => {
-        let { bounds, dynamic } = initialize([first, ...rest], cursor, dom);
+  return build(() => {
+    if (first.isStatic && rest.every((c) => c.isStatic)) {
+      return StaticContent.of(
+        "fragment",
+        { children: [first, ...rest] },
+        (cursor, dom) => {
+          return initialize([first, ...rest], cursor, dom).bounds;
+        }
+      );
+    } else {
+      return DynamicContent.of(
+        "fragment",
+        { children: [first, ...rest] },
+        (cursor, dom) => {
+          let { bounds, dynamic } = initialize([first, ...rest], cursor, dom);
 
-        return UpdatableContent.of(bounds, () => {
-          for (let item of dynamic) {
-            item.poll();
-          }
-        });
-      }
-    );
-  }
+          return UpdatableContent.of(bounds, () => {
+            for (let item of dynamic) {
+              item.poll();
+            }
+          });
+        }
+      );
+    }
+  });
 }
 
 function initialize(
