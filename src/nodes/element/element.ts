@@ -1,11 +1,10 @@
-import { Bounds } from "../../dom/bounds";
+import { Bounds, StaticBounds } from "../../dom/bounds";
 import { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
-import { Effect } from "../../glimmer/cache";
+import { DynamicRenderedContent, Effect } from "../../glimmer/cache";
 import {
   Content,
   DynamicContent,
-  RenderedContent,
   StaticContent,
   TemplateContent,
   UpdatableContent,
@@ -94,9 +93,9 @@ function initialize(
   cursor: Cursor,
   dom: SimplestDocument
 ): {
-  bounds: Bounds;
+  bounds: StaticBounds;
   dynamic: {
-    body: Effect<RenderedContent> | null;
+    body: DynamicRenderedContent | null;
     modifiers: readonly Effect<RenderedModifier>[] | null;
   } | null;
 } {
@@ -129,10 +128,10 @@ function initialize(
   let renderedBody = body.render(appending, dom);
 
   if (Bounds.is(renderedBody)) {
-    return { bounds: Bounds.single(element), dynamic: null };
+    return { bounds: StaticBounds.single(element), dynamic: null };
   } else {
     return {
-      bounds: Bounds.single(element),
+      bounds: StaticBounds.single(element),
       dynamic: {
         body: renderedBody,
         modifiers: dynamicModifiers.length === 0 ? null : dynamicModifiers,

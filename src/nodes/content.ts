@@ -1,10 +1,12 @@
-import { Bounds } from "../dom/bounds";
+import { AbstractBounds, Bounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
-import type { SimplestDocument } from "../dom/simplest";
-import { Effect } from "../glimmer/cache";
+import type { SimplestDocument, SimplestNode } from "../dom/simplest";
+import { DynamicRenderedContent } from "../glimmer/cache";
 import type { CommentInfo } from "./comment";
 import type { ElementInfo } from "./element/element";
 import type { FragmentInfo } from "./fragment";
+import type { BlockInfo } from "./structure/block";
+import type { EachInfo } from "./structure/each";
 import type { TextInfo } from "./text";
 
 export type ContentType =
@@ -12,7 +14,9 @@ export type ContentType =
   | "comment"
   | "fragment"
   | "choice"
-  | "element";
+  | "each"
+  | "element"
+  | "block";
 
 export interface StaticContent<
   Type extends ContentType = ContentType,
@@ -62,11 +66,14 @@ export const DynamicContent = {
 export interface UpdatableContent {
   readonly bounds: Bounds;
 
-  update(): void;
+  update(): UpdatableContent | void;
 }
 
 export const UpdatableContent = {
-  of: (bounds: Bounds, update: () => void): UpdatableContent => {
+  of: (
+    bounds: Bounds,
+    update: () => UpdatableContent | void
+  ): UpdatableContent => {
     return { bounds, update };
   },
 };
@@ -94,7 +101,7 @@ export abstract class AbstractTemplateContent<Type extends ContentType, Info> {
   abstract render(
     cursor: Cursor,
     dom: SimplestDocument
-  ): Bounds | Effect<RenderedContent>;
+  ): Bounds | ContentResult;
 }
 
 export class StaticTemplateContent<
@@ -114,11 +121,29 @@ export class StaticTemplateContent<
   }
 }
 
-export function renderBounds(result: Bounds | Effect<RenderedContent>): Bounds {
+export type ContentResult = Bounds | DynamicRenderedContent;
+
+export function firstNode(result: ContentResult): SimplestNode {
+  if (Bounds.is(result)) {
+    return result.firstNode;
+  } else {
+    return result.bounds.firstNode;
+  }
+}
+
+export function lastNode(result: ContentResult): SimplestNode {
+  if (Bounds.is(result)) {
+    return result.lastNode;
+  } else {
+    return result.poll().bounds.lastNode;
+  }
+}
+
+export function renderBounds(result: Bounds | ContentResult): Bounds {
   if (Bounds.is(result)) {
     return result;
   } else {
-    return result.poll().bounds;
+    return result.bounds;
   }
 }
 
@@ -134,8 +159,8 @@ export class DynamicTemplateContent<
     render: (cursor: Cursor, dom: SimplestDocument) => UpdatableContent;
   };
 
-  render(cursor: Cursor, dom: SimplestDocument): Effect<RenderedContent> {
-    return Effect.of({
+  render(cursor: Cursor, dom: SimplestDocument): ContentResult {
+    return DynamicRenderedContent.create({
       initialize: () => new RenderedContent(this.content.render(cursor, dom)),
       update: (content) => content.update(),
     });
@@ -151,17 +176,37 @@ export type Content =
   | TemplateContent<"comment", CommentInfo>
   | TemplateContent<"fragment", FragmentInfo>
   | TemplateContent<"choice", any>
-  | TemplateContent<"element", ElementInfo>;
+  | TemplateContent<"each", EachInfo>
+  | TemplateContent<"element", ElementInfo>
+  | TemplateContent<"block", BlockInfo>;
 
-export class RenderedContent<C extends UpdatableContent = UpdatableContent> {
-  constructor(readonly content: C) {}
+export class RenderedContent extends AbstractBounds {
+  #content: UpdatableContent;
+
+  constructor(content: UpdatableContent) {
+    super(content.bounds.parent);
+    this.#content = content;
+  }
 
   get bounds(): Bounds {
-    return this.content.bounds;
+    return this.#content.bounds;
+  }
+
+  get firstNode(): SimplestNode {
+    return this.#content.bounds.firstNode;
+  }
+
+  get lastNode(): SimplestNode {
+    return this.#content.bounds.lastNode;
   }
 
   update(): this {
-    this.content.update();
+    let newContent = this.#content.update();
+
+    if (newContent) {
+      this.#content = newContent;
+    }
+
     return this;
   }
 }

@@ -24,6 +24,10 @@ export class Cursor {
     this.#next = next;
   }
 
+  hasNext(node: SimplestNode | null): boolean {
+    return this.#next === node;
+  }
+
   insert<N extends SimplestNode>(node: N): N {
     this.#parent.insertBefore(node, this.#next);
     return node;

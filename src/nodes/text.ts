@@ -1,4 +1,4 @@
-import { Bounds } from "../dom/bounds";
+import { StaticBounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
 import { build, IntoReactive, Reactive } from "../reactive/cell";
@@ -21,16 +21,15 @@ export function text(
       return StaticContent.of("text", reactive, (cursor, dom) => {
         let text = initialize(reactive, cursor, dom);
 
-        return Bounds.single(text);
+        return StaticBounds.single(text);
       });
     } else {
       return DynamicContent.of("text", reactive, (cursor, dom) => {
         let text = initialize(reactive, cursor, dom);
 
-        return UpdatableContent.of(
-          Bounds.single(text),
-          () => (text.data = reactive.now)
-        );
+        return UpdatableContent.of(StaticBounds.single(text), () => {
+          text.data = reactive.now;
+        });
       });
     }
   });

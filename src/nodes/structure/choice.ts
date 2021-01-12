@@ -1,17 +1,14 @@
-import { Bounds } from "../dom/bounds";
-import type { Cursor } from "../dom/cursor";
-import type { SimplestDocument } from "../dom/simplest";
-import type { Effect } from "../glimmer/cache";
-import { build, IntoReactive, Reactive } from "../reactive/cell";
+import { Bounds } from "../../dom/bounds";
+import type { Cursor } from "../../dom/cursor";
+import type { SimplestDocument } from "../../dom/simplest";
+import type { DynamicRenderedContent } from "../../glimmer/cache";
+import { build, IntoReactive, Reactive } from "../../reactive/cell";
 import {
   Content,
   DynamicContent,
   renderBounds,
-  RenderedContent,
-  StaticContent,
-  TemplateContent,
   UpdatableContent,
-} from "./content";
+} from "../content";
 
 export type Choices = {
   [P in string]: VariantInfo<P, Reactive<unknown>>;
@@ -45,6 +42,16 @@ export type Match<C extends Choices, V> = {
   [P in keyof C]: V;
 };
 
+export function matchIsStatic(match: Match<Choices, Content>): boolean {
+  for (let content of Object.values(match)) {
+    if (!content.isStatic) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 export type Choice<C extends Choices> = Variant<C, keyof C>;
 
 export interface ChoiceInfo<C extends Choices = Choices> {
@@ -55,18 +62,13 @@ export interface ChoiceInfo<C extends Choices = Choices> {
 export function match<C extends Choices>(
   value: IntoReactive<Choice<C>>,
   match: Match<C, Content>
-): TemplateContent<"choice", ChoiceInfo<C>> {
+): Content {
   return build(() => {
     let reactive = Reactive.from(value);
 
     if (Reactive.isStatic(reactive)) {
-      return StaticContent.of(
-        "choice",
-        { value: reactive, match },
-        (cursor, dom) => {
-          return initialize(reactive, match, cursor, dom).bounds;
-        }
-      );
+      let { discriminant } = reactive.now;
+      return match[discriminant];
     }
 
     return DynamicContent.of(
@@ -102,12 +104,10 @@ function initialize<C extends Choices>(
   match: Match<C, Content>,
   cursor: Cursor,
   dom: SimplestDocument
-): { bounds: Bounds; dynamic: Effect<RenderedContent> | null } {
+): { bounds: Bounds; dynamic: DynamicRenderedContent | null } {
   let { discriminant } = reactive.now;
   let choice = match[discriminant] as Content;
   let result = choice.render(cursor, dom);
-
-  // let bounds = renderBounds(result);
 
   if (Bounds.is(result)) {
     return { bounds: result, dynamic: null };

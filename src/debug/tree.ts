@@ -8,6 +8,8 @@ import type {
   TemplateContent,
   TextInfo,
 } from "../nodes/public";
+import type { BlockInfo } from "../nodes/structure/block";
+import type { EachInfo } from "../nodes/structure/each";
 
 export function tree(content: Content): DebugContentNode {
   return new TreeBuilder().content(content);
@@ -33,6 +35,10 @@ interface FragmentNode extends DebugNode {
   children: readonly DebugContentNode[];
 }
 
+interface EachNode extends DebugNode {
+  type: "each";
+}
+
 interface ChoiceNode extends DebugNode {
   type: "choice";
   data: unknown;
@@ -45,12 +51,19 @@ interface ElementNode extends DebugNode {
   body: DebugNode;
 }
 
+interface BlockNode extends DebugNode {
+  type: "block";
+  content: DebugNode;
+}
+
 type DebugContentNode =
   | TextNode
   | CommentNode
   | FragmentNode
+  | EachNode
   | ChoiceNode
-  | ElementNode;
+  | ElementNode
+  | BlockNode;
 
 class TreeBuilder {
   content(content: Content): DebugContentNode {
@@ -61,10 +74,14 @@ class TreeBuilder {
         return this.text(content);
       case "fragment":
         return this.fragment(content);
+      case "each":
+        return this.each(content);
       case "choice":
         return this.choice(content);
       case "element":
         return this.element(content);
+      case "block":
+        return this.block(content);
     }
   }
 
@@ -88,8 +105,12 @@ class TreeBuilder {
     return {
       type: "fragment",
       static: content.isStatic,
-      children: content.info.children.map((c) => this.content(c)),
+      children: [...content.info.children.map((c) => this.content(c))],
     };
+  }
+
+  each(content: TemplateContent<"each", EachInfo>): EachNode {
+    return { type: "each", static: content.isStatic };
   }
 
   choice(content: TemplateContent<"choice", ChoiceInfo>): ChoiceNode {
@@ -113,6 +134,14 @@ class TreeBuilder {
       static: content.isStatic,
       tag: content.info.tag,
       body: this.content(content.info.body),
+    };
+  }
+
+  block(content: TemplateContent<"block", BlockInfo>): BlockNode {
+    return {
+      type: "block",
+      static: content.isStatic,
+      content: this.content(content.info.content),
     };
   }
 }

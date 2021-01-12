@@ -1,5 +1,6 @@
 import { registerDestructor } from "@glimmer/destroyable";
 import { Cache, createCache, getValue } from "@glimmer/validator";
+import type { RenderedContent } from "../nodes/content";
 import { assertDynamicContext } from "../reactive/cell";
 import { Maybe } from "../utils/option";
 import { isObject } from "../utils/predicates";
@@ -7,6 +8,35 @@ import { isObject } from "../utils/predicates";
 export class Effect<T> {
   static is(value: unknown): value is Effect<unknown> {
     return isObject(value) && value instanceof Effect;
+  }
+
+  static cache<T>({
+    initialize,
+    update,
+    destructor,
+  }: {
+    initialize: () => T;
+    update: (last: T) => T;
+    destructor?: (last: T) => void;
+  }): { cache: Cache<T>; destructor?: (last: T) => void } {
+    let last: Maybe<T> = Maybe.none();
+
+    let cache = createCache(() => {
+      return last.match({
+        None: () => {
+          let next = initialize();
+          last = Maybe.some(next);
+          return next;
+        },
+        Some: (prev: T) => {
+          let next = update(prev);
+          last = Maybe.some(next);
+          return next;
+        },
+      });
+    });
+
+    return { cache, destructor };
   }
 
   static of<T>({
@@ -56,8 +86,37 @@ export class Effect<T> {
     }
   }
 
+  /** @internal */
+  get last(): T {
+    return this.#last;
+  }
+
   poll(): T {
     return getValue(this.#cache)!;
+  }
+}
+
+export class DynamicRenderedContent extends Effect<RenderedContent> {
+  static create(options: {
+    initialize: () => RenderedContent;
+    update: (last: RenderedContent) => RenderedContent;
+    destructor?: (last: RenderedContent) => void;
+  }): DynamicRenderedContent {
+    let { cache, destructor } = Effect.cache(options);
+
+    return new DynamicRenderedContent(cache, destructor, getValue(cache)!);
+  }
+
+  get bounds() {
+    return this.last.bounds;
+  }
+
+  get firstNode() {
+    return this.last.bounds.firstNode;
+  }
+
+  get lastNode() {
+    return this.last.bounds.lastNode;
   }
 }
 

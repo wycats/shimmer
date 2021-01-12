@@ -21,7 +21,7 @@ export function attr(
     return StaticModifier.of(
       "attribute",
       { name, value: reactive },
-      (cursor, dom) => {
+      (cursor) => {
         cursor.setAttributeNS(null, name, reactive.now);
         return cursor;
       }
@@ -30,7 +30,7 @@ export function attr(
     return DynamicModifier.of(
       "attribute",
       { name, value: reactive },
-      (cursor, dom) => {
+      (cursor) => {
         cursor.setAttributeNS(null, name, reactive.now);
 
         return UpdatableModifier.of(cursor, () =>

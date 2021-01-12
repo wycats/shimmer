@@ -22,5 +22,19 @@ span.count {
 }
 
 button {
+  color: #b8b;
+  background-color: #fdf;
   margin-right: 1rem;
+  border-radius: 0.2rem;
+  border: 1px solid #909;
+  padding: 0 0.2rem;
+  cursor: pointer;
+
+  &:hover {
+    color: #909;
+  }
+
+  &:active {
+    color: #606;
+  }
 }

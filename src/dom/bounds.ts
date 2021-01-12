@@ -3,38 +3,71 @@ import { isObject } from "../utils/predicates";
 import { Cursor } from "./cursor";
 import type { SimplestNode, SimplestParentNode } from "./simplest";
 
-export class Bounds {
-  static is(value: unknown): value is Bounds {
-    return isObject(value) && value instanceof Bounds;
+export type Bounds = StaticBounds | DynamicBounds;
+
+export const Bounds = {
+  is: (value: unknown): value is Bounds => {
+    return AbstractBounds.is(value);
+  },
+};
+
+export abstract class AbstractBounds {
+  static is(value: unknown): value is StaticBounds {
+    return isObject(value) && value instanceof AbstractBounds;
   }
 
-  static of(firstNode: SimplestNode, lastNode: SimplestNode): Bounds {
-    return new Bounds(firstNode, lastNode);
+  #parent: SimplestParentNode;
+
+  constructor(parent: SimplestParentNode) {
+    this.#parent = parent;
   }
 
-  static single(node: SimplestNode): Bounds {
-    return new Bounds(node, node);
+  get parent(): SimplestParentNode {
+    return this.#parent;
   }
 
-  readonly isStatic = true;
+  abstract readonly bounds: Bounds;
+  abstract readonly firstNode: SimplestNode;
+  abstract readonly lastNode: SimplestNode;
 
-  constructor(
-    readonly firstNode: SimplestNode,
-    readonly lastNode: SimplestNode
-  ) {}
+  get cursorBefore(): Cursor {
+    return new Cursor(this.parent, this.firstNode);
+  }
 
-  get bounds(): Bounds {
+  get cursorAfter(): Cursor {
+    return new Cursor(this.parent, this.lastNode.nextSibling);
+  }
+
+  move(this: Bounds, cursor: Cursor): Bounds {
+    let { firstNode: start, lastNode: end } = this;
+
+    if (cursor.hasNext(this.lastNode.nextSibling)) {
+      return this;
+    }
+
+    let current: SimplestNode | null = start;
+
+    while (current) {
+      if (current === end) {
+        cursor.insert(current);
+        break;
+      }
+
+      let next: SimplestNode | null = current.nextSibling;
+      cursor.insert(current);
+      current = next;
+    }
+
     return this;
   }
 
   clear(): Cursor {
-    let { firstNode: start, lastNode: end } = this;
+    let { firstNode: start, lastNode: end, parent } = this;
 
     if (start === end) {
       return clearNode(start);
     }
 
-    let parent = start.parentNode! as SimplestParentNode;
     let next = end.nextSibling;
 
     let last: SimplestNode | null = end;
@@ -51,6 +84,60 @@ export class Bounds {
     }
 
     return new Cursor(parent, next);
+  }
+}
+
+export class DynamicBounds extends AbstractBounds {
+  static single(bounds: Bounds): DynamicBounds {
+    return new DynamicBounds(bounds, bounds);
+  }
+
+  static of(first: Bounds, last: Bounds): DynamicBounds {
+    return new DynamicBounds(first, last);
+  }
+
+  #first: Bounds;
+  #last: Bounds;
+
+  constructor(first: Bounds, last: Bounds) {
+    super(first.parent);
+    this.#first = first;
+    this.#last = last;
+  }
+
+  get bounds(): Bounds {
+    return this;
+  }
+
+  get firstNode(): SimplestNode {
+    return this.#first.firstNode;
+  }
+
+  get lastNode(): SimplestNode {
+    return this.#last.lastNode;
+  }
+}
+
+export class StaticBounds extends AbstractBounds {
+  static of(firstNode: SimplestNode, lastNode: SimplestNode): StaticBounds {
+    return new StaticBounds(firstNode, lastNode);
+  }
+
+  static single(node: SimplestNode): StaticBounds {
+    return new StaticBounds(node, node);
+  }
+
+  readonly isStatic = true;
+
+  constructor(
+    readonly firstNode: SimplestNode,
+    readonly lastNode: SimplestNode
+  ) {
+    super(firstNode.parentNode!);
+  }
+
+  get bounds(): Bounds {
+    return this;
   }
 }
 

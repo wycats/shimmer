@@ -6,9 +6,8 @@ import { Cache, createCache } from "@glimmer/validator";
 import { Bounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
-import type { Effect } from "../glimmer/cache";
 import type { Render } from "../glimmer/glimmer";
-import type { Content, RenderedContent } from "./content";
+import type { Content, ContentResult } from "./content";
 
 export class Doc {
   static of(dom: SimplestDocument): Doc {
@@ -25,7 +24,7 @@ export class Doc {
 export class App implements Render {
   readonly render: Cache<void> | null;
 
-  constructor(readonly content: Bounds | Effect<RenderedContent>) {
+  constructor(readonly content: ContentResult) {
     if (Bounds.is(content)) {
       this.render = null;
 

@@ -1,6 +1,7 @@
 import type * as dom from "./dom/simplest";
 import "./glimmer/setup";
 
+export * from "./array/normalize";
 export * from "./debug/tree";
 export * from "./dom/bounds";
 export * from "./dom/cursor";

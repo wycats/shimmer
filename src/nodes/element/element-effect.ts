@@ -20,7 +20,7 @@ export function effect<Args extends ReactiveArgs>(
   ): TemplateModifier<"effect", ElementEffectInfo<Args>> => {
     let a = ReactiveArgs.from<Args>(...args);
 
-    return DynamicModifier.of("effect", { callback }, (cursor, dom) => {
+    return DynamicModifier.of("effect", { callback }, (cursor) => {
       callback(cursor, ...a);
 
       return UpdatableModifier.of(cursor, () => {
