@@ -1,13 +1,14 @@
 import { Bounds, StaticBounds } from "../../dom/bounds";
 import { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
-import { DynamicRenderedContent, Effect } from "../../glimmer/cache";
+import { Effect } from "../../glimmer/cache";
 import {
   Content,
   DynamicContent,
+  StableDynamicContent,
   StaticContent,
   TemplateContent,
-  UpdatableContent,
+  UpdatableDynamicContent,
 } from "../content";
 import type { AttributeInfo } from "./attribute";
 import type { ElementEffectInfo } from "./element-effect";
@@ -22,6 +23,11 @@ export interface ElementInfo {
   attributes: readonly TemplateModifier<"attribute", AttributeInfo>[];
   effects: readonly TemplateModifier<"effect", ElementEffectInfo<any>>[];
   body: Content;
+}
+
+interface ElementState {
+  body: StableDynamicContent | null;
+  modifiers: readonly Effect<RenderedModifier>[] | null;
 }
 
 export function element(
@@ -47,38 +53,51 @@ export function element(
       "element",
       { tag, attributes, effects, body },
       (cursor, dom) => {
-        return initialize({ tag, attributes, effects, body }, cursor, dom)
-          .bounds;
+        return render({ tag, attributes, effects, body }, cursor, dom).bounds;
       }
     );
   } else {
     return DynamicContent.of(
       "element",
       { tag, attributes, effects, body },
-      (cursor, dom) => {
-        let { bounds, dynamic } = initialize(
-          { tag, attributes, effects, body },
-          cursor,
-          dom
-        );
-
-        return UpdatableContent.of(bounds, () => {
-          if (dynamic?.body) {
-            dynamic.body.poll();
-          }
-
-          if (dynamic?.modifiers) {
-            for (let attr of dynamic.modifiers) {
-              attr.poll();
-            }
-          }
-        });
-      }
+      new UpdatableElement({ tag, attributes, effects, body })
     );
   }
 }
 
-function initialize(
+class UpdatableElement extends UpdatableDynamicContent<ElementState> {
+  #data: ElementInfo;
+
+  constructor(data: ElementInfo) {
+    super();
+    this.#data = data;
+  }
+
+  isValid(): boolean {
+    return true;
+  }
+
+  poll(state: ElementState): void {
+    if (state.body) {
+      state.body.poll();
+    }
+
+    if (state.modifiers) {
+      for (let attr of state.modifiers) {
+        attr.poll();
+      }
+    }
+  }
+
+  render(
+    cursor: Cursor,
+    dom: SimplestDocument
+  ): { bounds: Bounds; state: ElementState } {
+    return render(this.#data, cursor, dom);
+  }
+}
+
+function render(
   {
     tag,
     attributes,
@@ -94,10 +113,10 @@ function initialize(
   dom: SimplestDocument
 ): {
   bounds: StaticBounds;
-  dynamic: {
-    body: DynamicRenderedContent | null;
+  state: {
+    body: StableDynamicContent | null;
     modifiers: readonly Effect<RenderedModifier>[] | null;
-  } | null;
+  };
 } {
   let element = cursor.createElement(tag, dom);
 
@@ -128,11 +147,14 @@ function initialize(
   let renderedBody = body.render(appending, dom);
 
   if (Bounds.is(renderedBody)) {
-    return { bounds: StaticBounds.single(element), dynamic: null };
+    return {
+      bounds: StaticBounds.single(element),
+      state: { body: null, modifiers: null },
+    };
   } else {
     return {
       bounds: StaticBounds.single(element),
-      dynamic: {
+      state: {
         body: renderedBody,
         modifiers: dynamicModifiers.length === 0 ? null : dynamicModifiers,
       },

@@ -1,12 +1,15 @@
-import { assert } from "../../assertions";
+import type { Bounds } from "../../dom/bounds";
+import type { Cursor } from "../../dom/cursor";
+import type { SimplestDocument } from "../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
 import { IntoReactive, Reactive } from "../../reactive/cell";
 import {
   Content,
   DynamicContent,
+  StableContentResult,
   StaticContent,
   StaticTemplateContent,
-  UpdatableContent,
+  UpdatableDynamicContent,
 } from "../content";
 
 // export type Block<Args extends ReactiveArgs> = (...args: Args) => Content;
@@ -15,6 +18,10 @@ export interface BlockInfo<T = any> {
   arg: Reactive<T>;
   callback: (arg: Reactive<T>) => Content;
   content: Content;
+}
+
+interface BlockState {
+  content: StableContentResult;
 }
 
 export type Block<T> = (arg: IntoReactive<T>) => Content;
@@ -37,7 +44,13 @@ export class BlockImpl<T> {
     let reactive = Reactive.from(arg);
     let content = this.#callback(reactive);
 
-    if (content.isStatic) {
+    let info = {
+      arg: reactive,
+      callback: this.#callback,
+      content,
+    };
+
+    if (info.content.isStatic) {
       return StaticContent.of(
         "block",
         {
@@ -48,40 +61,42 @@ export class BlockImpl<T> {
         (cursor, dom) => (content as StaticTemplateContent).render(cursor, dom)
       );
     } else {
-      return dynamicBlock({ reactive, callback: this.#callback, content });
+      return DynamicContent.of("block", info, new UpdatableBlock(info));
     }
   }
 }
 
-function dynamicBlock<T>({
-  reactive,
-  callback,
-  content,
-}: {
-  reactive: Reactive<T>;
-  callback: (arg: Reactive<T>) => Content;
-  content: Content;
-}) {
-  return DynamicContent.of(
-    "block",
-    {
-      arg: reactive,
-      callback: callback,
-      content,
-    },
-    (cursor, dom) => {
-      const rendered = content.render(cursor, dom);
+class UpdatableBlock extends UpdatableDynamicContent<BlockState> {
+  #data: BlockInfo;
 
-      assert(
-        Effect.is(rendered),
-        `Since the input value is dynamic, the output value is dynamic`
-      );
+  constructor(data: BlockInfo) {
+    super();
+    this.#data = data;
+  }
 
-      return UpdatableContent.of(rendered.bounds, () => {
-        rendered.poll();
-      });
+  isValid(): boolean {
+    return true;
+  }
+
+  poll(state: BlockState): void {
+    if (Effect.is(state.content)) {
+      state.content.poll();
     }
-  );
+
+    // TODO: we shouldn't get here is state.content is not an effect
+  }
+
+  render(
+    cursor: Cursor,
+    dom: SimplestDocument
+  ): { bounds: Bounds; state: BlockState } {
+    let rendered = this.#data.content.render(cursor, dom);
+
+    return {
+      bounds: rendered.bounds,
+      state: { content: rendered },
+    };
+  }
 }
 
 // export function Block<Args extends ReactiveArgs>(

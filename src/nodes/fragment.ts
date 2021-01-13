@@ -1,20 +1,25 @@
 import { Bounds, DynamicBounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
-import type { DynamicRenderedContent } from "../glimmer/cache";
 import { build, Reactive } from "../reactive/cell";
 import { OptionalArray, PresentArray } from "../utils/type";
 import { comment } from "./comment";
 import {
   Content,
-  ContentResult,
   DynamicContent,
+  StableContentResult,
+  StableDynamicContent,
   StaticContent,
-  UpdatableContent,
+  UpdatableDynamicContent,
 } from "./content";
 
 export interface FragmentInfo {
   readonly children: PresentArray<Content>;
+}
+
+export interface FragmentState {
+  dynamic: readonly StableDynamicContent[];
+  nodes: PresentArray<StableContentResult>;
 }
 
 export function fragment(...content: readonly Content[]): Content {
@@ -34,15 +39,7 @@ export function fragment(...content: readonly Content[]): Content {
         return DynamicContent.of(
           "fragment",
           { children: list },
-          (cursor, dom) => {
-            let { bounds, dynamic, nodes } = initializeFragment(
-              list,
-              cursor,
-              dom
-            );
-
-            return dynamicFragment({ bounds, dynamic, nodes });
-          }
+          new UpdatableFragment(list)
         );
       }
     });
@@ -53,43 +50,50 @@ export function fragment(...content: readonly Content[]): Content {
   }
 }
 
-function dynamicFragment({
-  bounds,
-  dynamic,
-  nodes,
-}: {
-  bounds: Bounds;
-  dynamic: readonly DynamicRenderedContent[];
-  nodes: PresentArray<ContentResult>;
-}): UpdatableContent {
-  return UpdatableContent.of(bounds, () => {
-    for (let item of dynamic) {
-      item.poll();
-    }
+class UpdatableFragment extends UpdatableDynamicContent<FragmentState> {
+  #list: PresentArray<Content>;
 
-    let first = nodes.first();
-    let last = nodes.last();
-    return dynamicFragment({
-      bounds: DynamicBounds.of(first.bounds, last.bounds),
-      dynamic,
-      nodes,
-    });
-  });
+  constructor(list: PresentArray<Content>) {
+    super();
+    this.#list = list;
+  }
+
+  isValid(): boolean {
+    return true;
+  }
+
+  poll(state: FragmentState): void {
+    for (let node of state.dynamic) {
+      node.poll();
+    }
+  }
+
+  render(
+    cursor: Cursor,
+    dom: SimplestDocument
+  ): { bounds: Bounds; state: FragmentState } {
+    let { bounds, dynamic, nodes } = initializeFragment(
+      this.#list,
+      cursor,
+      dom
+    );
+
+    return { bounds, state: { nodes, dynamic } };
+  }
 }
+
 export function initializeFragment(
   content: PresentArray<Content>,
   cursor: Cursor,
   dom: SimplestDocument
 ): {
   bounds: Bounds;
-  dynamic: readonly DynamicRenderedContent[];
-  nodes: PresentArray<ContentResult>;
-} {
+} & FragmentState {
   // let [first, ...rest] = content;
   let [first, rest] = content.split();
 
-  let dynamic: DynamicRenderedContent[] = [];
-  let nodes: ContentResult[] = [];
+  let dynamic: StableDynamicContent[] = [];
+  let nodes: StableContentResult[] = [];
 
   let head = first.render(cursor, dom);
   let tail = head;

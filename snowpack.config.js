@@ -12,6 +12,7 @@ module.exports = {
   ],
   mount: {
     app: "/",
+    "app/pages": "/pages",
     src: "/lib",
   },
 };

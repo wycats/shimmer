@@ -1,333 +1,120 @@
-import { assert } from "../src/assertions";
-import type { SimplestElement } from "../src/dom/simplest";
-import {
-  Cell,
-  Choice,
-  Cursor,
-  diffArray,
-  Doc,
-  enumerate,
-  fragment,
-  GLIMMER,
-  keyedArray,
-  match,
-  Pure,
-  Reactive,
-  text,
-  tree,
-  WrapperNode,
-  zip,
-} from "../src/index";
-import { component } from "../src/nodes/component";
-import { attr } from "../src/nodes/element/attribute";
-import { element } from "../src/nodes/element/element";
-import { effect } from "../src/nodes/element/element-effect";
-import { each } from "../src/nodes/structure/each";
-import type { Dict } from "../src/reactive/collection";
-import { Bool } from "./choice";
+import { registerDestructor } from "@glimmer/destroyable";
+import { App, Cursor } from "../src/index";
+import "./pages/patch-example.js";
 
-// function normalize()
+type ChangeCallback = (url: string) => void;
 
-interface Person {
-  id: number;
-  name: string;
+interface UrlBar {
+  // url(): string;
+  // didChange(location: string): void;
+  onChange(callback: ChangeCallback): () => void;
 }
 
-let array: Person[] = [
-  { id: 1, name: "Tom" },
-  { id: 3, name: "Robert" },
-  { id: 4, name: "Godfrey" },
-  { id: 2, name: "Yehuda" },
-  { id: 5, name: "Jen" },
-  { id: 6, name: "Katie" },
-];
-
-let initial = keyedArray(array, (a) => a.id);
-
-let patch = diffArray(
-  initial,
-  keyedArray(
-    [
-      { id: 2, name: "Yehuda" },
-      { id: 7, name: "Melanie" },
-      { id: 3, name: "Robert" },
-      { id: 4, name: "Godfrey" },
-      { id: 1, name: "Tom" },
-      { id: 6, name: "Katie" },
-      { id: 8, name: "Krati" },
-    ],
-    (a) => a.id
-  )
-);
-
-let newArray = [...initial];
-
-patch.applyPatch(newArray, {
-  remove: (object, from) => {
-    newArray.splice(from, 1);
-
-    trace("remove", { header: { from }, object, newArray });
-  },
-  insert: (object, before) => {
-    newArray.splice(before, 0, object);
-
-    trace("insert", { header: { before }, object, newArray });
-  },
-  move: (object, from, to) => {
-    let [obj] = newArray.splice(from, 1);
-    newArray.splice(to, 0, obj!);
-
-    trace("move  ", { header: { from, to }, object, newArray });
-  },
-});
-
-function trace(
-  kind: string,
-  {
-    header,
-    object,
-    newArray,
-  }: { header: object; object: object; newArray: WrapperNode<unknown>[] }
-) {
-  console.groupCollapsed(`step: ${kind}  `, header);
-  console.log("object    =", object);
-  console.log(
-    "new array =",
-    newArray.map((a) => a.inner)
-  );
-  console.groupEnd();
+interface InitializedUrlBar {
+  url: string;
+  bar: UrlBar;
 }
 
-console.log({ prev: array, next: newArray.map((a) => a.inner) });
-
-// steps:
-//
-// Start
-//
-// { id: 1, name: "Tom" }
-// { id: 3, name: "Robert" }
-// { id: 4, name: "Godfrey" }
-// { id: 2, name: "Yehuda" }
-// { id: 5, name: "Jen" }
-// { id: 6, name: "Katie" }
-//
-//
-// Remove Jen from 4
-//
-// { id: 1, name: "Tom" }
-// { id: 3, name: "Robert" }
-// { id: 4, name: "Godfrey" }
-// { id: 2, name: "Yehuda" }
-// { id: 6, name: "Katie" }
-//
-//
-// Insert Melanie before 1
-//
-// { id: 1, name: "Tom" }
-// { id: 7, name: "Melanie" }
-// { id: 3, name: "Robert" }
-// { id: 4, name: "Godfrey" }
-// { id: 2, name: "Yehuda" }
-// { id: 6, name: "Katie" }
-//
-//
-// Insert Krati before 6
-//
-// { id: 1, name: "Tom" }
-// { id: 7, name: "Melanie" }
-// { id: 3, name: "Robert" }
-// { id: 4, name: "Godfrey" }
-// { id: 2, name: "Yehuda" }
-// { id: 6, name: "Katie" }
-// { id: 8, name: "Krati" }
-//
-//
-// Move Yehuda to 0
-//
-// { id: 2, name: "Yehuda" }
-// { id: 1, name: "Tom" }
-// { id: 7, name: "Melanie" }
-// { id: 3, name: "Robert" }
-// { id: 4, name: "Godfrey" }
-// { id: 6, name: "Katie" }
-// { id: 8, name: "Krati" }
-//
-//
-// Move Tom to 4
-//
-// { id: 2, name: "Yehuda" }
-// { id: 7, name: "Melanie" }
-// { id: 3, name: "Robert" }
-// { id: 4, name: "Godfrey" }
-// { id: 1, name: "Tom" }
-// { id: 6, name: "Katie" }
-// { id: 8, name: "Krati" }
-
-assertItems(
-  newArray.map((a) => a.inner),
-  [
-    { id: 2, name: "Yehuda" },
-    { id: 7, name: "Melanie" },
-    { id: 3, name: "Robert" },
-    { id: 4, name: "Godfrey" },
-    { id: 1, name: "Tom" },
-    { id: 6, name: "Katie" },
-    { id: 8, name: "Krati" },
-  ]
-);
-
-function assertItems(actual: Person[], expected: Person[]): void {
-  assert(
-    actual.length === expected.length,
-    `the actual items didn't match the expected items.`
-  );
-
-  for (let [[left, right], i] of enumerate(zip(actual, expected))) {
-    assert(
-      left.id === right.id,
-      `Item #${i} had the wrong id. Expected ${right.id}, got ${left.id}`
-    );
-
-    assert(
-      left.name === right.name,
-      `Item #${i} had the wrong name. Expected ${right.name}, got ${left.name}`
-    );
+class HashUrl implements UrlBar {
+  static browser(): InitializedUrlBar {
+    return HashUrl.of(window);
   }
-}
 
-console.log("patch", patch);
-// console.log("normalized", normalize(patch));
+  static of(window: Window): InitializedUrlBar {
+    let url = window.location.hash.slice(1);
+    let hash = new HashUrl();
 
-interface CountValue {
-  id: number;
-  value: number;
-}
+    window.addEventListener("hashchange", (event) => {
+      let url = new URL(event.newURL);
 
-let countValues: Cell<CountValue>[] = [];
-
-for (let i = 0; i < 10; i++) {
-  countValues.push(Cell.of({ id: i, value: i }));
-}
-
-let counts = Reactive.cell(countValues);
-
-export const bool: Cell<Choice<Bool>> = Cell.of(
-  Bool.of("true", Reactive.static(true))
-);
-
-export const cond = match(bool, {
-  true: text("true"),
-  false: text("false"),
-});
-
-const on = effect(
-  (
-    element: SimplestElement,
-    eventName: Reactive<string>,
-    callback: Reactive<EventListener>
-  ) => {
-    (element as Element).addEventListener(eventName.now, callback.now);
-  }
-);
-
-// TODO:
-// 1. make the proxy
-// 2. catch using reactive values in static contexts
-
-/**
- * IntoReactive -> Reactive
- *
- * 1. if IntoReactive is a primitive, return Reactive.static(it)
- * 2. if IntoReactive is a Reactive<T>, return it
- * 3. otherwise, return ReactiveProxy(it)
- *
- * external: Reactive#deref
- *
- * ReactiveProxy.get(object, key)
- *
- * 1. let inner = object[key]
- * 2. return IntoReactive(inner)
- */
-
-export const contact = component(
-  (person: Dict<{ name: { first: string } }>) => {
-    return text(Pure.of(() => person.name.first));
-  }
-);
-
-export const Count = component((counter: Reactive<CountValue>) => {
-  let secondary = Cell.of(rand());
-
-  return fragment(
-    contact({
-      name: {
-        first: Pure.of(() => String(secondary.now)),
-      },
-    }),
-    text(" "),
-    element(
-      "p",
-      [
-        attr(
-          "class",
-          Pure.of(() => `count-${counter.now.value}`)
-        ),
-      ],
-      fragment(
-        element(
-          "button",
-          [on("click", () => secondary.update(rand))],
-          text("randomize")
-        ),
-        text(Pure.of(() => String(counter.now.value))),
-        text("::"),
-        element(
-          "span",
-          [attr("class", "count")],
-          text(Pure.of(() => String(secondary.now)))
-        )
-      )
-    )
-  );
-});
-
-function rand() {
-  return Math.floor(Math.random() * 100);
-}
-
-let texts = each(counts, (i) => String(i.id), Count);
-
-const hello = fragment(texts, text(" "), cond);
-
-let tick = 0;
-
-function increment() {
-  tick++;
-
-  if (tick % 2 === 0) {
-    counts.update((c) => {
-      return c.map((value) => {
-        let now = value.now;
-        return Cell.of({ id: now.id, value: now.value + 1 });
-      });
+      hash.#didChange(url.hash.slice(1));
     });
-  } else {
-    counts.now.forEach((c) =>
-      c.update((i) => ({ id: i.id, value: i.value + 1 }))
-    );
+
+    return { url, bar: hash };
   }
 
-  bool.update((last) => {
-    return last.match<Choice<Bool>>({
-      true: () => Bool.of("false", Reactive.static(false)),
-      false: () => Bool.of("true", Reactive.static(true)),
-    });
-  });
+  #onChanges: Set<ChangeCallback> = new Set();
+
+  #didChange = (url: string): void => {
+    for (let callback of this.#onChanges) {
+      callback(url);
+    }
+  };
+
+  onChange(callback: (url: string) => void): () => void {
+    this.#onChanges.add(callback);
+
+    return () => this.#onChanges.delete(callback);
+  }
 }
 
-console.log(tree(hello));
+export type Routes = (location: string) => Promise<App>;
 
-const DOC = Doc.of(document);
-GLIMMER.addRenderable(DOC.render(hello, Cursor.appending(document.body)));
+class Loading {
+  #url: string;
 
-setInterval(increment, 1000);
+  constructor(url: string) {
+    this.#url = url;
+  }
+
+  clear(): Cursor {
+    return Cursor.appending(document.body);
+  }
+}
+
+class Router {
+  static startForBrowser(routes: Routes): Router {
+    return Router.start(HashUrl.browser(), routes);
+  }
+
+  static start({ url, bar }: InitializedUrlBar, routes: Routes): Router {
+    let router = new Router(routes);
+
+    let destructor = bar.onChange((url) => {
+      router.route(url);
+    });
+
+    registerDestructor(router, destructor);
+
+    router.route(url);
+
+    return router;
+  }
+
+  #page: App | Loading | null = null;
+  #router: Routes;
+
+  constructor(router: Routes) {
+    this.#router = router;
+  }
+
+  async route(url: string): Promise<void> {
+    if (this.#page) {
+      let cursor = this.#page.clear();
+    }
+
+    this.#page = new Loading(url);
+    this.#page = await this.#router(url);
+  }
+}
+
+async function route(): Promise<App> {
+  switch (location.hash) {
+    case "#index": {
+      let page = await import("./pages/index.js");
+      return page.Main.render();
+    }
+    case "#tutorial": {
+      let page = await import("./pages/tutorial.js");
+      return page.Main.render();
+    }
+
+    default:
+      let page = await import("./pages/fallback.js");
+      return page.Main.render();
+  }
+}
+
+Router.startForBrowser(route);
+
+export {};

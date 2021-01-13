@@ -1,16 +1,16 @@
 import { getPatch, Patch } from "fast-array-diff";
 import { enumerate } from "../utils/collection";
 
-export class WrapperNode<T> {
+export class KeyedNode<T> {
   constructor(readonly key: unknown, readonly inner: T) {}
 }
 
 export class Insert<T> {
-  constructor(readonly content: WrapperNode<T>, readonly before: number) {}
+  constructor(readonly content: KeyedNode<T>, readonly before: number) {}
 }
 
 export class Move<T> {
-  constructor(readonly node: WrapperNode<T>, readonly to: number) {}
+  constructor(readonly node: KeyedNode<T>, readonly to: number) {}
 }
 
 export class Remove<T> {
@@ -26,11 +26,11 @@ interface Application<Insertion, Inserted> {
 
   // The `before` number is the location of the immediately following node at the point that the
   // callback was called.
-  insert: (value: WrapperNode<Insertion>, before: number) => void;
+  insert: (value: KeyedNode<Insertion>, before: number) => void;
 
   // The `from` number is the location of the node at the point that the callback is called. The
   // `to` number is the location of the node *after* the node was removed.
-  move: (value: WrapperNode<Inserted>, from: number, to: number) => void;
+  move: (value: KeyedNode<Inserted>, from: number, to: number) => void;
 }
 
 export class Patches<Insertion, Inserted> {
@@ -49,7 +49,7 @@ export class Patches<Insertion, Inserted> {
   }
 
   applyPatch(
-    array: WrapperNode<Inserted>[],
+    array: KeyedNode<Inserted>[],
     application: Application<Insertion, Inserted>
   ) {
     for (let remove of this.#remove) {
@@ -70,13 +70,13 @@ export class Patches<Insertion, Inserted> {
 export function keyedArray<T>(
   values: readonly T[],
   key: (a: T) => unknown
-): readonly WrapperNode<T>[] {
-  return values.map((v) => new WrapperNode(key(v), v));
+): readonly KeyedNode<T>[] {
+  return values.map((v) => new KeyedNode(key(v), v));
 }
 
 export function diffArray<Insertion, Inserted>(
-  prev: readonly WrapperNode<Inserted>[],
-  next: readonly WrapperNode<Insertion | Inserted>[]
+  prev: readonly KeyedNode<Inserted>[],
+  next: readonly KeyedNode<Insertion | Inserted>[]
 ): Patches<Insertion, Inserted> {
   // let next = nextValues.map((v) => new WrapperNode(key(v), v));
 
@@ -86,7 +86,7 @@ export function diffArray<Insertion, Inserted>(
 }
 
 export function normalize<Insertion, Inserted>(
-  patch: Patch<WrapperNode<Insertion | Inserted>>
+  patch: Patch<KeyedNode<Insertion | Inserted>>
 ): Patches<Insertion, Inserted> {
   let inserted: Set<unknown> = new Set();
   let removed: Set<unknown> = new Set();
@@ -125,12 +125,12 @@ export function normalize<Insertion, Inserted>(
         for (let [insertion, i] of enumerate(patchItem.items)) {
           if (removed.has(insertion.key)) {
             moves.push(
-              new Move(insertion as WrapperNode<Inserted>, patchItem.newPos + i)
+              new Move(insertion as KeyedNode<Inserted>, patchItem.newPos + i)
             );
           } else {
             inserts.push(
               new Insert(
-                insertion as WrapperNode<Insertion>,
+                insertion as KeyedNode<Insertion>,
                 patchItem.newPos + i
               )
             );

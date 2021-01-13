@@ -317,8 +317,8 @@
         "affectsGlobalScope": false
       },
       "./src/array/normalize.ts": {
-        "version": "d13c5ac930a2f8b9cef9d1c6a414786d8b782844135914b29a32a4a3688aacf8",
-        "signature": "cbf2f8cfdf9b93c9d5a0c4452c29babb04314a53b39ecc6feb060727a1e0c48c",
+        "version": "41c754b2275d4ecb72d95efa48852a167aa843057cad7e1c01c06cecfc0b4724",
+        "signature": "ad9626c7240dbe9e679e0e3879ec265398d9ba300758a12cbc0759f228a5a8c1",
         "affectsGlobalScope": false
       },
       "./src/assertions.ts": {
@@ -337,8 +337,8 @@
         "affectsGlobalScope": false
       },
       "./src/dom/bounds.ts": {
-        "version": "c152a35650d1cd433d085b836b2d58db587a1bbc195ff2715403a64eaf99dd1a",
-        "signature": "bde81144344230d30eb8a09f862b47e54902d7c6a3d54ebfe1ea3ac7012a7473",
+        "version": "76b93b10e5aa4a8a613e58581b1dc79e4b315f87ce4b1cf40940e6ec25aca091",
+        "signature": "15916e23ef30b18c2881ad6c29a9fc459ae25fa5c18e0b02197c6fd10510973d",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": {
@@ -567,7 +567,7 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/comment.ts": {
-        "version": "eb1fccb4b224aefd777314106e62d97d645cec01ac3873a0ffea8c1ef9476c9a",
+        "version": "b3d858908d589c8a450b6efbb3714779a65d6d2ab302c488e9adbc3213f796d9",
         "signature": "48149f15675a28b3feeda48a540bd4cb36c0f4f94a79b82766ac15e27f48b3d3",
         "affectsGlobalScope": false
       },
@@ -577,28 +577,28 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/fragment.ts": {
-        "version": "3e2f487a3b69d34b2c8e461501a7e20b7469bbfd6c70263be8a2032a8448b7b7",
-        "signature": "a3dbc9d44835e7ca7c5e4bbbc9e5f08e36a491dbdfd95510b8897df10258d8ce",
+        "version": "ac564b43ece4535415945930e2d631be9edb12f9853813af568f8aff81468f62",
+        "signature": "e62200b08eb98b8cd3d26661340c7d33d21f581ed3271a7b16165a45d5b9a6f9",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/block.ts": {
-        "version": "7bd4c5fd4afcc78c193717f54cc56187890d43ce232fd95d4a85480e9d5256d9",
+        "version": "54ba51b5fd1abbc844c51a4137af5748ca03192a7f97e0b915fd195d685c2789",
         "signature": "0f94e44e29a60718da68abcc788263f656503ade2cde80292803e9c163a9e3f2",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/each.ts": {
-        "version": "b2666076c6c8e3184b5ff37a430c8154972c3cb4c9a25e8062722cafbd94e79b",
-        "signature": "57d20a805ed1e8206bce5bc06de8153bc6b29a3e1b45d1eb03cb2c0960c177c1",
+        "version": "8cb892822bfd9d68537b10cd2cbfd95e4f195ca794995a591c868f20cde22c6d",
+        "signature": "d781f58003ae92e78f7a7f7fb858d29c9d9532c4b8ade67b273b8f0ac243dc96",
         "affectsGlobalScope": false
       },
       "./src/nodes/text.ts": {
-        "version": "6e50f3415da879dea536626dca9d834f8f5f83bde2a80a09f582dd1de0de00e7",
+        "version": "05510492b8f1f703c9aa14144763e465ce3ea49909c29b4a64ce88ad2b9381d1",
         "signature": "0fad5e1c3c81b9742478d4edb0175972268bf7bc2a269f475505001ae4263fcf",
         "affectsGlobalScope": false
       },
       "./src/nodes/content.ts": {
-        "version": "6ce3af9eae1981aeeb0a573c8544f2f7ad8cc4cd6d7d2d8203ca1863f2e1aa06",
-        "signature": "1b6523440ff4c88c7d8cdcde2c570a7c81f8ab725aac784c69af2d766a38a799",
+        "version": "e4668845901d6c96caba40899cd2ec0d5d7b97aeabc2693f9ac6798f1bd79095",
+        "signature": "373205ddb419d75666eea8091f24d4f55f399e70a580c51911aea8bd8b1f721a",
         "affectsGlobalScope": false
       },
       "./src/utils/option.ts": {
@@ -607,8 +607,8 @@
         "affectsGlobalScope": false
       },
       "./src/glimmer/cache.ts": {
-        "version": "45afe2510579265ccaca7cbfe457d0aa190a6d53e0d1e0e1ad29cc4a10bd0211",
-        "signature": "742db4c3a0c97b14dd95b1e8b234831896d866c40d722924af884030d4dca291",
+        "version": "f1d32e03fc3b9a1b50aa0c10edb9d47e50c34d452e5c003806ca066a762916d0",
+        "signature": "582b26df2569b7e2da020df8cfcd842dab4eb34ec49ee0a15a71653c30c56a7c",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/tracked-built-ins@1.0.2/node_modules/tracked-built-ins/-private/array.d.ts": {
@@ -657,17 +657,17 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/element/element.ts": {
-        "version": "ead186581d3449f8ec9287bfb6e687c9cb3f371be2c98e949aa8ce6f1b9679ca",
+        "version": "c9130e29da4f3e49ab4fb16c9b407187b655dc46312052621d90f77e3f53d6af",
         "signature": "557ca2f6ae3c589ca2f72459c7c5ea28c073065c931a7613c56fc176938a29c9",
         "affectsGlobalScope": false
       },
       "./src/nodes/app.ts": {
-        "version": "81a35771a826f0cae90fcc656f537563504f121f5a68c93e06a7acc3f1e6de0a",
-        "signature": "47e5f63f2f5ef60ef60e3e110c5fc8bfa5057a1ccf2264d02207b794c401daf3",
+        "version": "3889f8e464b589e738ab38269cbd77e0f23f92c7edd5c8ead905b565ec791b4f",
+        "signature": "e7d36cad6eebbffcc8d84adfb9edc3e7734fb793b99c1d1921712b0db0374eae",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/choice.ts": {
-        "version": "f1f550135a147a45e2ff8c426a2b9afe38097ac583a26a0fd76c6d396fbfdcc0",
+        "version": "379d60a4baa4c6736161bcfcb06be9e1014fdabfb795000ba8ba6925a4b47489",
         "signature": "9c663530f952d4d0a6110d5732f3ec041d66d71df5b88a9d5fa2e20a864ff409",
         "affectsGlobalScope": false
       },
@@ -696,9 +696,29 @@
         "signature": "e842dbea4118bcedbec193109d1d07d5fd1f0c3bf2ad3483e032cac20949dddb",
         "affectsGlobalScope": false
       },
+      "./app/pages/patch-example.ts": {
+        "version": "d0ddb4707c7c3039c2b2ea7deaf796b3ee320b773fa7e6d1ef15695aa82ba432",
+        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/index.ts": {
+        "version": "ea80132b6bf24c32e5caecc2f73be6a297517a6cd7d5aa86a7f3766128facb93",
+        "signature": "a45ded5471eec5e106e00015b0e94db83b6de014ab17458872913524a67220d0",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial.ts": {
+        "version": "dd8aea7dfd70ad119dd22f5a93139d86b8e78200cfc123477549351f4afc44cd",
+        "signature": "2ded9373a224ef5a66593ca4b5109f56708eb976b56dff0203d497836a17101e",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/fallback.ts": {
+        "version": "dd8aea7dfd70ad119dd22f5a93139d86b8e78200cfc123477549351f4afc44cd",
+        "signature": "2ded9373a224ef5a66593ca4b5109f56708eb976b56dff0203d497836a17101e",
+        "affectsGlobalScope": false
+      },
       "./app/index.ts": {
-        "version": "abd6fc6fda76319a5d2ab27b66fbbae4ade09e597c5c7f98bfff27c034f0d101",
-        "signature": "92664d08d80fb1410a9295a27128a8604494e7ea145da8dce07dd2961437dc8c",
+        "version": "661c9c50e859bf8ce01ea35be2d089f116eb520094416a5e7d57bc3cc093160a",
+        "signature": "010162dda85232a2ce781d0e7a3e2f161220cc183e239edf009ce154fb23ffcd",
         "affectsGlobalScope": false
       },
       "./src/hello-world.ts": {
@@ -1044,8 +1064,18 @@
         "./src/index.ts"
       ],
       "./app/index.ts": [
+        "./app/pages/fallback.ts",
+        "./app/pages/index.ts",
+        "./app/pages/patch-example.ts",
+        "./app/pages/tutorial.ts",
+        "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/fallback.ts": [
+        "./src/index.ts"
+      ],
+      "./app/pages/index.ts": [
         "./app/choice.ts",
-        "./src/assertions.ts",
         "./src/dom/simplest.ts",
         "./src/index.ts",
         "./src/nodes/component.ts",
@@ -1054,6 +1084,13 @@
         "./src/nodes/element/element.ts",
         "./src/nodes/structure/each.ts",
         "./src/reactive/collection.ts"
+      ],
+      "./app/pages/patch-example.ts": [
+        "./src/assertions.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial.ts": [
+        "./src/index.ts"
       ],
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts": [
         "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/index.d.ts"
@@ -1605,7 +1642,8 @@
         "./src/nodes/fragment.ts",
         "./src/nodes/structure/block.ts",
         "./src/nodes/structure/each.ts",
-        "./src/nodes/text.ts"
+        "./src/nodes/text.ts",
+        "./src/utils/predicates.ts"
       ],
       "./src/nodes/element/attribute.ts": [
         "./src/nodes/element/modifier-content.ts",
@@ -1636,7 +1674,6 @@
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
-        "./src/glimmer/cache.ts",
         "./src/nodes/comment.ts",
         "./src/nodes/content.ts",
         "./src/reactive/cell.ts",
@@ -1651,7 +1688,9 @@
         "./src/nodes/text.ts"
       ],
       "./src/nodes/structure/block.ts": [
-        "./src/assertions.ts",
+        "./src/dom/bounds.ts",
+        "./src/dom/cursor.ts",
+        "./src/dom/simplest.ts",
         "./src/glimmer/cache.ts",
         "./src/nodes/content.ts",
         "./src/reactive/cell.ts"
@@ -1660,7 +1699,6 @@
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
-        "./src/glimmer/cache.ts",
         "./src/nodes/content.ts",
         "./src/reactive/cell.ts"
       ],
@@ -1668,12 +1706,14 @@
         "./src/array/normalize.ts",
         "./src/assertions.ts",
         "./src/dom/bounds.ts",
+        "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/glimmer/cache.ts",
         "./src/nodes/content.ts",
         "./src/nodes/fragment.ts",
         "./src/nodes/structure/block.ts",
-        "./src/reactive/cell.ts"
+        "./src/reactive/cell.ts",
+        "./src/utils/type.ts"
       ],
       "./src/nodes/text.ts": [
         "./src/dom/bounds.ts",
@@ -1709,9 +1749,19 @@
         "./src/index.ts"
       ],
       "./app/index.ts": [
+        "./app/pages/patch-example.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/fallback.ts": [
+        "./src/index.ts"
+      ],
+      "./app/pages/index.ts": [
         "./app/choice.ts",
         "./src/index.ts",
         "./src/nodes/component.ts"
+      ],
+      "./app/pages/tutorial.ts": [
+        "./src/index.ts"
       ],
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts": [
         "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/index.d.ts"
@@ -2271,7 +2321,6 @@
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
-        "./src/glimmer/cache.ts",
         "./src/nodes/content.ts",
         "./src/utils/type.ts"
       ],
@@ -2292,6 +2341,8 @@
         "./src/reactive/cell.ts"
       ],
       "./src/nodes/structure/each.ts": [
+        "./src/array/normalize.ts",
+        "./src/dom/bounds.ts",
         "./src/nodes/content.ts",
         "./src/nodes/structure/block.ts",
         "./src/reactive/cell.ts"
@@ -2317,7 +2368,33 @@
     },
     "semanticDiagnosticsPerFile": [
       "./app/choice.ts",
-      "./app/index.ts",
+      [
+        "./app/index.ts",
+        [
+          {
+            "file": "./app/index.ts",
+            "start": 1190,
+            "length": 4,
+            "messageText": "'#url' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          },
+          {
+            "file": "./app/index.ts",
+            "start": 1936,
+            "length": 6,
+            "messageText": "'cursor' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/fallback.ts",
+      "./app/pages/index.ts",
+      "./app/pages/patch-example.ts",
+      "./app/pages/tutorial.ts",
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
       "./node_modules/.pnpm/@glimmer/global-context@0.73.1/node_modules/@glimmer/global-context/dist/types/index.d.ts",
       "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
@@ -2527,6 +2604,22 @@
       ],
       [
         "./app/index.ts",
+        1
+      ],
+      [
+        "./app/pages/fallback.ts",
+        1
+      ],
+      [
+        "./app/pages/index.ts",
+        1
+      ],
+      [
+        "./app/pages/patch-example.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial.ts",
         1
       ],
       [

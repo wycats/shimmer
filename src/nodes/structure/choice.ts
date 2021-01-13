@@ -1,13 +1,12 @@
 import { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
-import type { DynamicRenderedContent } from "../../glimmer/cache";
 import { build, IntoReactive, Reactive } from "../../reactive/cell";
 import {
   Content,
   DynamicContent,
-  renderBounds,
-  UpdatableContent,
+  StableDynamicContent,
+  UpdatableDynamicContent,
 } from "../content";
 
 export type Choices = {
@@ -59,6 +58,11 @@ export interface ChoiceInfo<C extends Choices = Choices> {
   match: Match<C, Content>;
 }
 
+interface ChoiceState<C extends Choices> {
+  discriminant: keyof C;
+  content: StableDynamicContent | null;
+}
+
 export function match<C extends Choices>(
   value: IntoReactive<Choice<C>>,
   match: Match<C, Content>
@@ -71,32 +75,47 @@ export function match<C extends Choices>(
       return match[discriminant];
     }
 
-    return DynamicContent.of(
-      "choice",
-      { value: reactive, match },
-      (cursor, dom) => {
-        let { bounds, dynamic } = initialize(reactive, match, cursor, dom);
-        let { discriminant } = reactive.now;
-
-        return UpdatableContent.of(bounds, () => {
-          let { discriminant: newDiscriminant } = reactive.now;
-
-          if (discriminant !== newDiscriminant) {
-            let cursor = bounds.clear();
-            let initialized = initialize(reactive, match, cursor, dom);
-            bounds = initialized.bounds;
-            dynamic = initialized.dynamic;
-            discriminant = newDiscriminant;
-            return;
-          }
-
-          if (dynamic) {
-            dynamic.poll();
-          }
-        });
-      }
-    );
+    let data = { value: reactive, match };
+    return DynamicContent.of("choice", data, new UpdatableChoice(data));
   });
+}
+
+class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
+  ChoiceState<C>
+> {
+  #data: ChoiceInfo<C>;
+
+  constructor(data: ChoiceInfo<C>) {
+    super();
+    this.#data = data;
+  }
+
+  isValid(state: ChoiceState<C>): boolean {
+    let { discriminant: newDiscriminant } = this.#data.value.now;
+
+    return state.discriminant === newDiscriminant;
+  }
+
+  poll(state: ChoiceState<C>): void {
+    if (state.content) {
+      state.content.poll();
+    }
+  }
+
+  render(
+    cursor: Cursor,
+    dom: SimplestDocument
+  ): { bounds: Bounds; state: ChoiceState<C> } {
+    let { value, match } = this.#data;
+
+    let { bounds, content } = initialize(value, match, cursor, dom);
+    let { discriminant } = value.now;
+
+    return {
+      bounds,
+      state: { discriminant, content },
+    };
+  }
 }
 
 function initialize<C extends Choices>(
@@ -104,14 +123,14 @@ function initialize<C extends Choices>(
   match: Match<C, Content>,
   cursor: Cursor,
   dom: SimplestDocument
-): { bounds: Bounds; dynamic: DynamicRenderedContent | null } {
+): { bounds: Bounds; content: StableDynamicContent | null } {
   let { discriminant } = reactive.now;
   let choice = match[discriminant] as Content;
   let result = choice.render(cursor, dom);
 
   if (Bounds.is(result)) {
-    return { bounds: result, dynamic: null };
+    return { bounds: result, content: null };
   } else {
-    return { bounds: renderBounds(result), dynamic: result };
+    return { bounds: result.bounds, content: result };
   }
 }

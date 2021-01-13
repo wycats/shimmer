@@ -1,13 +1,8 @@
-import { StaticBounds } from "../dom/bounds";
+import { Bounds, StaticBounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
 import { build, IntoReactive, Reactive } from "../reactive/cell";
-import {
-  DynamicContent,
-  StaticContent,
-  TemplateContent,
-  UpdatableContent,
-} from "./content";
+import { DynamicContent, StaticContent, TemplateContent } from "./content";
 
 export type TextInfo = Reactive<string>;
 
@@ -24,12 +19,16 @@ export function text(
         return StaticBounds.single(text);
       });
     } else {
-      return DynamicContent.of("text", reactive, (cursor, dom) => {
-        let text = initialize(reactive, cursor, dom);
-
-        return UpdatableContent.of(StaticBounds.single(text), () => {
+      return DynamicContent.of("text", reactive, {
+        isValid: () => true,
+        poll: (text: SimplestCharacterData) => {
           text.data = reactive.now;
-        });
+        },
+        render: (cursor, dom) => {
+          let text = initialize(reactive, cursor, dom);
+          let bounds = Bounds.single(text);
+          return { bounds, state: text };
+        },
       });
     }
   });

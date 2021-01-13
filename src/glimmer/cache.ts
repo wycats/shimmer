@@ -5,6 +5,12 @@ import { assertDynamicContext } from "../reactive/cell";
 import { Maybe } from "../utils/option";
 import { isObject } from "../utils/predicates";
 
+export interface EffectOptions<T> {
+  initialize: () => T;
+  update: (last: T) => T;
+  destructor?: (last: T) => void;
+}
+
 export class Effect<T> {
   static is(value: unknown): value is Effect<unknown> {
     return isObject(value) && value instanceof Effect;
@@ -14,11 +20,7 @@ export class Effect<T> {
     initialize,
     update,
     destructor,
-  }: {
-    initialize: () => T;
-    update: (last: T) => T;
-    destructor?: (last: T) => void;
-  }): { cache: Cache<T>; destructor?: (last: T) => void } {
+  }: EffectOptions<T>): { cache: Cache<T>; destructor?: (last: T) => void } {
     let last: Maybe<T> = Maybe.none();
 
     let cache = createCache(() => {

@@ -5,9 +5,28 @@ import type { SimplestNode, SimplestParentNode } from "./simplest";
 
 export type Bounds = StaticBounds | DynamicBounds;
 
+export type IntoBounds = Bounds | SimplestNode;
+
 export const Bounds = {
   is: (value: unknown): value is Bounds => {
     return AbstractBounds.is(value);
+  },
+
+  from: (into: IntoBounds): Bounds => {
+    if (Bounds.is(into)) {
+      return into;
+    } else {
+      return new StaticBounds(into, into);
+    }
+  },
+
+  spanning: (start: IntoBounds, end: IntoBounds): Bounds => {
+    return DynamicBounds.of(Bounds.from(start), Bounds.from(end));
+  },
+
+  single: (into: IntoBounds): Bounds => {
+    let bounds = Bounds.from(into);
+    return Bounds.spanning(bounds, bounds);
   },
 };
 
@@ -92,7 +111,11 @@ export class DynamicBounds extends AbstractBounds {
     return new DynamicBounds(bounds, bounds);
   }
 
-  static of(first: Bounds, last: Bounds): DynamicBounds {
+  static of(first: Bounds, last: Bounds): Bounds {
+    if (first instanceof StaticBounds && last instanceof StaticBounds) {
+      return StaticBounds.of(first.bounds.firstNode, last.bounds.lastNode);
+    }
+
     return new DynamicBounds(first, last);
   }
 
