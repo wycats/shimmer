@@ -108,18 +108,6 @@ export class DynamicRenderedContent extends Effect<RenderedContent> {
 
     return new DynamicRenderedContent(cache, destructor, getValue(cache)!);
   }
-
-  get bounds() {
-    return this.last.bounds;
-  }
-
-  get firstNode() {
-    return this.last.bounds.firstNode;
-  }
-
-  get lastNode() {
-    return this.last.bounds.lastNode;
-  }
 }
 
 export class Pure<T> {

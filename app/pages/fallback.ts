@@ -1,8 +1,8 @@
-import { App, Cursor, Doc, fragment, GLIMMER, text } from "../../src/index";
+import { App, Cursor, Doc, fragment, text } from "../../src/index";
 
 export class Main {
-  static render(): App {
-    return new Main(Doc.of(document)).render();
+  static render(cursor: Cursor): App {
+    return new Main(Doc.of(document)).render(cursor);
   }
 
   #doc: Doc;
@@ -11,9 +11,9 @@ export class Main {
     this.#doc = doc;
   }
 
-  render(): App {
-    let renderable = this.#doc.render(hello, Cursor.appending(document.body));
-    GLIMMER.addRenderable(renderable);
+  render(cursor: Cursor): App {
+    let renderable = this.#doc.render(hello, cursor);
+    // GLIMMER.addRenderable(renderable);
 
     return renderable;
   }

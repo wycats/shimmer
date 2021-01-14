@@ -282,7 +282,7 @@
         "affectsGlobalScope": false
       },
       "./src/glimmer/setup.ts": {
-        "version": "51c738274b56c27c0ba83331de8455babc586716dd8239cc7454c05da622f3c7",
+        "version": "699b6d5ebb62c256335935ccd49f5053cf4eb36319ed7de7441b87b98b92a7af",
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
@@ -324,21 +324,6 @@
       "./src/assertions.ts": {
         "version": "b3073f0b6418aa4066a6c0bab31025ce4e4c1229e123de6cf9a904ba7396abcd",
         "signature": "fb1563c9c8b9bea2f317f3eb0067a0098ba7f579235dda9eeb226ec40bee0b27",
-        "affectsGlobalScope": false
-      },
-      "./src/utils/predicates.ts": {
-        "version": "20a3961cde930581da25bc41c4bf5489020eb37a8ea4d9cceca74dd88c2d4e1b",
-        "signature": "bbb07e4b485143e2f975755788503c9fc7d98c91ce4a759dcfc4d4b50bb9871d",
-        "affectsGlobalScope": false
-      },
-      "./src/dom/cursor.ts": {
-        "version": "3852b440ee16158d6f778ccfc8111154210baa739072af60183528ad24b671c8",
-        "signature": "ac9f530c7e92540f4a1681e000de4359d9f4581d9c61dcbe8f442fd4e4d6d1d4",
-        "affectsGlobalScope": false
-      },
-      "./src/dom/bounds.ts": {
-        "version": "76b93b10e5aa4a8a613e58581b1dc79e4b315f87ce4b1cf40940e6ec25aca091",
-        "signature": "15916e23ef30b18c2881ad6c29a9fc459ae25fa5c18e0b02197c6fd10510973d",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": {
@@ -561,13 +546,33 @@
         "signature": "b9df383b51045bbe9944e75cc896468bdd32b73f73580a2c4fcf1b3a4a11df53",
         "affectsGlobalScope": false
       },
+      "./src/dom/cursor.ts": {
+        "version": "3852b440ee16158d6f778ccfc8111154210baa739072af60183528ad24b671c8",
+        "signature": "ac9f530c7e92540f4a1681e000de4359d9f4581d9c61dcbe8f442fd4e4d6d1d4",
+        "affectsGlobalScope": false
+      },
+      "./src/utils/predicates.ts": {
+        "version": "20a3961cde930581da25bc41c4bf5489020eb37a8ea4d9cceca74dd88c2d4e1b",
+        "signature": "bbb07e4b485143e2f975755788503c9fc7d98c91ce4a759dcfc4d4b50bb9871d",
+        "affectsGlobalScope": false
+      },
       "./src/reactive/cell.ts": {
         "version": "a03a736ed18f46793d5cfbfc72466acdad21c253bb9fc997c482523dfbb7a359",
         "signature": "b2d3712f87955985f16684fa4fd3c31bb7216de1b3343fb34a467e43922acc79",
         "affectsGlobalScope": false
       },
+      "./src/utils/option.ts": {
+        "version": "23b85c68dd164d247b38c6897e9103e21b033243a9679e0b24347f8745f84f1f",
+        "signature": "84d2194997a2612a9b4cba16e77f6afa51ccd967b08c2dbdd46ba75313f0b96a",
+        "affectsGlobalScope": false
+      },
+      "./src/glimmer/cache.ts": {
+        "version": "ef10e446d9f149a8ae00fac719c543df5f116920f8807fc3bae3bb1d7445c635",
+        "signature": "5e04834f16354662f38ffdeb2d0239abd73ca13c93717faa55985fc0f462e0aa",
+        "affectsGlobalScope": false
+      },
       "./src/nodes/comment.ts": {
-        "version": "b3d858908d589c8a450b6efbb3714779a65d6d2ab302c488e9adbc3213f796d9",
+        "version": "c5460c9694968a668284e76eb68080b74cccb0320165a614f0a622c8563999e1",
         "signature": "48149f15675a28b3feeda48a540bd4cb36c0f4f94a79b82766ac15e27f48b3d3",
         "affectsGlobalScope": false
       },
@@ -577,8 +582,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/fragment.ts": {
-        "version": "ac564b43ece4535415945930e2d631be9edb12f9853813af568f8aff81468f62",
-        "signature": "e62200b08eb98b8cd3d26661340c7d33d21f581ed3271a7b16165a45d5b9a6f9",
+        "version": "6e6f43cabcdc505ed4777728864270501d31fd7c87326b4ffd0af0005a66e399",
+        "signature": "0ae7360ed0613e671079d666a4b99700ae2c12ab900ed2ac0e388c837dc00c54",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/block.ts": {
@@ -587,28 +592,28 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/each.ts": {
-        "version": "8cb892822bfd9d68537b10cd2cbfd95e4f195ca794995a591c868f20cde22c6d",
+        "version": "feeb1beabb73eb6c69872e12a28be25d5a78d138e6321ab07b0be8a5425080dd",
         "signature": "d781f58003ae92e78f7a7f7fb858d29c9d9532c4b8ade67b273b8f0ac243dc96",
         "affectsGlobalScope": false
       },
       "./src/nodes/text.ts": {
-        "version": "05510492b8f1f703c9aa14144763e465ce3ea49909c29b4a64ce88ad2b9381d1",
+        "version": "f097e111b0ce58e3fb096597efb480028d754ddb466b20ec9b8c6b05c6432416",
         "signature": "0fad5e1c3c81b9742478d4edb0175972268bf7bc2a269f475505001ae4263fcf",
         "affectsGlobalScope": false
       },
       "./src/nodes/content.ts": {
-        "version": "e4668845901d6c96caba40899cd2ec0d5d7b97aeabc2693f9ac6798f1bd79095",
-        "signature": "373205ddb419d75666eea8091f24d4f55f399e70a580c51911aea8bd8b1f721a",
+        "version": "87d638a2d261b981605a84f4d74c982faa923bbbddf106ddd1677857b34fac4c",
+        "signature": "8af3c2f02e8ad94183e650a8680159193b75aa588bf24c879ec3211363a01004",
         "affectsGlobalScope": false
       },
-      "./src/utils/option.ts": {
-        "version": "23b85c68dd164d247b38c6897e9103e21b033243a9679e0b24347f8745f84f1f",
-        "signature": "84d2194997a2612a9b4cba16e77f6afa51ccd967b08c2dbdd46ba75313f0b96a",
+      "./src/nodes/app.ts": {
+        "version": "c60ff31efd9b7bb5ca5e22fa8230610596837d46529d5c5a39740b50e75552d7",
+        "signature": "7ae1683bc543299f6290c1f7a3574de6e41e9dd9b132fd3191f7787a2c290296",
         "affectsGlobalScope": false
       },
-      "./src/glimmer/cache.ts": {
-        "version": "f1d32e03fc3b9a1b50aa0c10edb9d47e50c34d452e5c003806ca066a762916d0",
-        "signature": "582b26df2569b7e2da020df8cfcd842dab4eb34ec49ee0a15a71653c30c56a7c",
+      "./src/owner.ts": {
+        "version": "7d067ff7245820467e5aa1b74b3daa596643ab4d0af66cf266935c11a74b3571",
+        "signature": "984e8e8ec073d1689f89145d68babd1f8d022902e99365034c520e45a3a44a26",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/tracked-built-ins@1.0.2/node_modules/tracked-built-ins/-private/array.d.ts": {
@@ -637,8 +642,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/component.ts": {
-        "version": "27a7817ff6c709fb616c057df7c1fa550b2c2909c68dc0a0782b7aad8d547e2e",
-        "signature": "a0ceca2ef7dd2533e00a5bf316afe18acebd0708a3f6c61ddc460043bf0a4e45",
+        "version": "2e5f399057aaf1de9039c2757056444beeb7e0625ffbf2622e39bf950a1b2dd7",
+        "signature": "be6a66c952f3f065501745b4e762fdb03e69ce8009a049177a3359d9365cb287",
         "affectsGlobalScope": false
       },
       "./src/nodes/element/element-effect.ts": {
@@ -647,38 +652,38 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/element/modifier-content.ts": {
-        "version": "34d29e114504623490e915a189f97486caf2e5e8fbb324d32daa3be822ac16f7",
-        "signature": "f40906ba36a174b255bd0d89ffb27b3ceff3c7afe07ea2dadc5a360762255a6b",
+        "version": "dcfb2173474e36457e97b2ef558e12ee47431c10853143f95cf8a99afe7f421e",
+        "signature": "fc1654e9e52558981265f69773339030ab6a7b162274a48753fd9df4471524b4",
         "affectsGlobalScope": false
       },
       "./src/nodes/element/attribute.ts": {
-        "version": "fe2ead3250c903d6b320309eae037fd21e27fa0af8b670c6ef7335823e2f27e5",
-        "signature": "7d570773c2425c2a984c6669e1dbad9a5c826f8a80deb229f7bfdd50a2aa39e6",
-        "affectsGlobalScope": false
-      },
-      "./src/nodes/element/element.ts": {
-        "version": "c9130e29da4f3e49ab4fb16c9b407187b655dc46312052621d90f77e3f53d6af",
-        "signature": "557ca2f6ae3c589ca2f72459c7c5ea28c073065c931a7613c56fc176938a29c9",
-        "affectsGlobalScope": false
-      },
-      "./src/nodes/app.ts": {
-        "version": "3889f8e464b589e738ab38269cbd77e0f23f92c7edd5c8ead905b565ec791b4f",
-        "signature": "e7d36cad6eebbffcc8d84adfb9edc3e7734fb793b99c1d1921712b0db0374eae",
+        "version": "361c7a9267bf83846b8c4021614577acfa4e168ddd6725f2ceac607d1fd296ea",
+        "signature": "68a68af24846791765a44e78980d68697d83b941da6f0f8f70c0093040b0b8e2",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/choice.ts": {
-        "version": "379d60a4baa4c6736161bcfcb06be9e1014fdabfb795000ba8ba6925a4b47489",
+        "version": "c9e1c7cfcb2cbe37b3a73bbbead28cf0a03543d5808c980866675d2ca27066ec",
         "signature": "9c663530f952d4d0a6110d5732f3ec041d66d71df5b88a9d5fa2e20a864ff409",
         "affectsGlobalScope": false
       },
       "./src/nodes/public.ts": {
-        "version": "459fbd757fb3f0858e32ed8c1fb63764617357b4ee27f6e732d186dd2a48e5fb",
-        "signature": "459fbd757fb3f0858e32ed8c1fb63764617357b4ee27f6e732d186dd2a48e5fb",
+        "version": "744427d1896e948d77a56217d77df14e6de2bfdae4d3f185b51c942cd1930fd6",
+        "signature": "744427d1896e948d77a56217d77df14e6de2bfdae4d3f185b51c942cd1930fd6",
+        "affectsGlobalScope": false
+      },
+      "./src/dom/bounds.ts": {
+        "version": "6ee025c2ee28c8c6488936fc087083f22ec744b40ee266364f570cc5af4d7ba8",
+        "signature": "946e35d3d7040163ae59bdf039ca3bff4ab164d68267c03c11c03dee6b0a84d0",
+        "affectsGlobalScope": false
+      },
+      "./src/nodes/element/element.ts": {
+        "version": "c714a96823f429c7a197186675e8c961644a5ebe1fcad001f671e183c36a2c4a",
+        "signature": "b3ea47392d9a48bd0922d0e836a6df4fe1cc8d08da298641ec52ce27da5cf898",
         "affectsGlobalScope": false
       },
       "./src/debug/tree.ts": {
-        "version": "2559a9f703c78c4f06ef583405ce1fa5d187b28822ff0efcc23d964e9dae02e8",
-        "signature": "0d5ca9a122c670eb0315100236af922d35776ea027557bb22760f5c36cc5e46d",
+        "version": "269846eac1b0f728d496cb155722b6d8d8ab45b9079a30417e827b8546983108",
+        "signature": "040f61964dd055d9ab386844203818a310039b684f5502e00efa3593fb6d4159",
         "affectsGlobalScope": false
       },
       "./src/utils/public.ts": {
@@ -687,8 +692,8 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "c7c8ede0101bf085c13d540cb8bd56413339153c2f60b2682b70449b95a4149b",
-        "signature": "840343cd1d15bdeb840ca9b1568df02d904898cc6f27fb91c17ee20d62b15e78",
+        "version": "1a6192b634bc1a7658e54d7e94d091b4bfe0efd7f1e3c1b0587e504433bca02c",
+        "signature": "46c115c1fcd61ffe5d9edfdb8992165aed61952732950f2fac870a51e09b7c23",
         "affectsGlobalScope": false
       },
       "./app/choice.ts": {
@@ -701,24 +706,39 @@
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
+      "./app/router/url-bar.ts": {
+        "version": "584f8c00706898577901bf7ffe2c21c76b0b4df9ac7a1c8191fc32583ebe9230",
+        "signature": "4b7016d3a4243f2e34feb55271feafb5abd8004ee5b29aa48ef02bbb02a2332b",
+        "affectsGlobalScope": false
+      },
+      "./app/router/router.ts": {
+        "version": "09026194675185f0a4de2f69a7fe26ac5e61e6dcf29b222ee32948be8a482cd1",
+        "signature": "b1eb63696d2faa53ad5c8b5d05cd2ab50d13723b6200dae488949242150217ef",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/nav.ts": {
+        "version": "d396056fd41bb0b7b1443fc617dfeb73842855485cf8c99d817aa5a6fdfb1c13",
+        "signature": "433bf9e821d71ef10487a731932357f690f374b78363f8ba3c298c3942d75db6",
+        "affectsGlobalScope": false
+      },
       "./app/pages/index.ts": {
-        "version": "ea80132b6bf24c32e5caecc2f73be6a297517a6cd7d5aa86a7f3766128facb93",
-        "signature": "a45ded5471eec5e106e00015b0e94db83b6de014ab17458872913524a67220d0",
+        "version": "f972a8480e6923524417cf09ddf2559fd0a16a4dd9b5f05bb8300d44d9d3951a",
+        "signature": "d6b306852261c6282e09ab8977c8e0097a9b0660b12a0b3e1b1ded51c6a106f1",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial.ts": {
-        "version": "dd8aea7dfd70ad119dd22f5a93139d86b8e78200cfc123477549351f4afc44cd",
-        "signature": "2ded9373a224ef5a66593ca4b5109f56708eb976b56dff0203d497836a17101e",
+        "version": "45820e42da02e2cb984c0352adb16e1afb9290f4ba7c7c41ccbc7f1f4c8ae4b9",
+        "signature": "9dcd24a81efa344bf0a16a2fae5619c625485786c7f8d4c704e1323e58e651a3",
         "affectsGlobalScope": false
       },
       "./app/pages/fallback.ts": {
-        "version": "dd8aea7dfd70ad119dd22f5a93139d86b8e78200cfc123477549351f4afc44cd",
-        "signature": "2ded9373a224ef5a66593ca4b5109f56708eb976b56dff0203d497836a17101e",
+        "version": "ca06873186a022b9aacd264ed9eda9cb50f914dbdafe90db7eac033404f21ccb",
+        "signature": "f587bcaae1660f3931f936d1f242b30d8e9bb9f034cae5f2faa4e84e4796bd29",
         "affectsGlobalScope": false
       },
       "./app/index.ts": {
-        "version": "661c9c50e859bf8ce01ea35be2d089f116eb520094416a5e7d57bc3cc093160a",
-        "signature": "010162dda85232a2ce781d0e7a3e2f161220cc183e239edf009ce154fb23ffcd",
+        "version": "304d0d6cb07f17da304fe7894d62ea22ba5ec91eeacf0f3fc47b92d5cf38bf11",
+        "signature": "2e5f60cf68bac67b4f56a334b804630293d334498f833025811227a3724ff8ce",
         "affectsGlobalScope": false
       },
       "./src/hello-world.ts": {
@@ -1068,29 +1088,37 @@
         "./app/pages/index.ts",
         "./app/pages/patch-example.ts",
         "./app/pages/tutorial.ts",
-        "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
-        "./src/index.ts"
+        "./app/router/router.ts",
+        "./src/index.ts",
+        "./src/owner.ts"
       ],
       "./app/pages/fallback.ts": [
         "./src/index.ts"
       ],
       "./app/pages/index.ts": [
         "./app/choice.ts",
-        "./src/dom/simplest.ts",
-        "./src/index.ts",
-        "./src/nodes/component.ts",
-        "./src/nodes/element/attribute.ts",
-        "./src/nodes/element/element-effect.ts",
-        "./src/nodes/element/element.ts",
-        "./src/nodes/structure/each.ts",
-        "./src/reactive/collection.ts"
+        "./app/pages/nav.ts",
+        "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/nav.ts": [
+        "./src/index.ts"
       ],
       "./app/pages/patch-example.ts": [
         "./src/assertions.ts",
         "./src/index.ts"
       ],
       "./app/pages/tutorial.ts": [
+        "./app/pages/nav.ts",
         "./src/index.ts"
+      ],
+      "./app/router/router.ts": [
+        "./app/router/url-bar.ts",
+        "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
+        "./src/index.ts"
+      ],
+      "./app/router/url-bar.ts": [
+        "./src/assertions.ts"
       ],
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts": [
         "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/index.d.ts"
@@ -1577,6 +1605,7 @@
         "./src/assertions.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
+        "./src/nodes/public.ts",
         "./src/utils/predicates.ts"
       ],
       "./src/dom/cursor.ts": [
@@ -1607,13 +1636,14 @@
         "./src/glimmer/glimmer.ts",
         "./src/glimmer/setup.ts",
         "./src/nodes/public.ts",
+        "./src/owner.ts",
         "./src/reactive/cell.ts",
+        "./src/reactive/collection.ts",
         "./src/utils/public.ts"
       ],
       "./src/nodes/app.ts": [
         "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
-        "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/glimmer/glimmer.ts",
@@ -1628,6 +1658,7 @@
       ],
       "./src/nodes/component.ts": [
         "./src/nodes/content.ts",
+        "./src/owner.ts",
         "./src/reactive/cell.ts",
         "./src/reactive/collection.ts",
         "./src/utils/predicates.ts"
@@ -1668,7 +1699,8 @@
         "./src/dom/simplest.ts",
         "./src/glimmer/cache.ts",
         "./src/nodes/element/attribute.ts",
-        "./src/nodes/element/element-effect.ts"
+        "./src/nodes/element/element-effect.ts",
+        "./src/utils/predicates.ts"
       ],
       "./src/nodes/fragment.ts": [
         "./src/dom/bounds.ts",
@@ -1682,9 +1714,14 @@
       "./src/nodes/public.ts": [
         "./src/nodes/app.ts",
         "./src/nodes/comment.ts",
+        "./src/nodes/component.ts",
         "./src/nodes/content.ts",
+        "./src/nodes/element/attribute.ts",
+        "./src/nodes/element/element-effect.ts",
+        "./src/nodes/element/element.ts",
         "./src/nodes/fragment.ts",
         "./src/nodes/structure/choice.ts",
+        "./src/nodes/structure/each.ts",
         "./src/nodes/text.ts"
       ],
       "./src/nodes/structure/block.ts": [
@@ -1749,18 +1786,24 @@
         "./src/index.ts"
       ],
       "./app/index.ts": [
-        "./app/pages/patch-example.ts",
-        "./src/index.ts"
+        "./app/pages/patch-example.ts"
       ],
       "./app/pages/fallback.ts": [
         "./src/index.ts"
       ],
       "./app/pages/index.ts": [
-        "./app/choice.ts",
         "./src/index.ts",
-        "./src/nodes/component.ts"
+        "./src/owner.ts"
+      ],
+      "./app/pages/nav.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
       ],
       "./app/pages/tutorial.ts": [
+        "./src/index.ts"
+      ],
+      "./app/router/router.ts": [
+        "./app/router/url-bar.ts",
         "./src/index.ts"
       ],
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts": [
@@ -2241,15 +2284,14 @@
       ],
       "./src/dom/bounds.ts": [
         "./src/dom/cursor.ts",
-        "./src/dom/simplest.ts"
+        "./src/dom/simplest.ts",
+        "./src/nodes/public.ts"
       ],
       "./src/dom/cursor.ts": [
         "./src/dom/simplest.ts"
       ],
       "./src/glimmer/cache.ts": [
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
-        "./src/dom/simplest.ts",
-        "./src/index.ts",
         "./src/nodes/content.ts"
       ],
       "./src/glimmer/glimmer.ts": [
@@ -2265,7 +2307,9 @@
         "./src/glimmer/glimmer.ts",
         "./src/glimmer/setup.ts",
         "./src/nodes/public.ts",
+        "./src/owner.ts",
         "./src/reactive/cell.ts",
+        "./src/reactive/collection.ts",
         "./src/utils/public.ts"
       ],
       "./src/nodes/app.ts": [
@@ -2281,6 +2325,7 @@
       ],
       "./src/nodes/component.ts": [
         "./src/nodes/content.ts",
+        "./src/owner.ts",
         "./src/reactive/cell.ts",
         "./src/reactive/collection.ts"
       ],
@@ -2289,6 +2334,7 @@
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/glimmer/cache.ts",
+        "./src/index.ts",
         "./src/nodes/comment.ts",
         "./src/nodes/element/element.ts",
         "./src/nodes/fragment.ts",
@@ -2327,9 +2373,14 @@
       "./src/nodes/public.ts": [
         "./src/nodes/app.ts",
         "./src/nodes/comment.ts",
+        "./src/nodes/component.ts",
         "./src/nodes/content.ts",
+        "./src/nodes/element/attribute.ts",
+        "./src/nodes/element/element-effect.ts",
+        "./src/nodes/element/element.ts",
         "./src/nodes/fragment.ts",
         "./src/nodes/structure/choice.ts",
+        "./src/nodes/structure/each.ts",
         "./src/nodes/text.ts"
       ],
       "./src/nodes/structure/block.ts": [
@@ -2368,33 +2419,27 @@
     },
     "semanticDiagnosticsPerFile": [
       "./app/choice.ts",
+      "./app/index.ts",
+      "./app/pages/fallback.ts",
+      "./app/pages/index.ts",
+      "./app/pages/nav.ts",
+      "./app/pages/patch-example.ts",
+      "./app/pages/tutorial.ts",
       [
-        "./app/index.ts",
+        "./app/router/router.ts",
         [
           {
-            "file": "./app/index.ts",
-            "start": 1190,
+            "file": "./app/router/router.ts",
+            "start": 1964,
             "length": 4,
             "messageText": "'#url' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          },
-          {
-            "file": "./app/index.ts",
-            "start": 1936,
-            "length": 6,
-            "messageText": "'cursor' is declared but its value is never read.",
             "category": 1,
             "code": 6133,
             "reportsUnnecessary": true
           }
         ]
       ],
-      "./app/pages/fallback.ts",
-      "./app/pages/index.ts",
-      "./app/pages/patch-example.ts",
-      "./app/pages/tutorial.ts",
+      "./app/router/url-bar.ts",
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
       "./node_modules/.pnpm/@glimmer/global-context@0.73.1/node_modules/@glimmer/global-context/dist/types/index.d.ts",
       "./node_modules/.pnpm/@glimmer/interfaces@0.73.1/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
@@ -2588,6 +2633,7 @@
       "./src/nodes/structure/choice.ts",
       "./src/nodes/structure/each.ts",
       "./src/nodes/text.ts",
+      "./src/owner.ts",
       "./src/reactive/cell.ts",
       "./src/reactive/collection.ts",
       "./src/reactive/proxy.ts",
@@ -2615,11 +2661,27 @@
         1
       ],
       [
+        "./app/pages/nav.ts",
+        1
+      ],
+      [
+        "./app/pages/owner.ts",
+        1
+      ],
+      [
         "./app/pages/patch-example.ts",
         1
       ],
       [
         "./app/pages/tutorial.ts",
+        1
+      ],
+      [
+        "./app/router/router.ts",
+        1
+      ],
+      [
+        "./app/router/url-bar.ts",
         1
       ],
       [
@@ -3244,6 +3306,10 @@
       ],
       [
         "./src/nodes/text.ts",
+        1
+      ],
+      [
+        "./src/owner.ts",
         1
       ],
       [

@@ -1,3 +1,4 @@
+import type { Owner } from "../owner";
 import { build, IntoReactive, Reactive } from "../reactive/cell";
 import {
   Dict,
@@ -44,15 +45,17 @@ export const ReactiveArgs = {
   },
 };
 
-export type Component<Args extends ReactiveArgs> = (...args: Args) => Content;
+export type Component<Args extends ReactiveArgs, O extends Owner> = (
+  owner: O
+) => (...args: Args) => Content;
 
-export function component<Args extends ReactiveArgs>(
-  definition: Component<Args>
-): (...args: IntoReactiveArgs<Args>) => Content {
-  return (...args: IntoReactiveArgs<Args>): Content => {
+export function component<Args extends ReactiveArgs, O extends Owner>(
+  definition: Component<Args, O>
+): (owner: O) => (...args: IntoReactiveArgs<Args>) => Content {
+  return (owner: O) => (...args: IntoReactiveArgs<Args>): Content => {
     return build(() => {
       let a = ReactiveArgs.from<Args>(...args);
-      return definition(...a);
+      return definition(owner)(...a);
     });
   };
 }

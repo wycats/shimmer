@@ -1,33 +1,30 @@
 import { userError } from "../assertions";
+import type { StableDynamicContent } from "../nodes/public";
 import { isObject } from "../utils/predicates";
 import { Cursor } from "./cursor";
 import type { SimplestNode, SimplestParentNode } from "./simplest";
 
-export type Bounds = StaticBounds | DynamicBounds;
+export type Bounds = StaticBounds | DynamicBounds | StableDynamicContent;
 
 export type IntoBounds = Bounds | SimplestNode;
 
 export const Bounds = {
-  is: (value: unknown): value is Bounds => {
-    return AbstractBounds.is(value);
-  },
-
-  from: (into: IntoBounds): Bounds => {
-    if (Bounds.is(into)) {
-      return into;
+  spanning: (first: Bounds, last: Bounds): Bounds => {
+    if (first.kind === "static" && last.kind === "static") {
+      return new StaticBounds(first.firstNode, last.lastNode);
     } else {
-      return new StaticBounds(into, into);
+      return new DynamicBounds(first, last);
     }
   },
 
-  spanning: (start: IntoBounds, end: IntoBounds): Bounds => {
-    return DynamicBounds.of(Bounds.from(start), Bounds.from(end));
-  },
-
-  single: (into: IntoBounds): Bounds => {
-    let bounds = Bounds.from(into);
-    return Bounds.spanning(bounds, bounds);
-  },
+  // single: (into: IntoBounds): Bounds => {
+  //   if (into instanceof AbstractBounds) {
+  //     return Bounds.spanning(into, into);
+  //   } else {
+  //     let bounds = StaticBounds.single(into);
+  //     return Bounds.spanning(bounds, bounds);
+  //   }
+  // },
 };
 
 export abstract class AbstractBounds {
@@ -45,7 +42,11 @@ export abstract class AbstractBounds {
     return this.#parent;
   }
 
-  abstract readonly bounds: Bounds;
+  /**
+   * static: the bounds cannot change
+   * dynamic: the bounds can change
+   */
+  abstract readonly kind: "static" | "dynamic";
   abstract readonly firstNode: SimplestNode;
   abstract readonly lastNode: SimplestNode;
 
@@ -111,13 +112,15 @@ export class DynamicBounds extends AbstractBounds {
     return new DynamicBounds(bounds, bounds);
   }
 
-  static of(first: Bounds, last: Bounds): Bounds {
-    if (first instanceof StaticBounds && last instanceof StaticBounds) {
-      return StaticBounds.of(first.bounds.firstNode, last.bounds.lastNode);
-    }
+  // static of(first: Bounds, last: Bounds): Bounds {
+  //   if (first instanceof StaticBounds && last instanceof StaticBounds) {
+  //     return StaticBounds.of(first.bounds.firstNode, last.bounds.lastNode);
+  //   }
 
-    return new DynamicBounds(first, last);
-  }
+  //   return new DynamicBounds(first, last);
+  // }
+
+  readonly kind = "dynamic";
 
   #first: Bounds;
   #last: Bounds;
@@ -150,7 +153,7 @@ export class StaticBounds extends AbstractBounds {
     return new StaticBounds(node, node);
   }
 
-  readonly isStatic = true;
+  readonly kind = "static";
 
   constructor(
     readonly firstNode: SimplestNode,

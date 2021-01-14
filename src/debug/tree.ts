@@ -48,7 +48,7 @@ interface ChoiceNode extends DebugNode {
 interface ElementNode extends DebugNode {
   type: "element";
   tag: string;
-  body: DebugNode;
+  body: DebugNode | null;
 }
 
 interface BlockNode extends DebugNode {
@@ -133,7 +133,7 @@ class TreeBuilder {
       type: "element",
       static: content.isStatic,
       tag: content.info.tag,
-      body: this.content(content.info.body),
+      body: content.info.body ? this.content(content.info.body) : null,
     };
   }
 

@@ -8,6 +8,8 @@ export * from "./dom/cursor";
 export * from "./glimmer/cache";
 export * from "./glimmer/glimmer";
 export * from "./nodes/public";
+export * from "./owner";
 export * from "./reactive/cell";
+export * from "./reactive/collection";
 export * from "./utils/public";
 export type { dom };

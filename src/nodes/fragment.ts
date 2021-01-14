@@ -1,4 +1,4 @@
-import { Bounds, DynamicBounds } from "../dom/bounds";
+import { Bounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
 import { build, Reactive } from "../reactive/cell";
@@ -10,6 +10,7 @@ import {
   StableContentResult,
   StableDynamicContent,
   StaticContent,
+  TemplateContent,
   UpdatableDynamicContent,
 } from "./content";
 
@@ -20,6 +21,7 @@ export interface FragmentInfo {
 export interface FragmentState {
   dynamic: readonly StableDynamicContent[];
   nodes: PresentArray<StableContentResult>;
+  bounds: Bounds;
 }
 
 export function fragment(...content: readonly Content[]): Content {
@@ -27,14 +29,19 @@ export function fragment(...content: readonly Content[]): Content {
 
   if (list.isPresent()) {
     return build(() => {
-      if (list.every((item): item is Content => item.isStatic)) {
+      if (list.every(TemplateContent.isStatic)) {
+        console.log("static content");
         return StaticContent.of(
           "fragment",
           { children: list },
           (cursor, dom) => {
-            return initializeFragment(list, cursor, dom).bounds;
+            return initializeFragment(
+              list as PresentArray<Content>,
+              cursor,
+              dom
+            ).bounds;
           }
-        );
+        ) as any;
       } else {
         return DynamicContent.of(
           "fragment",
@@ -58,6 +65,8 @@ class UpdatableFragment extends UpdatableDynamicContent<FragmentState> {
     this.#list = list;
   }
 
+  readonly shouldClear = false;
+
   isValid(): boolean {
     return true;
   }
@@ -70,15 +79,21 @@ class UpdatableFragment extends UpdatableDynamicContent<FragmentState> {
 
   render(
     cursor: Cursor,
-    dom: SimplestDocument
+    dom: SimplestDocument,
+    state: FragmentState | null
   ): { bounds: Bounds; state: FragmentState } {
+    if (state) {
+      this.poll(state);
+      return { bounds: state.bounds, state };
+    }
+
     let { bounds, dynamic, nodes } = initializeFragment(
       this.#list,
       cursor,
       dom
     );
 
-    return { bounds, state: { nodes, dynamic } };
+    return { bounds, state: { nodes, bounds, dynamic } };
   }
 }
 
@@ -98,7 +113,7 @@ export function initializeFragment(
   let head = first.render(cursor, dom);
   let tail = head;
 
-  if (!Bounds.is(head)) {
+  if (head instanceof StableDynamicContent) {
     dynamic.push(head);
   }
 
@@ -107,15 +122,17 @@ export function initializeFragment(
   for (let item of rest) {
     tail = item.render(cursor, dom);
 
-    if (!Bounds.is(tail)) {
+    if (tail instanceof StableDynamicContent) {
       dynamic.push(tail);
     }
 
     nodes.push(tail);
   }
 
+  // console.log("done", { nodes, dynamic });
+
   return {
-    bounds: DynamicBounds.of(head.bounds, tail.bounds),
+    bounds: Bounds.spanning(head, tail),
     dynamic,
     nodes: PresentArray.of(nodes),
   };

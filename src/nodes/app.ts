@@ -1,10 +1,9 @@
 import { registerDestructor } from "@glimmer/destroyable";
 import { Cache, createCache } from "@glimmer/validator";
-import { Bounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
 import type { Render } from "../glimmer/glimmer";
-import type { Content, StableContentResult } from "./content";
+import { Content, StableContentResult, StableDynamicContent } from "./content";
 
 export class Doc {
   static of(dom: SimplestDocument): Doc {
@@ -21,30 +20,26 @@ export class Doc {
 export class App implements Render {
   readonly render: Cache<void> | null;
 
-  #bounds: Bounds | Cursor;
+  #content: StableContentResult | null;
 
   constructor(readonly content: StableContentResult) {
-    this.#bounds = content.bounds;
+    this.#content = content;
 
     registerDestructor(this, () => this.clear());
 
-    if (Bounds.is(content)) {
-      this.render = null;
-    } else {
+    if (content instanceof StableDynamicContent) {
       this.render = createCache(() => {
         content.poll();
       });
+    } else {
+      this.render = null;
     }
   }
 
-  clear(): Cursor {
-    if (Bounds.is(this.#bounds)) {
-      let bounds = this.#bounds;
-      let cursor = bounds.clear();
-      this.#bounds = cursor;
-      return cursor;
-    } else {
-      return this.#bounds;
+  clear(): void {
+    if (this.#content) {
+      this.#content.bounds.clear();
+      this.#content = null;
     }
   }
 }

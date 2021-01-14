@@ -1,5 +1,6 @@
 import type { SimplestDocument, SimplestElement } from "../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
+import { isObject } from "../../utils/predicates";
 import type { AttributeInfo } from "./attribute";
 import type { ElementEffectInfo } from "./element-effect";
 
@@ -151,6 +152,19 @@ export type TemplateModifier<Type extends ModifierType, Info = unknown> =
 export type Modifier =
   | TemplateModifier<"attribute", AttributeInfo>
   | TemplateModifier<"effect", ElementEffectInfo<any>>;
+
+export const Modifier = {
+  is: (value: unknown): value is Modifier => {
+    if (isObject(value)) {
+      return (
+        value instanceof StaticTemplateModifier ||
+        value instanceof DynamicTemplateModifier
+      );
+    } else {
+      return false;
+    }
+  },
+};
 
 export class RenderedModifier<C extends UpdatableModifier = UpdatableModifier> {
   constructor(readonly content: C) {}

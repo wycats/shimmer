@@ -8,12 +8,12 @@ import {
 
 export interface AttributeInfo {
   name: string;
-  value: Reactive<string>;
+  value: Reactive<string | null>;
 }
 
 export function attr(
   name: string,
-  value: IntoReactive<string>
+  value: IntoReactive<string | null>
 ): TemplateModifier<"attribute", AttributeInfo> {
   let reactive = Reactive.from(value);
 
@@ -22,7 +22,10 @@ export function attr(
       "attribute",
       { name, value: reactive },
       (cursor) => {
-        cursor.setAttributeNS(null, name, reactive.now);
+        if (reactive.now !== null) {
+          cursor.setAttributeNS(null, name, reactive.now);
+        }
+
         return cursor;
       }
     );
@@ -31,11 +34,17 @@ export function attr(
       "attribute",
       { name, value: reactive },
       (cursor) => {
-        cursor.setAttributeNS(null, name, reactive.now);
+        if (reactive.now !== null) {
+          cursor.setAttributeNS(null, name, reactive.now);
+        }
 
-        return UpdatableModifier.of(cursor, () =>
-          cursor.setAttributeNS(null, name, reactive.now)
-        );
+        return UpdatableModifier.of(cursor, () => {
+          if (reactive.now === null) {
+            cursor.removeAttributeNS(null, name);
+          } else {
+            cursor.setAttributeNS(null, name, reactive.now);
+          }
+        });
       }
     );
   }

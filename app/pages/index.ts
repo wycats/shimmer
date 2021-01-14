@@ -1,51 +1,37 @@
-import type { SimplestElement } from "../../src/dom/simplest";
+import { registerDestructor } from "@glimmer/destroyable";
 import {
   App,
+  attr,
   Cell,
   Choice,
+  component,
   Cursor,
+  Dict,
   Doc,
+  dom,
+  each,
+  effect,
+  element,
   fragment,
-  GLIMMER,
+  IntoReactive,
   match,
+  Owner,
   Pure,
   Reactive,
   text,
   tree,
 } from "../../src/index";
-import { component } from "../../src/nodes/component";
-import { attr } from "../../src/nodes/element/attribute";
-import { element } from "../../src/nodes/element/element";
-import { effect } from "../../src/nodes/element/element-effect";
-import { each } from "../../src/nodes/structure/each";
-import type { Dict } from "../../src/reactive/collection";
 import { Bool } from "../choice";
+import { Nav } from "./nav";
 
 interface CountValue {
   id: number;
   value: number;
 }
 
-let countValues: Cell<CountValue>[] = [];
-
-for (let i = 0; i < 10; i++) {
-  countValues.push(Cell.of({ id: i, value: i }));
-}
-
-let counts = Reactive.cell(countValues);
-
-export const bool: Cell<Choice<Bool>> = Cell.of(
-  Bool.of("true", Reactive.static(true))
-);
-
-export const cond = match(bool, {
-  true: text("true"),
-  false: text("false"),
-});
-
 const on = effect(
   (
-    element: SimplestElement,
+    element: dom.SimplestElement,
     eventName: Reactive<string>,
     callback: Reactive<EventListener>
   ) => {
@@ -72,103 +58,134 @@ const on = effect(
  * 2. return IntoReactive(inner)
  */
 
-export const contact = component(
-  (person: Dict<{ name: { first: string } }>) => {
+export const Contact = component(
+  () => (person: Dict<{ name: { first: string } }>) => {
     return text(Pure.of(() => person.name.first));
   }
 );
 
-export const Count = component((counter: Reactive<CountValue>) => {
-  let secondary = Cell.of(rand());
+export const Count = component(
+  (owner: Owner) => (counter: Reactive<CountValue>) => {
+    let secondary = Cell.of(rand());
 
-  return fragment(
-    contact({
-      name: {
-        first: Pure.of(() => String(secondary.now)),
-      },
-    }),
-    text(" "),
-    element(
-      "p",
-      [
-        attr(
-          "class",
-          Pure.of(() => `count-${counter.now.value}`)
-        ),
-      ],
-      fragment(
-        element(
-          "button",
-          [on("click", () => secondary.update(rand))],
-          text("randomize")
-        ),
-        text(Pure.of(() => String(counter.now.value))),
-        text("::"),
-        element(
-          "span",
-          [attr("class", "count")],
-          text(Pure.of(() => String(secondary.now)))
+    return fragment(
+      Contact(owner)({
+        name: {
+          first: Pure.of(() => String(secondary.now)),
+        },
+      }),
+      text(" "),
+      element(
+        "p",
+        [
+          attr(
+            "class",
+            Pure.of(() => `count-${counter.now.value}`)
+          ),
+        ],
+        fragment(
+          element(
+            "button",
+            [on("click", () => secondary.update(rand))],
+            text("randomize")
+          ),
+          text(Pure.of(() => String(counter.now.value))),
+          text("::"),
+          element(
+            "span",
+            [attr("class", "count")],
+            text(Pure.of(() => String(secondary.now)))
+          )
         )
       )
-    )
-  );
-});
+    );
+  }
+);
 
 function rand() {
   return Math.floor(Math.random() * 100);
 }
 
-let texts = each(counts, (i) => String(i.id), Count);
+type ReactiveCounts = Reactive<Iterable<IntoReactive<CountValue>>>;
 
-const hello = fragment(texts, text(" "), cond);
+const Texts = component((owner: Owner) => (counts: ReactiveCounts) => {
+  return each<CountValue>(counts, (i) => String(i.id), Count(owner));
+});
 
-let tick = 0;
-
-function increment() {
-  tick++;
-
-  if (tick % 2 === 0) {
-    counts.update((c) => {
-      return c.map((value) => {
-        let now = value.now;
-        return Cell.of({ id: now.id, value: now.value + 1 });
-      });
-    });
-  } else {
-    counts.now.forEach((c) =>
-      c.update((i) => ({ id: i.id, value: i.value + 1 }))
-    );
-  }
-
-  bool.update((last) => {
-    return last.match<Choice<Bool>>({
-      true: () => Bool.of("false", Reactive.static(false)),
-      false: () => Bool.of("true", Reactive.static(true)),
-    });
+const Cond = component(() => (bool: Reactive<Choice<Bool>>) => {
+  return match(bool, {
+    true: text("true"),
+    false: text("false"),
   });
-}
+});
 
-console.log(tree(hello));
+const Hello = component(
+  (owner: Owner) => (counts: ReactiveCounts, bool: Reactive<Choice<Bool>>) => {
+    return fragment(Nav(owner)(), Texts(owner)(counts), Cond(owner)(bool));
+  }
+);
 
 export class Main {
-  static render(): App {
-    return new Main(Doc.of(document)).render();
+  static render(cursor: Cursor, owner: Owner): App {
+    return new Main(owner, Doc.of(document)).render(cursor);
   }
 
   #doc: Doc;
+  #tick: number = 0;
+  #counts: Cell<Cell<CountValue>[]>;
+  #bool: Cell<Choice<Bool>>;
+  #owner: Owner;
 
-  constructor(doc: Doc) {
+  constructor(owner: Owner, doc: Doc) {
+    this.#owner = owner;
     this.#doc = doc;
+
+    let countValues: Cell<CountValue>[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      countValues.push(Cell.of({ id: i, value: i }));
+    }
+
+    this.#counts = Reactive.cell(countValues);
+    this.#bool = Cell.of(Bool.of("true", Reactive.static(true)));
   }
 
-  render(): App {
-    let renderable = this.#doc.render(hello, Cursor.appending(document.body));
-    GLIMMER.addRenderable(renderable);
+  render(cursor: Cursor): App {
+    let hello = Hello(this.#owner)(this.#counts, this.#bool);
+    console.log(tree(hello));
 
-    return renderable;
+    let app = this.#doc.render(hello, cursor);
+
+    let token = setInterval(() => this.increment(), 1000);
+    registerDestructor(app, () => clearInterval(token));
+
+    return app;
+  }
+
+  increment() {
+    this.#tick++;
+    console.log("tick", this.#tick);
+
+    if (this.#tick % 2 === 0) {
+      this.#counts.update((c) => {
+        return c.map((value) => {
+          let now = value.now;
+          return Cell.of({ id: now.id, value: now.value + 1 });
+        });
+      });
+    } else {
+      this.#counts.now.forEach((c) =>
+        c.update((i) => ({ id: i.id, value: i.value + 1 }))
+      );
+    }
+
+    this.#bool.update((last) => {
+      return last.match<Choice<Bool>>({
+        true: () => Bool.of("false", Reactive.static(false)),
+        false: () => Bool.of("true", Reactive.static(true)),
+      });
+    });
   }
 }
 
 // export function main() {}
-
-setInterval(increment, 1000);

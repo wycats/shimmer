@@ -1,4 +1,9 @@
-import { AbstractBounds, Bounds } from "../dom/bounds";
+import {
+  AbstractBounds,
+  Bounds,
+  DynamicBounds,
+  StaticBounds,
+} from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument, SimplestNode } from "../dom/simplest";
 import type { DynamicRenderedContent } from "../glimmer/cache";
@@ -80,39 +85,21 @@ export class StaticTemplateContent<
   }
 }
 
-export type StableContentResult = Bounds | StableDynamicContent;
-export type ContentResult = Bounds | DynamicRenderedContent;
-
-export function firstNode(result: ContentResult): SimplestNode {
-  if (Bounds.is(result)) {
-    return result.firstNode;
-  } else {
-    return result.bounds.firstNode;
-  }
-}
-
-export function lastNode(result: ContentResult): SimplestNode {
-  if (Bounds.is(result)) {
-    return result.lastNode;
-  } else {
-    return result.poll().bounds.lastNode;
-  }
-}
-
-export function renderBounds(result: Bounds | ContentResult): Bounds {
-  if (Bounds.is(result)) {
-    return result;
-  } else {
-    return result.bounds;
-  }
-}
+export type StableContentResult = Bounds;
+export type ContentResult =
+  | StaticBounds
+  | DynamicBounds
+  | DynamicRenderedContent;
 
 export interface DynamicContentHooks<State> {
+  readonly shouldClear: boolean;
+
   isValid(state: State): boolean;
   poll(state: State): void;
   render(
     cursor: Cursor,
-    dom: SimplestDocument
+    dom: SimplestDocument,
+    state: State | null
   ): { bounds: Bounds; state: State };
 }
 
@@ -130,11 +117,14 @@ export abstract class UpdatableDynamicContent<State = unknown>
     return isObject(value) && value instanceof UpdatableDynamicContent;
   }
 
+  readonly shouldClear: boolean = true;
+
   abstract isValid(state: State): boolean;
   abstract poll(state: State): void;
   abstract render(
     cursor: Cursor,
-    dom: SimplestDocument
+    dom: SimplestDocument,
+    state: State | null
   ): { bounds: Bounds; state: State };
 }
 
@@ -158,9 +148,10 @@ export class ConcreteUpdatableDynamicContent<
 
   render(
     cursor: Cursor,
-    dom: SimplestDocument
+    dom: SimplestDocument,
+    state: State | null
   ): { bounds: Bounds; state: State } {
-    return this.#hooks.render(cursor, dom);
+    return this.#hooks.render(cursor, dom, state);
   }
 }
 
@@ -174,26 +165,51 @@ export type StaticRenderFunction = (
   dom: SimplestDocument
 ) => Bounds;
 
-export class StableDynamicContent<State = unknown> {
-  static of<State>(hooks: DynamicContentHooks<State>): StableRenderFunction {
+export class StableDynamicContent<State = unknown> extends AbstractBounds {
+  static of<State>(
+    hooks: DynamicContentHooks<State>,
+    info: { type: ContentType; info: unknown }
+  ): StableRenderFunction {
     return (cursor, dom) => {
-      let first = hooks.render(cursor, dom);
-      return new StableDynamicContent(hooks, first, dom);
+      let first = hooks.render(cursor, dom, null);
+      return new StableDynamicContent(hooks, first, info, dom);
     };
   }
 
   readonly #hooks: UpdatableDynamicContent<State>;
+  #info: { type: ContentType; info: unknown };
   #last: { bounds: Bounds; state: State };
   #dom: SimplestDocument;
 
   constructor(
     hooks: UpdatableDynamicContent<State>,
     first: { bounds: Bounds; state: State },
+    info: { type: ContentType; info: unknown },
     dom: SimplestDocument
   ) {
+    super(first.bounds.parent);
     this.#hooks = hooks;
     this.#last = first;
+    this.#info = info;
     this.#dom = dom;
+  }
+
+  readonly kind = "dynamic";
+
+  get firstNode(): SimplestNode {
+    return this.#last.bounds.firstNode;
+  }
+
+  get lastNode(): SimplestNode {
+    return this.#last.bounds.lastNode;
+  }
+
+  get type(): ContentType {
+    return this.#info.type;
+  }
+
+  get info(): unknown {
+    return this.#info.info;
   }
 
   get bounds(): Bounds {
@@ -206,8 +222,10 @@ export class StableDynamicContent<State = unknown> {
       return;
     }
 
-    let cursor = this.#last.bounds.clear();
-    this.#last = this.#hooks.render(cursor, this.#dom);
+    let cursor = this.#hooks.shouldClear
+      ? this.#last.bounds.clear()
+      : this.#last.bounds.cursorAfter;
+    this.#last = this.#hooks.render(cursor, this.#dom, this.#last.state);
   }
 }
 
@@ -223,7 +241,7 @@ export class DynamicContent<
     return new DynamicContent({
       type,
       info,
-      render: StableDynamicContent.of(render),
+      render: StableDynamicContent.of(render, { type, info }),
     });
   }
 
@@ -240,6 +258,12 @@ export class DynamicContent<
   }
 }
 
+export const TemplateContent = {
+  isStatic: (content: Content): content is Content & StaticTemplateContent => {
+    return content.isStatic;
+  },
+};
+
 export type TemplateContent<Type extends ContentType, Info = unknown> =
   | StaticTemplateContent<Type, Info>
   | DynamicContent<Type, Info>;
@@ -253,24 +277,26 @@ export type Content =
   | TemplateContent<"element", ElementInfo>
   | TemplateContent<"block", BlockInfo>;
 
-export class RenderedContent extends AbstractBounds {
+export const Content = {
+  is: (value: unknown): value is Content => {
+    if (isObject(value)) {
+      return (
+        value instanceof StaticTemplateContent ||
+        value instanceof DynamicContent
+      );
+    } else {
+      return false;
+    }
+  },
+};
+
+export class RenderedContent {
+  readonly kind = "dynamic";
+
   #inner: DynamicRenderedContent;
 
   constructor(content: DynamicRenderedContent) {
-    super(content.bounds.parent);
     this.#inner = content;
-  }
-
-  get bounds(): Bounds {
-    return this.#inner.bounds;
-  }
-
-  get firstNode(): SimplestNode {
-    return this.#inner.bounds.firstNode;
-  }
-
-  get lastNode(): SimplestNode {
-    return this.#inner.bounds.lastNode;
   }
 
   update(): this {

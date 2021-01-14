@@ -24,10 +24,16 @@ setGlobalContext({
 
   warnIfStyleNotTrusted() {},
 
-  scheduleDestroy<T extends Destroyable>(
-    _destroyable: T,
-    _destructor: Destructor<T>
-  ) {},
+  async scheduleDestroy<T extends Destroyable>(
+    destroyable: T,
+    destructor: Destructor<T>
+  ) {
+    await Promise.resolve();
+    destructor(destroyable);
+  },
 
-  scheduleDestroyed(_fn: () => void) {},
+  async scheduleDestroyed(fn: () => void) {
+    await Promise.resolve();
+    fn();
+  },
 });

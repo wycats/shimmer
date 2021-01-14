@@ -22,7 +22,7 @@ export interface ElementInfo {
   tag: string;
   attributes: readonly TemplateModifier<"attribute", AttributeInfo>[];
   effects: readonly TemplateModifier<"effect", ElementEffectInfo<any>>[];
-  body: Content;
+  body: Content | null;
 }
 
 interface ElementState {
@@ -31,10 +31,40 @@ interface ElementState {
 }
 
 export function element(
-  tag: string,
-  modifiers: readonly Modifier[],
-  body: Content
-): TemplateContent<"element", ElementInfo> {
+  ...args:
+    | [tag: string]
+    | [tag: string, body: Content]
+    | [tag: string, modifiers: readonly Modifier[], body: Content]
+): // tag: string,
+// modifiers: readonly Modifier[],
+// body: Content
+TemplateContent<"element", ElementInfo> {
+  let tag = args[0];
+  let body: Content | null;
+  let modifiers: readonly Modifier[];
+
+  if (Content.is(args[1])) {
+    body = args[1];
+  } else if (Content.is(args[2])) {
+    body = args[2];
+  } else {
+    body = null;
+  }
+
+  if (Array.isArray(args[1])) {
+    modifiers = args[1];
+  } else {
+    modifiers = [];
+  }
+
+  if (Array.isArray(args[1])) {
+    modifiers = args[1];
+  } else if (Array.isArray(args[2])) {
+    modifiers = args[2];
+  } else {
+    modifiers = [];
+  }
+
   let attributes = modifiers.filter(
     (a): a is TemplateModifier<"attribute", AttributeInfo> =>
       a.type === "attribute"
@@ -44,8 +74,10 @@ export function element(
       a.type === "effect"
   );
 
+  let staticBody = body === null || body.isStatic;
+
   if (
-    body.isStatic &&
+    staticBody &&
     attributes.every((a) => a.isStatic) &&
     effects.every((e) => e.isStatic)
   ) {
@@ -107,7 +139,7 @@ function render(
     tag: string;
     attributes: readonly TemplateModifier<"attribute", AttributeInfo>[];
     effects: readonly TemplateModifier<"effect", ElementEffectInfo>[];
-    body: Content;
+    body: Content | null;
   },
   cursor: Cursor,
   dom: SimplestDocument
@@ -144,20 +176,30 @@ function render(
 
   let appending = Cursor.appending(element);
 
-  let renderedBody = body.render(appending, dom);
-
-  if (Bounds.is(renderedBody)) {
+  if (body === null) {
     return {
       bounds: StaticBounds.single(element),
-      state: { body: null, modifiers: null },
+      state: {
+        body: null,
+        modifiers: dynamicModifiers.length === 0 ? null : dynamicModifiers,
+      },
     };
-  } else {
+  }
+
+  let renderedBody = body.render(appending, dom);
+
+  if (renderedBody instanceof StableDynamicContent) {
     return {
       bounds: StaticBounds.single(element),
       state: {
         body: renderedBody,
         modifiers: dynamicModifiers.length === 0 ? null : dynamicModifiers,
       },
+    };
+  } else {
+    return {
+      bounds: StaticBounds.single(element),
+      state: { body: null, modifiers: null },
     };
   }
 }

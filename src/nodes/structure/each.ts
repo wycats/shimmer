@@ -1,9 +1,9 @@
 import { diffArray, KeyedNode, Patches } from "../../array/normalize";
 import { assert } from "../../assertions";
-import { Bounds, DynamicBounds } from "../../dom/bounds";
+import { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
-import { Effect, Pure } from "../../glimmer/cache";
+import { Pure } from "../../glimmer/cache";
 import { Cell, IntoReactive, Reactive } from "../../reactive/cell";
 import { OptionalArray } from "../../utils/type";
 import {
@@ -87,42 +87,10 @@ function initialize<T>({
     return DynamicContent.of("each", info, new UpdatableEach(info));
   }
 }
-// (cursor, dom) => {
-//   let stable = new StableEach({
-//     reactive,
-//     key: keyOf,
-//     block,
-//     dom,
-//     stableMap: new Map(),
-//   });
 
-//   let render = new InitialRenderEach(stable);
-
-//   let iterable = reactive.now;
-
-//   // let start: Bounds | null = null;
-//   // let end: Bounds | null = null;
-
-//   for (let item of iterable) {
-//     let reactive = Reactive.from(item);
-//     let key = stable.keyOf(reactive.now);
-
-//     let entry = RenderableEach.upsert(render, reactive);
-
-//     let content = block(entry.stable);
-//     let rendered = content.render(cursor, dom);
-
-//     render.add(key, rendered);
-//   }
-
-//   let { artifacts, bounds } = render.done();
-
-//   return updatableEach<T>({
-//     stable,
-//     last: new LastEach(bounds, iterable, artifacts),
-//   });
-// }
 class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
+  readonly shouldClear = false;
+
   #data: EachInfo<T>;
 
   constructor(data: EachInfo<T>) {
@@ -142,10 +110,11 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
 
   render(
     cursor: Cursor,
-    dom: SimplestDocument
+    dom: SimplestDocument,
+    state: EachState<T> | null
   ): { bounds: Bounds; state: EachState<T> } {
     let each = this.#initialize(
-      RenderArtifacts.empty(),
+      state ? state.last.artifacts : RenderArtifacts.empty(),
       this.#data.reactive.now,
       cursor,
       dom
@@ -273,152 +242,6 @@ interface StableEachState<T> {
   stableMap: StableMap<T>;
 }
 
-// interface UpdatableEachOptions<T> {
-//   stable: StableEach<T>;
-//   last: LastEach<T>;
-// }
-
-// class RenderableEach<T> {
-//   #stable: StableEach<T>;
-
-//   constructor(stable: StableEach<T>) {
-//     this.#stable = stable;
-//   }
-
-//   get dom(): SimplestDocument {
-//     return this.#stable.dom;
-//   }
-// }
-
-// class InitialRenderEach<T> extends RenderableEach<T> {
-//   readonly #dynamicNodes: KeyedNode<DynamicRenderedContent>[] = [];
-//   readonly #nodes: KeyedNode<ContentResult>[] = [];
-//   #start: Bounds | null = null;
-//   #end: Bounds | null = null;
-
-//   constructor(stable: StableEach<T>) {
-//     super(stable);
-//   }
-
-//   done(): { artifacts: RenderArtifacts; bounds: Bounds } {
-//     assert(
-//       this.#start !== null && this.#end !== null,
-//       `unimplemented empty each`
-//     );
-
-//     return {
-//       artifacts: RenderArtifacts.of(this.#nodes),
-//       bounds: Bounds.spanning(this.#start, this.#end),
-//     };
-//   }
-
-//   add(key: unknown, rendered: ContentResult) {
-//     if (Effect.is(rendered)) {
-//       this.#dynamicNodes.push(new KeyedNode(key, rendered));
-//     }
-
-//     if (this.#start === null) {
-//       this.#start = rendered.bounds;
-//     }
-
-//     this.#end = rendered.bounds;
-
-//     this.#nodes.push(new KeyedNode(key, rendered));
-//   }
-// }
-
-// class DynamicEach<T> extends RenderableEach<T> {
-//   static update<T>(options: UpdatableEachOptions<T>) {
-//     return new DynamicEach(options).#update();
-//   }
-
-//   // readonly #stable: StableEach<T>;
-//   readonly #last: LastEach<T>;
-
-//   constructor({ stable, last }: UpdatableEachOptions<T>) {
-//     super(stable);
-//     // this.#stable = stable;
-//     this.#last = last;
-//   }
-
-//   get bounds(): Bounds {
-//     return this.#last.bounds;
-//   }
-
-//   #dynamicNodes = () => this.#last.artifacts.dynamic;
-
-//   #poll = () => {
-//     for (let node of this.#dynamicNodes()) {
-//       node.inner.poll();
-//     }
-//   };
-
-//   #render = (render: RenderEach, item: IntoReactive<T>) => {
-//     let reactive = Reactive.from(item);
-//     let key = RenderableEach.keyOf(this, reactive.now);
-
-//     let stableCell = RenderableEach.upsertEntry(this, key, reactive);
-
-//     render.add(key, () => RenderableEach.render(this, stableCell.stable));
-//   };
-
-//   #renderAll = (iterable: ReactiveIterable<T>, cursor: Cursor) => {
-//     let render = new RenderEach(this.#last.artifacts);
-
-//     for (let item of iterable) {
-//       this.#render(render, item);
-//     }
-
-//     return render.patch(cursor, this.dom);
-//   };
-
-//   #initialize = (iterable: ReactiveIterable<T>) => {
-//     let nextArtifacts = this.#renderAll(iterable);
-
-//     // This polls new dynamic nodes. This is not ideal, but not the
-//     // end of the world.
-//     for (let node of nextArtifacts.dynamic) {
-//       node.inner.poll();
-//     }
-
-//     if (nextArtifacts.isEmpty) {
-//       throw new Error("unimplemented empty array passed to #each");
-//     }
-
-//     let bounds = nextArtifacts.bounds;
-
-//     assert(bounds, `unimplemented empty each`);
-
-//     return RenderableEach.updatable(this, {
-//       iterable,
-//       artifacts: nextArtifacts,
-//       bounds,
-//     });
-//   };
-
-//   #update = () => {
-//     let content = UpdatableContent.of(
-//       this.bounds,
-//       (): UpdatableContent => {
-//         let nextIterable = RenderableEach.iterable(this);
-
-//         if (this.#last.iterable === nextIterable) {
-//           this.#poll();
-//           return content;
-//         } else {
-//           return this.#initialize(nextIterable);
-//         }
-//       }
-//     );
-
-//     return content;
-//   };
-// }
-
-// function updatableEach<T>(options: UpdatableEachOptions<T>): UpdatableContent {
-//   return DynamicEach.update(options);
-// }
-
 /**
  * RenderArtifacts keep track of the aspects of the previous render that are unstable (i.e. their
  * identity changes across renders).
@@ -456,7 +279,7 @@ class RenderArtifacts {
       let first = array.first();
       let last = array.last();
 
-      return DynamicBounds.of(first.inner.bounds, last.inner.bounds);
+      return Bounds.spanning(first.inner.bounds, last.inner.bounds);
     } else {
       return null;
     }
@@ -479,8 +302,9 @@ class RenderArtifacts {
   }
 
   get dynamic(): readonly KeyedNode<StableDynamicContent>[] {
-    return this.#nodes.filter((node): node is KeyedNode<StableDynamicContent> =>
-      Effect.is(node.inner)
+    return this.#nodes.filter(
+      (node): node is KeyedNode<StableDynamicContent> =>
+        node.inner instanceof StableDynamicContent
     );
   }
 }
@@ -518,10 +342,13 @@ class RenderEach {
 
     this.#diff().applyPatch(nextNodes, {
       remove: (content, from) => {
+        trace("removing", content);
         nextNodes.splice(from, 1);
         content.bounds.clear();
       },
       insert: (content, before) => {
+        trace("inserting", content);
+
         let next = nextNodes[before];
         let nextCursor = next ? next.inner.bounds.cursorBefore : cursor;
 
@@ -531,7 +358,9 @@ class RenderEach {
           new KeyedNode(content.key, content.inner.render(nextCursor, dom))
         );
       },
-      move: (_node, from, to) => {
+      move: (node, from, to) => {
+        trace("moving", node);
+
         let next = nextNodes[to]!;
         let cursor = next.inner.bounds.cursorBefore;
 
@@ -550,4 +379,12 @@ class RenderEach {
       this.#next.nodes
     );
   };
+}
+
+const TRACE = false;
+
+function trace(...args: any[]): void {
+  if (TRACE) {
+    console.log(...args);
+  }
 }

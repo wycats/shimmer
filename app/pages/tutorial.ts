@@ -1,22 +1,38 @@
-import { App, Cursor, Doc, fragment, GLIMMER, text } from "../../src/index";
+import {
+  App,
+  component,
+  Content,
+  Cursor,
+  Doc,
+  fragment,
+  Owner,
+  text,
+} from "../../src/index";
+import { Nav } from "./nav";
 
 export class Main {
-  static render(): App {
-    return new Main(Doc.of(document)).render();
+  static render(cursor: Cursor, owner: Owner): App {
+    return new Main(owner, Doc.of(document)).render(cursor);
   }
 
+  // #owner: Owner;
   #doc: Doc;
+  #template: Content;
 
-  constructor(doc: Doc) {
+  constructor(owner: Owner, doc: Doc) {
+    // this.#owner = owner;
     this.#doc = doc;
+    this.#template = Hello(owner)();
   }
 
-  render(): App {
-    let renderable = this.#doc.render(hello, Cursor.appending(document.body));
-    GLIMMER.addRenderable(renderable);
+  render(cursor: Cursor): App {
+    let renderable = this.#doc.render(this.#template, cursor);
+    // GLIMMER.addRenderable(renderable);
 
     return renderable;
   }
 }
 
-const hello = fragment(text("hello"));
+const Hello = component((owner: Owner) => () =>
+  fragment(Nav(owner)(), text("hello"))
+);

@@ -1,4 +1,4 @@
-import { Bounds } from "../../dom/bounds";
+import type { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
 import { build, IntoReactive, Reactive } from "../../reactive/cell";
@@ -128,9 +128,9 @@ function initialize<C extends Choices>(
   let choice = match[discriminant] as Content;
   let result = choice.render(cursor, dom);
 
-  if (Bounds.is(result)) {
-    return { bounds: result, content: null };
+  if (result instanceof StableDynamicContent) {
+    return { bounds: result, content: result };
   } else {
-    return { bounds: result.bounds, content: result };
+    return { bounds: result, content: null };
   }
 }
