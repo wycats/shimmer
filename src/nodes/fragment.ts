@@ -30,7 +30,6 @@ export function fragment(...content: readonly Content[]): Content {
   if (list.isPresent()) {
     return build(() => {
       if (list.every(TemplateContent.isStatic)) {
-        console.log("static content");
         return StaticContent.of(
           "fragment",
           { children: list },

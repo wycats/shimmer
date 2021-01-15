@@ -1,22 +1,39 @@
-import { App, Cursor, Doc, fragment, text } from "../../src/index";
+import {
+  App,
+  component,
+  fragment,
+  Owner,
+  Services,
+  text,
+} from "../../src/index";
+import { Nav } from "./nav";
+import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
+import { el } from "./utils";
 
-export class Main {
-  static render(cursor: Cursor): App {
-    return new Main(Doc.of(document)).render(cursor);
+interface TutorialState {}
+
+export class TutorialPage implements PageHooks<TutorialState> {
+  construct(_owner: Owner<Services>): TutorialState {
+    return {};
   }
+  render(
+    _state: TutorialState,
+    { owner }: StaticOptions,
+    { cursor }: RenderOptions
+  ): App {
+    let doc = owner.service("doc");
 
-  #doc: Doc;
-
-  constructor(doc: Doc) {
-    this.#doc = doc;
-  }
-
-  render(cursor: Cursor): App {
-    let renderable = this.#doc.render(hello, cursor);
-    // GLIMMER.addRenderable(renderable);
-
-    return renderable;
+    return doc.render(Template(owner)(), cursor);
   }
 }
 
-const hello = fragment(text("hello"));
+export const Main = page(() => new TutorialPage());
+
+const Template = component((owner: Owner) => () => {
+  return fragment(
+    Nav(owner)(),
+    el("div", { class: "fallback" }, Page(owner)())
+  );
+});
+
+const Page = component((_owner: Owner) => () => fragment(text("hello")));

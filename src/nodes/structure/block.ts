@@ -3,6 +3,7 @@ import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
 import { IntoReactive, Reactive } from "../../reactive/cell";
+import { isObject } from "../../utils/predicates";
 import {
   Content,
   DynamicContent,
@@ -11,8 +12,6 @@ import {
   StaticTemplateContent,
   UpdatableDynamicContent,
 } from "../content";
-
-// export type Block<Args extends ReactiveArgs> = (...args: Args) => Content;
 
 export interface BlockInfo<T = any> {
   arg: Reactive<T>;
@@ -24,16 +23,31 @@ interface BlockState {
   content: StableContentResult;
 }
 
-export type Block<T> = (arg: IntoReactive<T>) => Content;
+export type BlockFunction<T> = (arg: IntoReactive<T>) => Content;
 
-export function block<T>(
-  callback: (arg: Reactive<T>) => Content
-): (arg: IntoReactive<T>) => Content {
-  let b = new BlockImpl(callback);
-  return (arg: IntoReactive<T>) => b.invoke(Reactive.from(arg));
+export function block<T>(callback: () => Content): Block<void>;
+
+export function block<T>(callback: (arg: Reactive<T>) => Content): Block<T>;
+export function block<T>(callback: (arg: Reactive<T>) => Content): Block<T> {
+  let b = new Block(callback);
+  return new Block((arg: IntoReactive<T>) => b.invoke(Reactive.from(arg)));
 }
 
-export class BlockImpl<T> {
+// export class Block<T> {
+//   #function: BlockFunction<T>;
+
+//   constructor(func: BlockFunction<T>) {
+//     this.#function = func;
+//   }
+
+//   invoke(arg: Reactive<T>): Content {}
+// }
+
+export class Block<T> {
+  static is(value: unknown): value is Block<unknown> {
+    return isObject(value) && value instanceof Block;
+  }
+
   #callback: (arg: Reactive<T>) => Content;
 
   constructor(callback: (arg: Reactive<T>) => Content) {
@@ -83,7 +97,7 @@ class UpdatableBlock extends UpdatableDynamicContent<BlockState> {
       state.content.poll();
     }
 
-    // TODO: we shouldn't get here is state.content is not an effect
+    // TODO: we shouldn't get here if state.content is not an effect
   }
 
   render(
@@ -98,13 +112,3 @@ class UpdatableBlock extends UpdatableDynamicContent<BlockState> {
     };
   }
 }
-
-// export function Block<Args extends ReactiveArgs>(
-//   callback: (...args: Args) => Content
-// ): (...args: IntoReactiveArgs<Args>) => Content {
-//   return (...args: IntoReactiveArgs<Args>): Content => {
-//     let a = (ReactiveArgs.from(...args) as any) as Args;
-
-//     return callback(...a);
-//   };
-// }

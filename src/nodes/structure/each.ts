@@ -14,7 +14,7 @@ import {
   UpdatableDynamicContent,
 } from "../content";
 import { fragment } from "../fragment";
-import type { Block } from "./block";
+import type { BlockFunction } from "./block";
 
 export type ReactiveIterable<T> = Iterable<IntoReactive<T>>;
 
@@ -29,7 +29,7 @@ export interface EachState<T> {
 export function each<T>(
   value: IntoReactive<Iterable<IntoReactive<T>>>,
   key: (arg: T) => unknown,
-  block: Block<T>
+  block: BlockFunction<T>
 ): Content {
   let reactive = Reactive.from(value);
 
@@ -59,7 +59,7 @@ function initialize<T>({
 }: {
   reactive: Reactive<ReactiveIterable<T>>;
   key: (arg: T) => unknown;
-  block: Block<T>;
+  block: BlockFunction<T>;
 }): Content {
   let iterableIsStatic = Reactive.isStatic(reactive);
 
@@ -238,7 +238,7 @@ class LastEach<T> {
 interface StableEachState<T> {
   reactive: Reactive<ReactiveIterable<T>>;
   key: (value: T) => unknown;
-  block: Block<T>;
+  block: BlockFunction<T>;
   stableMap: StableMap<T>;
 }
 

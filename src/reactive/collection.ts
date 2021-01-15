@@ -1,11 +1,11 @@
 // type IntoReactiveRecord<T> = Reac
 
 import "tracked-built-ins";
-import { isObject } from "../utils/predicates";
-import { IntoReactive, Reactive } from "./cell";
+import { isObject, isObjectLiteral } from "../utils/predicates";
+import { Reactive, Static } from "./cell";
 
 export type ReactiveObjectSpec = {
-  [P in string]: ReactiveObjectSpec | unknown;
+  [P in string]: ReactiveObjectSpec | Reactive<unknown> | Static<unknown>;
 };
 
 export type ReactiveObject<
@@ -19,14 +19,20 @@ export type ReactiveObject<
 export type IntoReactiveObject<O extends ReactiveObjectSpec> = {
   [P in keyof O]: O[P] extends ReactiveObjectSpec
     ? IntoReactiveObject<O[P]>
-    : IntoReactive<O[P]>;
+    : O[P] extends Static<infer T>
+    ? Static<T> | T
+    : O[P] extends Reactive<infer T>
+    ? Reactive<T> | T
+    : never;
 };
 
 type Deref<
   T extends ReactiveObjectSpec,
   K extends keyof T
 > = T[K] extends Reactive<infer U>
-  ? U
+  ? Reactive<U>
+  : T[K] extends Static<infer U>
+  ? Static<U>
   : T[K] extends ReactiveObjectSpec
   ? ReactiveRecord<T[K]>
   : never;
@@ -41,7 +47,9 @@ type DerefProxy<
   T extends ReactiveObjectSpec,
   K extends keyof T
 > = T[K] extends Reactive<infer U>
-  ? U
+  ? Reactive<U>
+  : T[K] extends Static<infer U>
+  ? Static<U>
   : T[K] extends ReactiveObjectSpec
   ? Dict<T[K]>
   : never;
@@ -67,11 +75,15 @@ export class ReactiveRecord<T extends ReactiveObjectSpec> {
     let value = this.#object[key];
 
     if (Reactive.is(value)) {
-      return value.now as Deref<T, K>;
-    } else {
+      return value as any;
+    } else if (isObjectLiteral(value)) {
       return new ReactiveRecord(
         value as ReactiveObject<ReactiveObjectSpec>
       ) as Deref<T, K>;
+    } else if (Static.is(value)) {
+      return value as any;
+    } else {
+      return new Static(value) as any;
     }
   }
 }

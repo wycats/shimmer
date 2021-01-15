@@ -1,0 +1,275 @@
+html {
+  display: block;
+}
+/* children of the <head> element all have display:none */
+head {
+  display: none;
+}
+meta {
+  display: none;
+}
+title {
+  display: none;
+}
+link {
+  display: none;
+}
+style {
+  display: none;
+}
+script {
+  display: none;
+}
+/* generic block-level elements */
+body {
+  display: block;
+}
+p {
+  display: block;
+}
+div {
+  display: block;
+}
+layer {
+  display: block;
+}
+article,
+aside,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+  display: block;
+}
+marquee {
+  display: inline-block;
+}
+address {
+  display: block;
+}
+blockquote {
+  display: block;
+}
+figcaption {
+  display: block;
+}
+figure {
+  display: block;
+}
+q {
+  display: inline;
+}
+center {
+  display: block;
+}
+hr {
+  display: block;
+}
+map {
+  display: inline;
+}
+video {
+  object-fit: contain;
+}
+/* heading elements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: block;
+}
+/* tables */
+table {
+  display: table;
+}
+thead {
+  display: table-header-group;
+}
+tbody {
+  display: table-row-group;
+}
+tfoot {
+  display: table-footer-group;
+}
+col {
+  display: table-column;
+}
+colgroup {
+  display: table-column-group;
+}
+tr {
+  display: table-row;
+}
+td,
+th {
+  display: table-cell;
+}
+caption {
+  display: table-caption;
+}
+/* lists */
+ul,
+menu,
+dir {
+  display: block;
+}
+ol {
+  display: block;
+}
+li {
+  display: list-item;
+}
+dd {
+  display: block;
+}
+dl {
+  display: block;
+}
+dt {
+  display: block;
+}
+
+/* form elements */
+form {
+  display: block;
+}
+legend {
+  display: block;
+}
+fieldset {
+  display: block;
+}
+input,
+textarea,
+keygen,
+select,
+button {
+  display: inline-block;
+}
+input[type="hidden" i] {
+  display: none;
+}
+datalist {
+  display: none;
+}
+area {
+  display: inline;
+}
+param {
+  display: none;
+}
+optgroup {
+  display: block;
+}
+option {
+  display: block;
+}
+output {
+  display: inline;
+}
+/* meter */
+meter {
+  display: inline-block;
+}
+/* progress */
+progress {
+  display: inline-block;
+}
+/* inline elements */
+pre,
+xmp,
+plaintext,
+listing {
+  display: block;
+}
+/* states */
+:focus {
+  outline: auto 5px -webkit-focus-ring-color;
+}
+/* Read-only text fields do not show a focus ring but do still receive focus */
+html:focus,
+body:focus,
+input[readonly]:focus {
+  outline: none;
+}
+embed:focus,
+iframe:focus,
+object:focus {
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+keygen:focus,
+select:focus {
+  outline-offset: -2px;
+}
+input[type="button" i]:focus,
+input[type="checkbox" i]:focus,
+input[type="file" i]:focus,
+input[type="hidden" i]:focus,
+input[type="image" i]:focus,
+input[type="radio" i]:focus,
+input[type="reset" i]:focus,
+input[type="search" i]:focus,
+input[type="submit" i]:focus,
+input[type="file" i]:focus::-webkit-file-upload-button {
+  outline-offset: 0;
+}
+
+/* HTML5 ruby elements */
+ruby > rt {
+  display: block;
+}
+ruby > rp {
+  display: none;
+}
+/* other elements */
+noframes {
+  display: none;
+}
+frameset,
+frame {
+  display: block;
+}
+details {
+  display: block;
+}
+summary {
+  display: block;
+}
+template {
+  display: none;
+}
+bdi,
+output {
+  unicode-bidi: -webkit-isolate;
+}
+bdo {
+  unicode-bidi: bidi-override;
+}
+textarea[dir="auto" i] {
+  unicode-bidi: -webkit-plaintext;
+}
+dialog:not([open]) {
+  display: none;
+}
+/* page */
+@page {
+  /* FIXME: Define the right default values for page properties. */
+  size: auto;
+  margin: auto;
+  padding: 0px;
+  border-width: 0px;
+}
+/* Disable multicol in printing, since it's not implemented properly. See crbug.com/99358 */
+@media print {
+  * {
+    -webkit-columns: auto !important;
+  }
+}
+/* noscript is handled internally, as it depends on settings. */

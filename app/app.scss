@@ -1,3 +1,5 @@
+@import "./tutorial.scss";
+
 * {
   box-sizing: border-box;
 }
@@ -10,6 +12,10 @@ body {
   font-family: sans-serif;
 }
 
+a {
+  cursor: pointer;
+}
+
 nav {
   display: block;
   background-color: #88b;
@@ -20,7 +26,6 @@ nav {
   // grid-auto-columns: auto;
 
   a {
-    cursor: pointer;
     margin-right: 1rem;
 
     &:last-child {
@@ -34,6 +39,17 @@ nav {
       color: #fff;
     }
   }
+}
+
+div.info {
+  margin-bottom: 2rem;
+}
+
+.error {
+  padding: 1rem;
+  border: 1px solid #900;
+  background-color: #eaa;
+  color: #900;
 }
 
 p {
@@ -64,3 +80,5 @@ button {
     color: #606;
   }
 }
+
+@import "./ua.scss";

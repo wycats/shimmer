@@ -5,12 +5,8 @@ import {
   Cell,
   Choice,
   component,
-  Cursor,
   Dict,
-  Doc,
-  dom,
   each,
-  effect,
   element,
   fragment,
   IntoReactive,
@@ -23,21 +19,13 @@ import {
 } from "../../src/index";
 import { Bool } from "../choice";
 import { Nav } from "./nav";
+import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
+import { on } from "./utils";
 
 interface CountValue {
   id: number;
   value: number;
 }
-
-const on = effect(
-  (
-    element: dom.SimplestElement,
-    eventName: Reactive<string>,
-    callback: Reactive<EventListener>
-  ) => {
-    (element as Element).addEventListener(eventName.now, callback.now);
-  }
-);
 
 // TODO:
 // 1. make the proxy
@@ -59,8 +47,8 @@ const on = effect(
  */
 
 export const Contact = component(
-  () => (person: Dict<{ name: { first: string } }>) => {
-    return text(Pure.of(() => person.name.first));
+  () => (person: Dict<{ name: { first: Reactive<string> } }>) => {
+    return text(Pure.of(() => person.name.first.now));
   }
 );
 
@@ -125,67 +113,73 @@ const Hello = component(
   }
 );
 
-export class Main {
-  static render(cursor: Cursor, owner: Owner): App {
-    return new Main(owner, Doc.of(document)).render(cursor);
-  }
+interface IndexState {
+  tick: number;
+  readonly counts: Cell<Cell<CountValue>[]>;
+  readonly bool: Cell<Choice<Bool>>;
+}
 
-  #doc: Doc;
-  #tick: number = 0;
-  #counts: Cell<Cell<CountValue>[]>;
-  #bool: Cell<Choice<Bool>>;
-  #owner: Owner;
-
-  constructor(owner: Owner, doc: Doc) {
-    this.#owner = owner;
-    this.#doc = doc;
-
+export class IndexPage implements PageHooks<IndexState> {
+  construct(): IndexState {
     let countValues: Cell<CountValue>[] = [];
 
     for (let i = 0; i < 10; i++) {
       countValues.push(Cell.of({ id: i, value: i }));
     }
 
-    this.#counts = Reactive.cell(countValues);
-    this.#bool = Cell.of(Bool.of("true", Reactive.static(true)));
+    let counts = Reactive.cell(countValues);
+    let bool = Cell.of(Bool.of("true", Reactive.static(true)));
+
+    return {
+      tick: 0,
+      counts,
+      bool,
+    };
   }
 
-  render(cursor: Cursor): App {
-    let hello = Hello(this.#owner)(this.#counts, this.#bool);
+  render(
+    state: IndexState,
+    { owner }: StaticOptions,
+    { cursor }: RenderOptions
+  ): App {
+    let doc = owner.service("doc");
+    let { counts, bool } = state;
+
+    let hello = Hello(owner)(counts, bool);
     console.log(tree(hello));
 
-    let app = this.#doc.render(hello, cursor);
+    let app = doc.render(hello, cursor);
 
-    let token = setInterval(() => this.increment(), 1000);
+    let token = setInterval(() => this.#increment(state), 1000);
     registerDestructor(app, () => clearInterval(token));
 
     return app;
   }
 
-  increment() {
-    this.#tick++;
-    console.log("tick", this.#tick);
+  #increment = (state: IndexState) => {
+    state.tick++;
+    console.log("tick", state.tick);
 
-    if (this.#tick % 2 === 0) {
-      this.#counts.update((c) => {
+    if (state.tick % 2 === 0) {
+      state.counts.update((c) => {
         return c.map((value) => {
           let now = value.now;
           return Cell.of({ id: now.id, value: now.value + 1 });
         });
       });
     } else {
-      this.#counts.now.forEach((c) =>
+      state.counts.now.forEach((c) =>
         c.update((i) => ({ id: i.id, value: i.value + 1 }))
       );
     }
 
-    this.#bool.update((last) => {
+    state.bool.update((last) => {
       return last.match<Choice<Bool>>({
         true: () => Bool.of("false", Reactive.static(false)),
         false: () => Bool.of("true", Reactive.static(true)),
       });
     });
-  }
+  };
 }
 
-// export function main() {}
+export const Main = page(() => new IndexPage());

@@ -1,30 +1,52 @@
 import { destroy, registerDestructor } from "@glimmer/destroyable";
+import type { SimplestDocument } from "../../src/dom/simplest";
 import {
   App,
   Cell,
   Cursor,
+  Doc,
   GLIMMER,
   Owner,
   Render,
   RouterService,
 } from "../../src/index";
-import { HashUrl, InitializedUrlBar, UrlBar } from "./url-bar";
+import {
+  HashUrl,
+  InitializedUrlBar,
+  QueryParams,
+  UrlBar,
+  UrlDetails,
+} from "./url-bar";
 
 export type Routes = (owner: Owner) => RoutesWithOwner;
 export type RoutesWithOwner = (
-  location: string,
+  url: { path: string; params: QueryParams },
   cursor: Cursor
 ) => Promise<App>;
 
+export interface Environment {
+  doc: SimplestDocument;
+  bar: UrlBar;
+}
+
 export class Router implements RouterService {
   static startForBrowser(routes: Routes): Router {
-    return Router.start(HashUrl.browser(), routes);
+    return Router.start(HashUrl.browser(), document, routes);
   }
 
-  static start({ url, bar }: InitializedUrlBar, routes: Routes): Router {
-    let router = new Router(routes, bar, Cursor.appending(document.body));
+  static start(
+    { url, bar }: InitializedUrlBar,
+    doc: SimplestDocument,
+    routes: Routes
+  ): Router {
+    let router = new Router(
+      routes,
+      { doc, bar },
+      Cursor.appending(document.body)
+    );
 
     let destructor = bar.onChange((url) => {
+      console.log("bar changed", url);
       router.route(url);
     });
 
@@ -39,31 +61,42 @@ export class Router implements RouterService {
   #bar: UrlBar;
   #router: RoutesWithOwner;
   #cursor: Cursor;
-  #url: Cell<string | null> = Cell.of(null);
-  #owner = new Owner({ router: this });
+  #url: Cell<UrlDetails | null> = Cell.of(null);
+  #owner: Owner;
 
-  constructor(router: Routes, bar: UrlBar, cursor: Cursor) {
+  constructor(router: Routes, env: Environment, cursor: Cursor) {
+    this.#owner = new Owner({ router: this, doc: Doc.of(env.doc) });
     this.#router = router(this.#owner);
-    this.#bar = bar;
+    this.#bar = env.bar;
     this.#cursor = cursor;
   }
 
-  async route(url: string): Promise<void> {
+  async route(url: UrlDetails): Promise<void> {
+    console.log("routing to", url);
+
     this.#set(new Loading(url));
     this.#set(await this.#router(url, this.#cursor));
     this.#url.update(() => url);
   }
 
   get url(): string | null {
-    return this.#url.now;
+    if (this.#url.now) {
+      return this.#url.now.path;
+    } else {
+      return null;
+    }
   }
 
+  /**
+   * Converts a URL that appears in the literal URL bar into a logical application-relative absolute
+   * URL (that begins with a `/`)
+   */
   normalizeHref(href: string): string {
     return this.#bar.normalizeConcreteHref(href);
   }
 
   isActive(logicalURL: string): boolean {
-    return this.#bar.currentLogicalURL() === logicalURL;
+    return this.#bar.currentLogicalPath() === logicalURL;
   }
 
   #remove = () => {
@@ -84,10 +117,10 @@ export class Router implements RouterService {
 }
 
 class Loading implements Render {
-  #url: string;
+  #details: UrlDetails;
 
-  constructor(url: string) {
-    this.#url = url;
+  constructor(url: UrlDetails) {
+    this.#details = url;
   }
   readonly render = null;
 

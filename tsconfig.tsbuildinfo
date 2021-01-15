@@ -552,13 +552,13 @@
         "affectsGlobalScope": false
       },
       "./src/utils/predicates.ts": {
-        "version": "20a3961cde930581da25bc41c4bf5489020eb37a8ea4d9cceca74dd88c2d4e1b",
-        "signature": "bbb07e4b485143e2f975755788503c9fc7d98c91ce4a759dcfc4d4b50bb9871d",
+        "version": "35f27f533bfa779a6d50225ea79ef66f4c43c4ce72c1e4d3194eb138ecd14160",
+        "signature": "92e2fc9daf09669ef4fc2a9da793db4dfb8dc89e7df87d6c46a90c80668e1265",
         "affectsGlobalScope": false
       },
       "./src/reactive/cell.ts": {
-        "version": "a03a736ed18f46793d5cfbfc72466acdad21c253bb9fc997c482523dfbb7a359",
-        "signature": "b2d3712f87955985f16684fa4fd3c31bb7216de1b3343fb34a467e43922acc79",
+        "version": "3ca471ed2c6ec76af4bf39ce20747bfc6c837a7b0487abe7823abbcb2f780974",
+        "signature": "2ec9d6ea517a5eb4fe6133d71ed802641c3c49d9d3e7440bb7f473b48d8eb88d",
         "affectsGlobalScope": false
       },
       "./src/utils/option.ts": {
@@ -567,8 +567,8 @@
         "affectsGlobalScope": false
       },
       "./src/glimmer/cache.ts": {
-        "version": "ef10e446d9f149a8ae00fac719c543df5f116920f8807fc3bae3bb1d7445c635",
-        "signature": "5e04834f16354662f38ffdeb2d0239abd73ca13c93717faa55985fc0f462e0aa",
+        "version": "d93f4b62697f1b08e304b0c99372afb87ad4e7899cadd2e25bb19ad1552aaf86",
+        "signature": "1a8689a7f94818ab9e8b91a7568c7603985dafa0d03631cc8062277040f242e0",
         "affectsGlobalScope": false
       },
       "./src/nodes/comment.ts": {
@@ -582,18 +582,18 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/fragment.ts": {
-        "version": "6e6f43cabcdc505ed4777728864270501d31fd7c87326b4ffd0af0005a66e399",
+        "version": "7d84e0825d65ab57cd2fca6270597dd273ac5d44c1001258afab680ce46290ab",
         "signature": "0ae7360ed0613e671079d666a4b99700ae2c12ab900ed2ac0e388c837dc00c54",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/block.ts": {
-        "version": "54ba51b5fd1abbc844c51a4137af5748ca03192a7f97e0b915fd195d685c2789",
-        "signature": "0f94e44e29a60718da68abcc788263f656503ade2cde80292803e9c163a9e3f2",
+        "version": "41e562b23293a19d1942632cd0182919dabd62ec28d03e3b5354dbbca4370970",
+        "signature": "647cd437a7439e0cd697fe8a613abdf03f1aeb0429a2aeef78ba2fb4e9c68459",
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/each.ts": {
-        "version": "feeb1beabb73eb6c69872e12a28be25d5a78d138e6321ab07b0be8a5425080dd",
-        "signature": "d781f58003ae92e78f7a7f7fb858d29c9d9532c4b8ade67b273b8f0ac243dc96",
+        "version": "16bc57bdaa7cda3d2e6bb353e778bea68349bcee027138e5bbfdff697b09a0e3",
+        "signature": "3ab83791b5ab9eb6b0c84c62b100ec3db5c90261c81b7f537dbcf02474f23409",
         "affectsGlobalScope": false
       },
       "./src/nodes/text.ts": {
@@ -606,14 +606,14 @@
         "signature": "8af3c2f02e8ad94183e650a8680159193b75aa588bf24c879ec3211363a01004",
         "affectsGlobalScope": false
       },
-      "./src/nodes/app.ts": {
-        "version": "c60ff31efd9b7bb5ca5e22fa8230610596837d46529d5c5a39740b50e75552d7",
-        "signature": "7ae1683bc543299f6290c1f7a3574de6e41e9dd9b132fd3191f7787a2c290296",
+      "./src/owner.ts": {
+        "version": "9d0fc94710f6892fa1fe3e490f24ddb6c0e9fe18d120cbe9679931fb749c10f4",
+        "signature": "cb077603a7a55c7ea4df3792eb78f405e704ea4cad4a37855c2bf0e200e2ad1b",
         "affectsGlobalScope": false
       },
-      "./src/owner.ts": {
-        "version": "7d067ff7245820467e5aa1b74b3daa596643ab4d0af66cf266935c11a74b3571",
-        "signature": "984e8e8ec073d1689f89145d68babd1f8d022902e99365034c520e45a3a44a26",
+      "./src/nodes/app.ts": {
+        "version": "11229153cccdffa8a86787dc6d6e2b2549ee82bc64c75c39f8fa3835b6ec975b",
+        "signature": "d6c78387aa984ea6c25839453319e14a0d2f8ebd188bd9005248fc8e203e416a",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/tracked-built-ins@1.0.2/node_modules/tracked-built-ins/-private/array.d.ts": {
@@ -637,13 +637,13 @@
         "affectsGlobalScope": false
       },
       "./src/reactive/collection.ts": {
-        "version": "cedd6b7a846a8ba21a8c330b94426935febc770915229aa2c54d58b2fb381294",
-        "signature": "68ce60b337aeda6508165c2aa6cacf6c6ce1039bf148a9bf20ab543ffc407d66",
+        "version": "801eba72aa457c669aa697a00e152aa6fa049d203b7ec27d60210458b1041d1b",
+        "signature": "85a0c557bea493294bc6692552bf28d4255685b316c658e5ef87dea1d9c899fe",
         "affectsGlobalScope": false
       },
       "./src/nodes/component.ts": {
-        "version": "2e5f399057aaf1de9039c2757056444beeb7e0625ffbf2622e39bf950a1b2dd7",
-        "signature": "be6a66c952f3f065501745b4e762fdb03e69ce8009a049177a3359d9365cb287",
+        "version": "8edfe59ee2201a92b92810896ee151c172f5d0ddfed4a77c903eb47b9da21f98",
+        "signature": "4bf0c740e81b39263199ca72528e8c6299b2d4f22fe71f2b7e8cbc734868a132",
         "affectsGlobalScope": false
       },
       "./src/nodes/element/element-effect.ts": {
@@ -652,8 +652,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/element/modifier-content.ts": {
-        "version": "dcfb2173474e36457e97b2ef558e12ee47431c10853143f95cf8a99afe7f421e",
-        "signature": "fc1654e9e52558981265f69773339030ab6a7b162274a48753fd9df4471524b4",
+        "version": "c6f36303d954a8f3ed3cadedc7c7ec865d8901e2c7e9b86f1c7c2e31d69bc702",
+        "signature": "d586f57b20a73a8eae2c2f7b1f4e22f9c2029e59412a6f236a28b9c4b244f03d",
         "affectsGlobalScope": false
       },
       "./src/nodes/element/attribute.ts": {
@@ -677,8 +677,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/element/element.ts": {
-        "version": "c714a96823f429c7a197186675e8c961644a5ebe1fcad001f671e183c36a2c4a",
-        "signature": "b3ea47392d9a48bd0922d0e836a6df4fe1cc8d08da298641ec52ce27da5cf898",
+        "version": "01773fbb5c78105453c23ba98c39978a1c5e671db268bc55f16803c98a4392c9",
+        "signature": "2b2c56e9d379ec85a012e0a40abdf2ebeda51cfe7f1a67eaffcdfbb4545ae36d",
         "affectsGlobalScope": false
       },
       "./src/debug/tree.ts": {
@@ -707,38 +707,218 @@
         "affectsGlobalScope": false
       },
       "./app/router/url-bar.ts": {
-        "version": "584f8c00706898577901bf7ffe2c21c76b0b4df9ac7a1c8191fc32583ebe9230",
-        "signature": "4b7016d3a4243f2e34feb55271feafb5abd8004ee5b29aa48ef02bbb02a2332b",
+        "version": "47fcaec0e6e9dc9f323f62cfe2a46dd20004fae94d12fa9bbd6b6b187bd365a9",
+        "signature": "8b5a22b2d77beb2efed7eeac99f9a4e6b6ee0bcef3d960d9c1f06116039ed2ad",
         "affectsGlobalScope": false
       },
       "./app/router/router.ts": {
-        "version": "09026194675185f0a4de2f69a7fe26ac5e61e6dcf29b222ee32948be8a482cd1",
-        "signature": "b1eb63696d2faa53ad5c8b5d05cd2ab50d13723b6200dae488949242150217ef",
+        "version": "99a75895e86ec7aaf55c7303ac88665b912d178ccaa46090d2f4b5fc1f0ad9a8",
+        "signature": "5ffa7baa143c5ccb99fd518366afeb4f80bb8065078a0f386f3fd1978ae83eb7",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/utils.ts": {
+        "version": "3bca1f882fc25f54488d60d4bfa12b458293521d1615dbca0c093b7aa879fd5c",
+        "signature": "c9bd5521f996facf7250648206b3e4f56b5e2f4535ae15f8ee4e62bd95e7bda2",
         "affectsGlobalScope": false
       },
       "./app/pages/nav.ts": {
-        "version": "d396056fd41bb0b7b1443fc617dfeb73842855485cf8c99d817aa5a6fdfb1c13",
-        "signature": "433bf9e821d71ef10487a731932357f690f374b78363f8ba3c298c3942d75db6",
+        "version": "52a50975c001d82aa59448484f703000f4370bd9623a74204e2f859e23890c97",
+        "signature": "3d2526ceff3d194693c1acc47e7902b0119488413bed56d60468ccb80cbc42c9",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/page.ts": {
+        "version": "a299d66a2604adede97c5e028333aa853d876937cf8af0708f1669492d747e78",
+        "signature": "ce7b78b10ee61eb592e2d162641048a5a0f0775930906a27baa16e047e3dd451",
         "affectsGlobalScope": false
       },
       "./app/pages/index.ts": {
-        "version": "f972a8480e6923524417cf09ddf2559fd0a16a4dd9b5f05bb8300d44d9d3951a",
-        "signature": "d6b306852261c6282e09ab8977c8e0097a9b0660b12a0b3e1b1ded51c6a106f1",
+        "version": "4fc91a4216672e8ba8703b17d017571a12ea265810ff713dbc3bcd689cb84e1d",
+        "signature": "db9fbb61dbc40fe0fe90673d4e60bb63e6e137d122c55b0728152ef182692206",
         "affectsGlobalScope": false
       },
-      "./app/pages/tutorial.ts": {
-        "version": "45820e42da02e2cb984c0352adb16e1afb9290f4ba7c7c41ccbc7f1f4c8ae4b9",
-        "signature": "9dcd24a81efa344bf0a16a2fae5619c625485786c7f8d4c704e1323e58e651a3",
+      "./app/pages/tutorial/subnav.ts": {
+        "version": "b8ca400bc3a17e272863fce1f670675f3b15a4dc5e5742db230f8095b3ee7fc3",
+        "signature": "60000bba5b29b98154bb583c46425b40f93aff193e2e06a128daaf13aaedb6b6",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part1.ts": {
+        "version": "973a86546aa0d0275302ff3cb34fac586b95890729ca15162d56131455bfcf8f",
+        "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/new-message-input.ts": {
+        "version": "6aa266d22fd79cf8c5f9249c6ed24d53894cce190fddc509cbc319389ff76eab",
+        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/received-message/avatar.ts": {
+        "version": "36e46fd36834610d2785faf5a3fbf4cbcefd56f8ee83b52e19891c6bbba59177",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/received-message/username.ts": {
+        "version": "e2b91366d1e5af96ae4538df63cc18ffac1c4e349df9081d22063fe0d9c0b2f2",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/received-message/index.ts": {
+        "version": "1c215fda1958a70818089e948687a411ae8309ac9fbfb85bfcd205111077ff46",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/sent-message/avatar.ts": {
+        "version": "e34f9b0e30ab16c66b6df9dfdf804fb26a67f6ca84daca10e3ce00d1edb903a6",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/sent-message/username.ts": {
+        "version": "c2d36ce7d6e2e58c8851c3eba170f4b31b41badc719abf05d348b1fd2a8a2c05",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2/sent-message/index.ts": {
+        "version": "957628a7f1b6f05fe43327231816b0dbcd58440421b5376b76ace6a0ddcf459c",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part2.ts": {
+        "version": "540ef08697f1a00cb31a53c5ff2cd9c1499f26c677ea5cb652f964a3f786f3e5",
+        "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/new-message-input.ts": {
+        "version": "6aa266d22fd79cf8c5f9249c6ed24d53894cce190fddc509cbc319389ff76eab",
+        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/avatar.ts": {
+        "version": "aec4fd8acb835cf54d58a778be2c40b4e1d90ea252199fccad00298a45ff084f",
+        "signature": "fb0133e337a037db45fc0c855ea4dc90eaf8f44210344007f42e7800e2878cf1",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/received-message/avatar.ts": {
+        "version": "cdec795ff67a8aecaa792ae3b3ffb7d8c921c74d3e791e89eccf28882f079c1c",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/username.ts": {
+        "version": "68a52807fc841a19a02ef28c5dfc6ac06f2f380b21e580944351590ee90ad0e8",
+        "signature": "25797af3605f07ccdd196c30d3c6952698cc7b01d5730a0509c96e23c6d790b3",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/received-message/username.ts": {
+        "version": "cdbcc00376d2ae91271f0f52aa4fedf63f6dfc4c33c8fc3496a2584b4f3052a9",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/received-message/index.ts": {
+        "version": "1c215fda1958a70818089e948687a411ae8309ac9fbfb85bfcd205111077ff46",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/sent-message/avatar.ts": {
+        "version": "5b1f953d1c462b9c49e566045b8f07b133233072982cf5a142b333f53cdb9fea",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/sent-message/username.ts": {
+        "version": "8afbda403261fee8f2fe71f8f6d51f8da026d46a62d9802ae1795f0df52e84df",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3/sent-message/index.ts": {
+        "version": "957628a7f1b6f05fe43327231816b0dbcd58440421b5376b76ace6a0ddcf459c",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part3.ts": {
+        "version": "d494c3735db4e3477264ec83886abb9ced482fc7e92904aa7ffa1c00bc5e84e4",
+        "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/new-message-input.ts": {
+        "version": "6aa266d22fd79cf8c5f9249c6ed24d53894cce190fddc509cbc319389ff76eab",
+        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/avatar.ts": {
+        "version": "aec4fd8acb835cf54d58a778be2c40b4e1d90ea252199fccad00298a45ff084f",
+        "signature": "fb0133e337a037db45fc0c855ea4dc90eaf8f44210344007f42e7800e2878cf1",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/username.ts": {
+        "version": "68a52807fc841a19a02ef28c5dfc6ac06f2f380b21e580944351590ee90ad0e8",
+        "signature": "25797af3605f07ccdd196c30d3c6952698cc7b01d5730a0509c96e23c6d790b3",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/message.ts": {
+        "version": "5cb4c58be9b71c838f863c2c405d57f69ad7f2468e7cc41ca7f7e5f0277defd1",
+        "signature": "ffb1447597a41f451660a7309be483fcf8c68234ed700f5140f4c88e73b04b14",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/received-message/index.ts": {
+        "version": "e4abdf25ddc1ea8f57567017be20051af6b1018d3625181280a29ab47796844d",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/sent-message/index.ts": {
+        "version": "d4c314371e80631635550017c8459d1eca398990b3cfc19a5c2d60a78d2439b5",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4.ts": {
+        "version": "9c5f2e5666f12d630d60eea7b92749a095ce2c4de647b7185d87dc011019f26a",
+        "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5.ts": {
+        "version": "9c5f2e5666f12d630d60eea7b92749a095ce2c4de647b7185d87dc011019f26a",
+        "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/error.ts": {
+        "version": "484347a343b71dfed290a506fe329f20e54ed525dbe369d6ffc1cd446b36425b",
+        "signature": "3cf08122ef1e63b8ef9e5dbcd307c1bfb36943db151d00d42496897ffa6ce6f2",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/state/counter.ts": {
+        "version": "2086099503b7f88d2db7a7dd5064a5574e27a70a0d8417714984bf04b9d73eb4",
+        "signature": "47e7e5d81fe7e7d4a429ececfc2a40eb4ef24ba32b03f04473c53a46bf5a8987",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/state/index.ts": {
+        "version": "6a9e91078f7e157049a6288c6eec5fff5da8b96c34102dc6ae16800b8d6f89b0",
+        "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/fallback.ts": {
-        "version": "ca06873186a022b9aacd264ed9eda9cb50f914dbdafe90db7eac033404f21ccb",
-        "signature": "f587bcaae1660f3931f936d1f242b30d8e9bb9f034cae5f2faa4e84e4796bd29",
+        "version": "98dcab130e52308a813ffd68229077232d979a412468f767e7a9c9f3434d9e10",
+        "signature": "3cf08122ef1e63b8ef9e5dbcd307c1bfb36943db151d00d42496897ffa6ce6f2",
         "affectsGlobalScope": false
       },
       "./app/index.ts": {
-        "version": "304d0d6cb07f17da304fe7894d62ea22ba5ec91eeacf0f3fc47b92d5cf38bf11",
+        "version": "c87272155359c2cf9c6a08e2fb3b2ddf24c90d6f11c96ddcc64b2c0b7116e0ba",
         "signature": "2e5f60cf68bac67b4f56a334b804630293d334498f833025811227a3724ff8ce",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/received-message/avatar.ts": {
+        "version": "cdec795ff67a8aecaa792ae3b3ffb7d8c921c74d3e791e89eccf28882f079c1c",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/received-message/username.ts": {
+        "version": "cdbcc00376d2ae91271f0f52aa4fedf63f6dfc4c33c8fc3496a2584b4f3052a9",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/sent-message/avatar.ts": {
+        "version": "5b1f953d1c462b9c49e566045b8f07b133233072982cf5a142b333f53cdb9fea",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part4/sent-message/username.ts": {
+        "version": "8afbda403261fee8f2fe71f8f6d51f8da026d46a62d9802ae1795f0df52e84df",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./src/hello-world.ts": {
@@ -1084,37 +1264,242 @@
         "./src/index.ts"
       ],
       "./app/index.ts": [
+        "./app/pages/error.ts",
         "./app/pages/fallback.ts",
         "./app/pages/index.ts",
         "./app/pages/patch-example.ts",
-        "./app/pages/tutorial.ts",
+        "./app/pages/state/index.ts",
+        "./app/pages/tutorial/part1.ts",
+        "./app/pages/tutorial/part2.ts",
+        "./app/pages/tutorial/part3.ts",
+        "./app/pages/tutorial/part4.ts",
+        "./app/pages/tutorial/part5.ts",
         "./app/router/router.ts",
+        "./app/router/url-bar.ts",
         "./src/index.ts",
         "./src/owner.ts"
       ],
+      "./app/pages/error.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
       "./app/pages/fallback.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/utils.ts",
         "./src/index.ts"
       ],
       "./app/pages/index.ts": [
         "./app/choice.ts",
         "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/utils.ts",
         "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
         "./src/index.ts"
       ],
       "./app/pages/nav.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/page.ts": [
         "./src/index.ts"
       ],
       "./app/pages/patch-example.ts": [
         "./src/assertions.ts",
         "./src/index.ts"
       ],
-      "./app/pages/tutorial.ts": [
+      "./app/pages/state/counter.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/state/index.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/state/counter.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part1.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/tutorial/subnav.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/tutorial/part2/new-message-input.ts",
+        "./app/pages/tutorial/part2/received-message/index.ts",
+        "./app/pages/tutorial/part2/sent-message/index.ts",
+        "./app/pages/tutorial/subnav.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/new-message-input.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/received-message/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/received-message/index.ts": [
+        "./app/pages/tutorial/part2/received-message/avatar.ts",
+        "./app/pages/tutorial/part2/received-message/username.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/received-message/username.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/sent-message/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/sent-message/index.ts": [
+        "./app/pages/tutorial/part2/sent-message/avatar.ts",
+        "./app/pages/tutorial/part2/sent-message/username.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/sent-message/username.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/tutorial/part3/new-message-input.ts",
+        "./app/pages/tutorial/part3/received-message/index.ts",
+        "./app/pages/tutorial/part3/sent-message/index.ts",
+        "./app/pages/tutorial/subnav.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/new-message-input.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/received-message/avatar.ts": [
+        "./app/pages/tutorial/part3/avatar.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/received-message/index.ts": [
+        "./app/pages/tutorial/part3/received-message/avatar.ts",
+        "./app/pages/tutorial/part3/received-message/username.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/received-message/username.ts": [
+        "./app/pages/tutorial/part3/username.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/sent-message/avatar.ts": [
+        "./app/pages/tutorial/part3/avatar.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/sent-message/index.ts": [
+        "./app/pages/tutorial/part3/sent-message/avatar.ts",
+        "./app/pages/tutorial/part3/sent-message/username.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/sent-message/username.ts": [
+        "./app/pages/tutorial/part3/username.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/username.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/tutorial/part4/new-message-input.ts",
+        "./app/pages/tutorial/part4/received-message/index.ts",
+        "./app/pages/tutorial/part4/sent-message/index.ts",
+        "./app/pages/tutorial/subnav.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/message.ts": [
+        "./app/pages/tutorial/part4/avatar.ts",
+        "./app/pages/tutorial/part4/username.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts",
+        "./src/nodes/structure/block.ts"
+      ],
+      "./app/pages/tutorial/part4/new-message-input.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/received-message/avatar.ts": [
+        "./app/pages/tutorial/part4/avatar.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/received-message/index.ts": [
+        "./app/pages/tutorial/part4/message.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts",
+        "./src/nodes/structure/block.ts"
+      ],
+      "./app/pages/tutorial/part4/received-message/username.ts": [
+        "./app/pages/tutorial/part4/username.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/sent-message/avatar.ts": [
+        "./app/pages/tutorial/part4/avatar.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/sent-message/index.ts": [
+        "./app/pages/tutorial/part4/message.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts",
+        "./src/nodes/structure/block.ts"
+      ],
+      "./app/pages/tutorial/part4/sent-message/username.ts": [
+        "./app/pages/tutorial/part4/username.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/username.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5.ts": [
+        "./app/pages/nav.ts",
+        "./app/pages/page.ts",
+        "./app/pages/tutorial/part4/new-message-input.ts",
+        "./app/pages/tutorial/part4/received-message/index.ts",
+        "./app/pages/tutorial/part4/sent-message/index.ts",
+        "./app/pages/tutorial/subnav.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/subnav.ts": [
         "./app/pages/nav.ts",
         "./src/index.ts"
+      ],
+      "./app/pages/utils.ts": [
+        "./app/choice.ts",
+        "./src/index.ts",
+        "./src/nodes/element/modifier-content.ts"
       ],
       "./app/router/router.ts": [
         "./app/router/url-bar.ts",
         "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
+        "./src/dom/simplest.ts",
         "./src/index.ts"
       ],
       "./app/router/url-bar.ts": [
@@ -1647,7 +2032,8 @@
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/glimmer/glimmer.ts",
-        "./src/nodes/content.ts"
+        "./src/nodes/content.ts",
+        "./src/owner.ts"
       ],
       "./src/nodes/comment.ts": [
         "./src/dom/bounds.ts",
@@ -1658,6 +2044,7 @@
       ],
       "./src/nodes/component.ts": [
         "./src/nodes/content.ts",
+        "./src/nodes/structure/block.ts",
         "./src/owner.ts",
         "./src/reactive/cell.ts",
         "./src/reactive/collection.ts",
@@ -1730,7 +2117,8 @@
         "./src/dom/simplest.ts",
         "./src/glimmer/cache.ts",
         "./src/nodes/content.ts",
-        "./src/reactive/cell.ts"
+        "./src/reactive/cell.ts",
+        "./src/utils/predicates.ts"
       ],
       "./src/nodes/structure/choice.ts": [
         "./src/dom/bounds.ts",
@@ -1758,6 +2146,12 @@
         "./src/dom/simplest.ts",
         "./src/nodes/content.ts",
         "./src/reactive/cell.ts"
+      ],
+      "./src/owner.ts": [
+        "./src/dom/cursor.ts",
+        "./src/dom/simplest.ts",
+        "./src/nodes/app.ts",
+        "./src/nodes/content.ts"
       ],
       "./src/reactive/cell.ts": [
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
@@ -1788,10 +2182,17 @@
       "./app/index.ts": [
         "./app/pages/patch-example.ts"
       ],
+      "./app/pages/error.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
       "./app/pages/fallback.ts": [
+        "./app/pages/page.ts",
         "./src/index.ts"
       ],
       "./app/pages/index.ts": [
+        "./app/choice.ts",
+        "./app/pages/page.ts",
         "./src/index.ts",
         "./src/owner.ts"
       ],
@@ -1799,11 +2200,157 @@
         "./src/index.ts",
         "./src/owner.ts"
       ],
-      "./app/pages/tutorial.ts": [
+      "./app/pages/page.ts": [
         "./src/index.ts"
+      ],
+      "./app/pages/state/counter.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/state/index.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part1.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part2/new-message-input.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part2/received-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part2/received-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part2/received-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part2/sent-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part2/sent-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part2/sent-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part3/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/new-message-input.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/received-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/received-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/received-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/sent-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/sent-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/sent-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part3/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part4/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/message.ts": [
+        "./src/index.ts",
+        "./src/nodes/structure/block.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/new-message-input.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/received-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/received-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/received-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/sent-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/sent-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/sent-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part4/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5.ts": [
+        "./app/pages/page.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/subnav.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/utils.ts": [
+        "./app/choice.ts",
+        "./src/index.ts",
+        "./src/nodes/element/modifier-content.ts",
+        "./src/owner.ts"
       ],
       "./app/router/router.ts": [
         "./app/router/url-bar.ts",
+        "./src/dom/simplest.ts",
         "./src/index.ts"
       ],
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts": [
@@ -2317,7 +2864,8 @@
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/glimmer/glimmer.ts",
-        "./src/nodes/content.ts"
+        "./src/nodes/content.ts",
+        "./src/owner.ts"
       ],
       "./src/nodes/comment.ts": [
         "./src/nodes/content.ts",
@@ -2325,6 +2873,7 @@
       ],
       "./src/nodes/component.ts": [
         "./src/nodes/content.ts",
+        "./src/nodes/structure/block.ts",
         "./src/owner.ts",
         "./src/reactive/cell.ts",
         "./src/reactive/collection.ts"
@@ -2402,6 +2951,12 @@
         "./src/nodes/content.ts",
         "./src/reactive/cell.ts"
       ],
+      "./src/owner.ts": [
+        "./src/dom/cursor.ts",
+        "./src/dom/simplest.ts",
+        "./src/nodes/app.ts",
+        "./src/nodes/content.ts"
+      ],
       "./src/reactive/cell.ts": [
         "./src/glimmer/cache.ts"
       ],
@@ -2420,19 +2975,185 @@
     "semanticDiagnosticsPerFile": [
       "./app/choice.ts",
       "./app/index.ts",
+      "./app/pages/error.ts",
       "./app/pages/fallback.ts",
       "./app/pages/index.ts",
-      "./app/pages/nav.ts",
+      [
+        "./app/pages/nav.ts",
+        [
+          {
+            "file": "./app/pages/nav.ts",
+            "start": 723,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/page.ts",
       "./app/pages/patch-example.ts",
-      "./app/pages/tutorial.ts",
+      [
+        "./app/pages/state/counter.ts",
+        [
+          {
+            "file": "./app/pages/state/counter.ts",
+            "start": 454,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/state/index.ts",
+      [
+        "./app/pages/tutorial/part1.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part1.ts",
+            "start": 886,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/tutorial/part2.ts",
+      [
+        "./app/pages/tutorial/part2/new-message-input.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part2/new-message-input.ts",
+            "start": 125,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/avatar.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part2/received-message/avatar.ts",
+            "start": 131,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/tutorial/part2/received-message/index.ts",
+      [
+        "./app/pages/tutorial/part2/received-message/username.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part2/received-message/username.ts",
+            "start": 131,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/avatar.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part2/sent-message/avatar.ts",
+            "start": 131,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/tutorial/part2/sent-message/index.ts",
+      [
+        "./app/pages/tutorial/part2/sent-message/username.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part2/sent-message/username.ts",
+            "start": 131,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/tutorial/part3.ts",
+      "./app/pages/tutorial/part3/avatar.ts",
+      [
+        "./app/pages/tutorial/part3/new-message-input.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part3/new-message-input.ts",
+            "start": 125,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/tutorial/part3/received-message/avatar.ts",
+      "./app/pages/tutorial/part3/received-message/index.ts",
+      "./app/pages/tutorial/part3/received-message/username.ts",
+      "./app/pages/tutorial/part3/sent-message/avatar.ts",
+      "./app/pages/tutorial/part3/sent-message/index.ts",
+      "./app/pages/tutorial/part3/sent-message/username.ts",
+      "./app/pages/tutorial/part3/username.ts",
+      "./app/pages/tutorial/part4.ts",
+      "./app/pages/tutorial/part4/avatar.ts",
+      "./app/pages/tutorial/part4/message.ts",
+      [
+        "./app/pages/tutorial/part4/new-message-input.ts",
+        [
+          {
+            "file": "./app/pages/tutorial/part4/new-message-input.ts",
+            "start": 125,
+            "length": 5,
+            "messageText": "'owner' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ],
+      "./app/pages/tutorial/part4/received-message/avatar.ts",
+      "./app/pages/tutorial/part4/received-message/index.ts",
+      "./app/pages/tutorial/part4/received-message/username.ts",
+      "./app/pages/tutorial/part4/sent-message/avatar.ts",
+      "./app/pages/tutorial/part4/sent-message/index.ts",
+      "./app/pages/tutorial/part4/sent-message/username.ts",
+      "./app/pages/tutorial/part4/username.ts",
+      "./app/pages/tutorial/part5.ts",
+      "./app/pages/tutorial/subnav.ts",
+      "./app/pages/utils.ts",
       [
         "./app/router/router.ts",
         [
           {
             "file": "./app/router/router.ts",
-            "start": 1964,
-            "length": 4,
-            "messageText": "'#url' is declared but its value is never read.",
+            "start": 2610,
+            "length": 8,
+            "messageText": "'#details' is declared but its value is never read.",
             "category": 1,
             "code": 6133,
             "reportsUnnecessary": true
@@ -2653,6 +3374,10 @@
         1
       ],
       [
+        "./app/pages/error.ts",
+        1
+      ],
+      [
         "./app/pages/fallback.ts",
         1
       ],
@@ -2669,11 +3394,207 @@
         1
       ],
       [
+        "./app/pages/page.ts",
+        1
+      ],
+      [
         "./app/pages/patch-example.ts",
         1
       ],
       [
+        "./app/pages/state/counter.ts",
+        1
+      ],
+      [
+        "./app/pages/state/index.ts",
+        1
+      ],
+      [
         "./app/pages/tutorial.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part1.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/new-message-input.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message-avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message-username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/received-message-avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/received-message-username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/received-message.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/received-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message-avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message-username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/sent-message-avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/sent-message-username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/sent-message.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part2/sent-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/new-message-input.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/received-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/received-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/received-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/sent-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/sent-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/sent-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part3/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/message.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/new-message-input.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/received-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/received-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/received-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/sent-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/sent-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/sent-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part4/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/subnav.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/tutorial.ts",
+        1
+      ],
+      [
+        "./app/pages/utils.ts",
         1
       ],
       [

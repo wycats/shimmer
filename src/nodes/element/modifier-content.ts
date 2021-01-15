@@ -149,9 +149,10 @@ export type TemplateModifier<Type extends ModifierType, Info = unknown> =
   | StaticTemplateModifier<Type, Info>
   | DynamicTemplateModifier<Type, Info>;
 
-export type Modifier =
-  | TemplateModifier<"attribute", AttributeInfo>
-  | TemplateModifier<"effect", ElementEffectInfo<any>>;
+export type EffectModifier = TemplateModifier<"effect", ElementEffectInfo<any>>;
+export type AttributeModifier = TemplateModifier<"attribute", AttributeInfo>;
+
+export type Modifier = EffectModifier | AttributeModifier;
 
 export const Modifier = {
   is: (value: unknown): value is Modifier => {

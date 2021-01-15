@@ -2,7 +2,11 @@ export function isObject(value: unknown): value is object {
   return typeof value === "object" && value !== null;
 }
 
-export function isObjectLiteral(value: unknown): value is object {
+export type ObjectLiteral = object & {
+  __proto__: null | ObjectConstructor["prototype"];
+};
+
+export function isObjectLiteral(value: unknown): value is ObjectLiteral {
   if (isObject(value) === false) {
     return false;
   }

@@ -11,9 +11,9 @@ import { isObject } from "../utils/predicates";
 //   ? ReactiveRecord<T>
 //   : Cell<T> | Static<T> | Pure<T>;
 
-export type IntoReactive<T> = Reactive<T> | T;
+export type IntoReactive<T> = Reactive<T> | Static<T> | T;
 
-export type Reactive<T> = Cell<T> | Static<T> | Pure<T>;
+export type Reactive<T> = Cell<T> | StaticReactive<T> | Pure<T> | Static<T>;
 
 // export type DerefReactive<R extends Reactive> = R extends
 //   | Cell<infer T>
@@ -37,34 +37,41 @@ export type Reactive<T> = Cell<T> | Static<T> | Pure<T>;
 //   : ReactiveValue<T>;
 
 export const Reactive = {
-  static: <T>(value: T): Static<T> => new Static(value),
+  static: <T>(value: T): StaticReactive<T> => new StaticReactive(value),
   cell: <T>(value: T): Cell<T> => new Cell(value),
 
   is: (value: unknown): value is Reactive<unknown> => {
-    return Cell.is(value) || Static.is(value) || Pure.is(value);
+    return Cell.is(value) || StaticReactive.is(value) || Pure.is(value);
   },
 
-  isStatic: (value: Reactive<unknown>): value is Static<unknown> =>
-    value instanceof Static,
+  isStatic: (
+    value: Reactive<unknown> | Static<unknown>
+  ): value is StaticReactive<unknown> =>
+    value instanceof StaticReactive || value instanceof Static,
 
   from: intoReactive,
 };
 
-function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> {
+function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> | Static<T> {
   if (!isObject(reactive)) {
-    return new Static(reactive);
+    return new StaticReactive(reactive);
   }
 
-  if (Cell.is(reactive) || Static.is(reactive) || Pure.is(reactive)) {
+  if (
+    Cell.is(reactive) ||
+    StaticReactive.is(reactive) ||
+    Pure.is(reactive) ||
+    Static.is(reactive)
+  ) {
     return reactive;
   }
 
   return new Static(reactive);
 }
 
-export class Static<T = unknown> {
-  static is(value: unknown): value is Static {
-    return isObject(value) && value instanceof Static;
+export abstract class AbstractStatic<T = unknown> {
+  static is<T, S>(this: { new (now: T): S }, value: unknown): value is S {
+    return isObject(value) && value instanceof this;
   }
 
   readonly type = "value";
@@ -76,11 +83,23 @@ export class Static<T = unknown> {
   }
 
   get now(): T {
+    return this.#now;
+  }
+}
+
+export class Static<T = unknown> extends AbstractStatic<T> {}
+
+export class StaticReactive<T = unknown> extends AbstractStatic<T> {
+  get now(): T {
     assertDynamicContext(
       "getting the current JavaScript value of a reactive value (Static)"
     );
 
-    return this.#now;
+    return super.now;
+  }
+
+  get debug(): T {
+    return super.now;
   }
 }
 
@@ -109,6 +128,10 @@ export class Cell<T = unknown> {
 
     consumeTag(this.#tag);
     return this.#value;
+  }
+
+  get debug(): T {
+    return this.now;
   }
 
   update(callback: (oldValue: T) => T) {

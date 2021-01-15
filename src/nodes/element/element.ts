@@ -34,7 +34,7 @@ export function element(
   ...args:
     | [tag: string]
     | [tag: string, body: Content]
-    | [tag: string, modifiers: readonly Modifier[], body: Content]
+    | [tag: string, modifiers: readonly Modifier[], body?: Content]
 ): // tag: string,
 // modifiers: readonly Modifier[],
 // body: Content

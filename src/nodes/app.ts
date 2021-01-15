@@ -3,9 +3,10 @@ import { Cache, createCache } from "@glimmer/validator";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
 import type { Render } from "../glimmer/glimmer";
+import type { DocService } from "../owner";
 import { Content, StableContentResult, StableDynamicContent } from "./content";
 
-export class Doc {
+export class Doc implements DocService {
   static of(dom: SimplestDocument): Doc {
     return new Doc(dom);
   }

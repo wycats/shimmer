@@ -155,4 +155,8 @@ export class Pure<T> {
 
     return getValue(this.#cache)!;
   }
+
+  get debug(): T {
+    return getValue(this.#cache)!;
+  }
 }

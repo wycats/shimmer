@@ -1,0 +1,94 @@
+div.tutorial {
+  max-width: 800px;
+  margin: auto;
+  // padding: 2em;
+  font-family: sans-serif;
+  background-color: #fdfdfd;
+
+  h4 {
+    font-weight: bold;
+  }
+
+  .messages {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    padding: 2em;
+    border-radius: 0.5em;
+    box-shadow: 0 0.25em 1.5em 0.25em rgba(0, 0, 0, 0.1);
+  }
+
+  .messages ul > li {
+    margin-left: 1rem;
+  }
+
+  .messages > section {
+    margin-bottom: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  .messages p,
+  .messages ul,
+  .username {
+    margin: 0.5rem 0;
+  }
+
+  .local-time {
+    font-size: 0.8rem;
+    color: #da6c4d;
+    font-weight: normal;
+    margin-left: 10px;
+  }
+
+  .avatar {
+    position: relative;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+
+    text-align: center;
+    line-height: 60px;
+
+    color: white;
+    font-weight: bold;
+    background-color: #ff907b;
+  }
+
+  .avatar.is-active:after {
+    content: " ";
+    height: 14px;
+    width: 14px;
+    border: solid 3px white;
+    border-radius: 50%;
+    background-color: #8bc34a;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .current-user .avatar {
+    background-color: #30aba5;
+  }
+
+  form {
+    display: grid;
+    grid-column: span 2;
+    grid-template-columns: 1fr 6rem;
+  }
+
+  form > input {
+    padding: 0.5em;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border: 1px solid #cccccc;
+    border-right: none;
+    font-size: 1em;
+  }
+
+  form > button {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border: 1px solid #cccccc;
+    font-size: 1em;
+    text-align: center;
+  }
+}
