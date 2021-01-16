@@ -1,39 +1,26 @@
 import type { Owner } from "../owner";
-import { build, Reactive, Static } from "../reactive/cell";
-import {
-  Dict,
-  IntoReactiveObject,
-  ReactiveObject,
-  ReactiveObjectSpec,
-  ReactiveProxy,
-  ReactiveRecord,
-} from "../reactive/collection";
+import { Reactive, Static } from "../reactive/cell";
+import { Dict } from "../reactive/dict";
 import { isObjectLiteral } from "../utils/predicates";
 import { Content } from "./content";
+import type { Args } from "./dsl/utils";
 import { Block } from "./structure/block";
 
 export type ReactiveArg =
   | Reactive<any>
   | Static<any>
-  | Dict<any>
   | Content
   | Block<any>
   | undefined;
 
 export type ReactiveArgs = readonly ReactiveArg[];
 
-export type IntoReactiveRecord<T extends ReactiveObjectSpec> =
-  | ReactiveRecord<T>
-  | IntoReactiveObject<T>;
-
-export type IntoReactiveArg<Arg extends ReactiveArg> = Arg extends Reactive<
-  infer T
->
+export type IntoReactiveArg<Arg extends ReactiveArg> = Arg extends Dict<infer T>
+  ? Dict<T> | T
+  : Arg extends Reactive<infer T>
   ? Reactive<T> | Static<T> | T
   : Arg extends Static<infer T>
   ? T | Static<T>
-  : Arg extends Dict<infer O>
-  ? IntoReactiveRecord<O>
   : Arg extends Reactive<undefined>
   ? void
   : Arg extends Block<infer T>
@@ -50,22 +37,15 @@ export type IntoReactiveArgs<Args extends ReactiveArgs> = {
 
 export const ReactiveArg = {
   from: <Arg extends ReactiveArg>(arg: IntoReactiveArg<Arg>): Arg => {
-    if (ReactiveRecord.is(arg)) {
-      return ReactiveProxy(arg) as Arg;
-    } else if (
+    if (
       Content.is(arg) ||
       Block.is(arg) ||
-      Static.is(arg) ||
+      Reactive.is(arg) ||
       arg === undefined
     ) {
-      console.log("passthru", arg);
       return arg;
     } else if (isObjectLiteral(arg)) {
-      return ReactiveProxy(
-        ReactiveRecord.of(
-          (arg as unknown) as ReactiveObject<ReactiveObjectSpec>
-        )
-      ) as Arg;
+      return new Dict(arg) as Arg;
     } else {
       return new Static(arg) as Arg;
     }
@@ -78,18 +58,24 @@ export const ReactiveArgs = {
   },
 };
 
-export type Component<Args extends ReactiveArgs, O extends Owner> = (
+export type ComponentDefinition<A extends Args, O extends Owner> = (
   owner: O
-) => (...args: Args) => Content;
+) => (args: A) => Content;
 
-export function component<Args extends ReactiveArgs, O extends Owner>(
-  definition: Component<Args, O>
-): (owner: O) => (...args: IntoReactiveArgs<Args>) => Content {
-  return (owner: O) => (...args: IntoReactiveArgs<Args>): Content => {
-    return build(() => {
-      let a = ReactiveArgs.from<Args>(...args);
-      console.log("args", args, a);
-      return definition(owner)(...a);
-    });
-  };
+export function createComponent<A extends Args, O extends Owner>(
+  definition: ComponentDefinition<A, O>
+): (owner: O) => (args: A) => Content {
+  return definition;
 }
+
+// export function component<Args extends ReactiveArgs, O extends Owner>(
+//   definition: Component<Args, O>
+// ): (owner: O) => (...args: IntoReactiveArgs<Args>) => Content {
+//   return (owner: O) => (...args: IntoReactiveArgs<Args>): Content => {
+//     return build(() => {
+//       let a = ReactiveArgs.from<Args>(...args);
+//       console.log("args", args, a);
+//       return definition(owner)(...a);
+//     });
+//   };
+// }

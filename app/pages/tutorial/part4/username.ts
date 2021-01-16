@@ -2,14 +2,15 @@ import { component, Dict, Owner, Reactive, text } from "../../../../src/index";
 import { Cond, el, ToBool } from "../../utils";
 
 export default component(
-  (owner: Owner) => ({
-    name,
-    localTime,
-  }: Dict<{
-    name: Reactive<string>;
-    localTime: Reactive<string | undefined>;
-  }>) =>
-    el(
+  (owner: Owner) => (
+    args: Dict<{
+      name: Reactive<string>;
+      localTime: Reactive<string | undefined>;
+    }>
+  ) => {
+    let { name, localTime } = args.now;
+
+    return el(
       "h4",
       { class: "username" },
       text(name),
@@ -22,5 +23,6 @@ export default component(
           text(localTime as Reactive<string>)
         )
       )
-    )
+    );
+  }
 );

@@ -1,13 +1,16 @@
 import type { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
-import { build, IntoReactive, Reactive } from "../../reactive/cell";
+import { build, Reactive } from "../../reactive/cell";
 import {
   Content,
   DynamicContent,
   StableDynamicContent,
+  TemplateContent,
   UpdatableDynamicContent,
 } from "../content";
+
+console.log("CHOICE");
 
 export type Choices = {
   [P in string]: VariantInfo<P, Reactive<unknown>>;
@@ -58,24 +61,27 @@ export interface ChoiceInfo<C extends Choices = Choices> {
   match: Match<C, Content>;
 }
 
+export type ChoiceContent<C extends Choices = Choices> = TemplateContent<
+  "choice",
+  ChoiceInfo<C>
+>;
+
 interface ChoiceState<C extends Choices> {
   discriminant: keyof C;
   content: StableDynamicContent | null;
 }
 
-export function match<C extends Choices>(
-  value: IntoReactive<Choice<C>>,
+export function createMatch<C extends Choices>(
+  reactive: Reactive<Choice<C>>,
   match: Match<C, Content>
 ): Content {
   return build(() => {
-    let reactive = Reactive.from(value);
-
     if (Reactive.isStatic(reactive)) {
       let { discriminant } = reactive.now;
       return match[discriminant];
     }
 
-    let data = { value: reactive, match };
+    let data: ChoiceInfo<C> = { value: reactive, match };
     return DynamicContent.of("choice", data, new UpdatableChoice(data));
   });
 }

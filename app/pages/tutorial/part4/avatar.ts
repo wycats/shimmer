@@ -1,21 +1,24 @@
-import type { Dict, Reactive, StaticReactive } from "../../../../src/index";
+import type {
+  Dict,
+  IntoModifiers,
+  Reactive,
+  StaticReactive,
+} from "../../../../src/index";
 import { component, Owner, text } from "../../../../src/index";
-import { Classes, el, If, ModifiersSpec } from "../../utils";
+import { Classes, el, If } from "../../utils";
 
 export default component(
   (_owner: Owner) => (
-    {
-      title,
-      initial,
-      isActive,
-    }: Dict<{
+    args: Dict<{
       title: Reactive<string>;
       initial: Reactive<string>;
       isActive: Reactive<boolean>;
     }>,
-    attrs: StaticReactive<ModifiersSpec | undefined>
-  ) =>
-    el(
+    attrs: StaticReactive<IntoModifiers | undefined>
+  ) => {
+    let { title, initial, isActive } = args.now;
+
+    return el(
       "aside",
       attrs.now,
       el(
@@ -23,5 +26,6 @@ export default component(
         { class: Classes("avatar", If(isActive, "is-active", null)), title },
         text(initial)
       )
-    )
+    );
+  }
 );

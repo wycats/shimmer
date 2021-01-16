@@ -10,92 +10,118 @@ import {
   TemplateContent,
   UpdatableDynamicContent,
 } from "../content";
-import type { AttributeInfo } from "./attribute";
-import type { ElementEffectInfo } from "./element-effect";
-import type {
-  Modifier,
-  RenderedModifier,
-  TemplateModifier,
-} from "./modifier-content";
+import type { Modifier, RenderedModifier } from "./modifier-content";
 
 export interface ElementInfo {
   tag: string;
-  attributes: readonly TemplateModifier<"attribute", AttributeInfo>[];
-  effects: readonly TemplateModifier<"effect", ElementEffectInfo<any>>[];
+  modifiers: readonly Modifier[] | null;
   body: Content | null;
 }
+
+export type ElementArgs = ElementInfo;
+export type ElementContent = TemplateContent<"element", ElementInfo>;
 
 interface ElementState {
   body: StableDynamicContent | null;
   modifiers: readonly Effect<RenderedModifier>[] | null;
 }
 
-export function element(
-  ...args:
-    | [tag: string]
-    | [tag: string, body: Content]
-    | [tag: string, modifiers: readonly Modifier[], body?: Content]
-): // tag: string,
-// modifiers: readonly Modifier[],
-// body: Content
-TemplateContent<"element", ElementInfo> {
-  let tag = args[0];
-  let body: Content | null;
-  let modifiers: readonly Modifier[];
-
-  if (Content.is(args[1])) {
-    body = args[1];
-  } else if (Content.is(args[2])) {
-    body = args[2];
-  } else {
-    body = null;
-  }
-
-  if (Array.isArray(args[1])) {
-    modifiers = args[1];
-  } else {
-    modifiers = [];
-  }
-
-  if (Array.isArray(args[1])) {
-    modifiers = args[1];
-  } else if (Array.isArray(args[2])) {
-    modifiers = args[2];
-  } else {
-    modifiers = [];
-  }
-
-  let attributes = modifiers.filter(
-    (a): a is TemplateModifier<"attribute", AttributeInfo> =>
-      a.type === "attribute"
-  );
-  let effects = modifiers.filter(
-    (a): a is TemplateModifier<"effect", ElementEffectInfo> =>
-      a.type === "effect"
-  );
-
+export function createElement({
+  tag,
+  modifiers,
+  body,
+}: {
+  tag: string;
+  modifiers: readonly Modifier[] | null;
+  body: Content | null;
+}): ElementContent {
   let staticBody = body === null || body.isStatic;
+  let staticModifiers =
+    modifiers === null || modifiers.every((m) => m.isStatic);
 
-  if (
-    staticBody &&
-    attributes.every((a) => a.isStatic) &&
-    effects.every((e) => e.isStatic)
-  ) {
+  if (staticBody && staticModifiers) {
     return StaticContent.of(
       "element",
-      { tag, attributes, effects, body },
+      { tag, modifiers, body },
       (cursor, dom) => {
-        return render({ tag, attributes, effects, body }, cursor, dom).bounds;
+        return render({ tag, modifiers, body }, cursor, dom).bounds;
       }
     );
   } else {
     return DynamicContent.of(
       "element",
-      { tag, attributes, effects, body },
-      new UpdatableElement({ tag, attributes, effects, body })
+      { tag, modifiers, body },
+      new UpdatableElement({ tag, modifiers, body })
     );
   }
 }
+
+// export function element(
+//   ...args:
+//     | [tag: string]
+//     | [tag: string, body: Content]
+//     | [tag: string, modifiers: readonly Modifier[], body?: Content]
+// ): // tag: string,
+// // modifiers: readonly Modifier[],
+// // body: Content
+// TemplateContent<"element", ElementInfo> {
+//   let tag = args[0];
+//   let body: Content | null;
+//   let modifiers: readonly Modifier[];
+
+//   if (Content.is(args[1])) {
+//     body = args[1];
+//   } else if (Content.is(args[2])) {
+//     body = args[2];
+//   } else {
+//     body = null;
+//   }
+
+//   if (Array.isArray(args[1])) {
+//     modifiers = args[1];
+//   } else {
+//     modifiers = [];
+//   }
+
+//   if (Array.isArray(args[1])) {
+//     modifiers = args[1];
+//   } else if (Array.isArray(args[2])) {
+//     modifiers = args[2];
+//   } else {
+//     modifiers = [];
+//   }
+
+//   let attributes = modifiers.filter(
+//     (a): a is TemplateModifier<"attribute", AttributeInfo> =>
+//       a.type === "attribute"
+//   );
+//   let effects = modifiers.filter(
+//     (a): a is TemplateModifier<"effect", ElementEffectInfo> =>
+//       a.type === "effect"
+//   );
+
+//   let staticBody = body === null || body.isStatic;
+
+//   if (
+//     staticBody &&
+//     attributes.every((a) => a.isStatic) &&
+//     effects.every((e) => e.isStatic)
+//   ) {
+//     return StaticContent.of(
+//       "element",
+//       { tag, modifiers, body },
+//       (cursor, dom) => {
+//         return render({ tag, modifiers, body }, cursor, dom).bounds;
+//       }
+//     );
+//   } else {
+//     return DynamicContent.of(
+//       "element",
+//       { tag, modifiers, body },
+//       new UpdatableElement({ tag, modifiers, body })
+//     );
+//   }
+// }
 
 class UpdatableElement extends UpdatableDynamicContent<ElementState> {
   #data: ElementInfo;
@@ -132,13 +158,11 @@ class UpdatableElement extends UpdatableDynamicContent<ElementState> {
 function render(
   {
     tag,
-    attributes,
-    effects,
+    modifiers,
     body,
   }: {
     tag: string;
-    attributes: readonly TemplateModifier<"attribute", AttributeInfo>[];
-    effects: readonly TemplateModifier<"effect", ElementEffectInfo>[];
+    modifiers: readonly Modifier[] | null;
     body: Content | null;
   },
   cursor: Cursor,
@@ -154,19 +178,13 @@ function render(
 
   let dynamicModifiers: Effect<RenderedModifier>[] = [];
 
-  for (let attribute of attributes) {
-    let attr = attribute.render(element, dom);
+  if (modifiers) {
+    for (let modifier of modifiers) {
+      let rendered = modifier.render(element, dom);
 
-    if (Effect.is(attr)) {
-      dynamicModifiers.push(attr);
-    }
-  }
-
-  for (let effect of effects) {
-    let result = effect.render(element, dom);
-
-    if (Effect.is(result)) {
-      dynamicModifiers.push(result);
+      if (Effect.is(rendered)) {
+        dynamicModifiers.push(rendered);
+      }
     }
   }
 

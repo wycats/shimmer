@@ -5,6 +5,8 @@ import { assertDynamicContext } from "../reactive/cell";
 import { Maybe } from "../utils/option";
 import { isObject } from "../utils/predicates";
 
+console.log("CACHE");
+
 export interface EffectOptions<T> {
   initialize: () => T;
   update: (last: T) => T;

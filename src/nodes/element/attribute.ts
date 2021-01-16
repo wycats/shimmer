@@ -1,4 +1,4 @@
-import { IntoReactive, Reactive } from "../../reactive/cell";
+import { Reactive } from "../../reactive/cell";
 import {
   DynamicModifier,
   StaticModifier,
@@ -11,41 +11,33 @@ export interface AttributeInfo {
   value: Reactive<string | null>;
 }
 
-export function attr(
+export type AttributeModifier = TemplateModifier<"attribute", AttributeInfo>;
+
+export function createAttr(
   name: string,
-  value: IntoReactive<string | null>
-): TemplateModifier<"attribute", AttributeInfo> {
-  let reactive = Reactive.from(value);
-
-  if (Reactive.isStatic(reactive)) {
-    return StaticModifier.of(
-      "attribute",
-      { name, value: reactive },
-      (cursor) => {
-        if (reactive.now !== null) {
-          cursor.setAttributeNS(null, name, reactive.now);
-        }
-
-        return cursor;
+  value: Reactive<string | null>
+): AttributeModifier {
+  if (Reactive.isStatic(value)) {
+    return StaticModifier.of("attribute", { name, value }, (cursor) => {
+      if (value.now !== null) {
+        cursor.setAttributeNS(null, name, value.now);
       }
-    );
+
+      return cursor;
+    });
   } else {
-    return DynamicModifier.of(
-      "attribute",
-      { name, value: reactive },
-      (cursor) => {
-        if (reactive.now !== null) {
-          cursor.setAttributeNS(null, name, reactive.now);
-        }
-
-        return UpdatableModifier.of(cursor, () => {
-          if (reactive.now === null) {
-            cursor.removeAttributeNS(null, name);
-          } else {
-            cursor.setAttributeNS(null, name, reactive.now);
-          }
-        });
+    return DynamicModifier.of("attribute", { name, value }, (cursor) => {
+      if (value.now !== null) {
+        cursor.setAttributeNS(null, name, value.now);
       }
-    );
+
+      return UpdatableModifier.of(cursor, () => {
+        if (value.now === null) {
+          cursor.removeAttributeNS(null, name);
+        } else {
+          cursor.setAttributeNS(null, name, value.now);
+        }
+      });
+    });
   }
 }

@@ -1,5 +1,5 @@
-import { assert } from "../../src/assertions";
 import {
+  assert,
   diffArray,
   enumerate,
   keyedArray,

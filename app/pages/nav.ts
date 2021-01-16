@@ -38,7 +38,7 @@ export function inFallback(router: RouterService): boolean {
 
 export const SimpleLink = component((owner: Owner) => {
   return (args: Dict<{ href: Reactive<string> }>, body: Reactive<string>) => {
-    let { href } = args;
+    let { href } = args.now;
 
     return el("a", { href }, text(body));
   };
@@ -46,7 +46,7 @@ export const SimpleLink = component((owner: Owner) => {
 
 export const Link = component((owner: Owner) => {
   return (args: Dict<{ href: Reactive<string> }>, body: Reactive<string>) => {
-    let { href } = args;
+    let { href } = args.now;
 
     let active = isActive(href, owner);
 
@@ -60,10 +60,10 @@ export const Nav = component((owner: Owner) => () => {
   return element(
     "nav",
     fragment(
-      Link(owner)({ href: "#tutorial" }, "Tutorial"),
-      Link(owner)({ href: "#index" }, "Counts"),
-      Link(owner)({ href: "#state" }, "State"),
-      Link(owner)({ href: "#fallback" }, "Fallback")
+      Link(owner)({ href: Reactive.static("#tutorial") }, "Tutorial"),
+      Link(owner)({ href: Reactive.static("#index") }, "Counts"),
+      Link(owner)({ href: Reactive.static("#state") }, "State"),
+      Link(owner)({ href: Reactive.static("#fallback") }, "Fallback")
     )
   );
 });

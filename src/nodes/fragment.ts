@@ -3,7 +3,7 @@ import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
 import { build, Reactive } from "../reactive/cell";
 import { OptionalArray, PresentArray } from "../utils/type";
-import { comment } from "./comment";
+import { createComment } from "./comment";
 import {
   Content,
   DynamicContent,
@@ -18,13 +18,15 @@ export interface FragmentInfo {
   readonly children: PresentArray<Content>;
 }
 
+export type FragmentContent = TemplateContent<"fragment", FragmentInfo>;
+
 export interface FragmentState {
   dynamic: readonly StableDynamicContent[];
   nodes: PresentArray<StableContentResult>;
   bounds: Bounds;
 }
 
-export function fragment(...content: readonly Content[]): Content {
+export function createFragment(content: readonly Content[]): Content {
   const list = OptionalArray.of(content);
 
   if (list.isPresent()) {
@@ -51,7 +53,7 @@ export function fragment(...content: readonly Content[]): Content {
     });
   } else {
     return build(() => {
-      return comment(Reactive.static(""));
+      return createComment(Reactive.static(""));
     });
   }
 }

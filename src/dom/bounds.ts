@@ -1,5 +1,5 @@
 import { userError } from "../assertions";
-import type { StableDynamicContent } from "../nodes/public";
+import type { StableDynamicContent } from "../nodes/content";
 import { isObject } from "../utils/predicates";
 import { Cursor } from "./cursor";
 import type { SimplestNode, SimplestParentNode } from "./simplest";

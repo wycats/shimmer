@@ -1,15 +1,11 @@
+import type { CommentContent } from "../nodes/comment";
+import type { Content, ContentType, TemplateContent } from "../nodes/content";
 import type { ElementInfo } from "../nodes/element/element";
-import type { FragmentInfo } from "../nodes/fragment";
-import type {
-  ChoiceInfo,
-  CommentInfo,
-  Content,
-  ContentType,
-  TemplateContent,
-  TextInfo,
-} from "../nodes/public";
+import type { FragmentContent } from "../nodes/fragment";
 import type { BlockInfo } from "../nodes/structure/block";
+import type { ChoiceContent } from "../nodes/structure/choice";
 import type { EachInfo } from "../nodes/structure/each";
+import type { TextContent } from "../nodes/text";
 
 export function tree(content: Content): DebugContentNode {
   return new TreeBuilder().content(content);
@@ -85,7 +81,7 @@ class TreeBuilder {
     }
   }
 
-  text(content: TemplateContent<"text", TextInfo>): TextNode {
+  text(content: TextContent): TextNode {
     return {
       type: "text",
       static: content.isStatic,
@@ -93,7 +89,7 @@ class TreeBuilder {
     };
   }
 
-  comment(content: TemplateContent<"comment", CommentInfo>): CommentNode {
+  comment(content: CommentContent): CommentNode {
     return {
       type: "comment",
       static: content.isStatic,
@@ -101,7 +97,7 @@ class TreeBuilder {
     };
   }
 
-  fragment(content: TemplateContent<"fragment", FragmentInfo>): FragmentNode {
+  fragment(content: FragmentContent): FragmentNode {
     return {
       type: "fragment",
       static: content.isStatic,
@@ -113,7 +109,7 @@ class TreeBuilder {
     return { type: "each", static: content.isStatic };
   }
 
-  choice(content: TemplateContent<"choice", ChoiceInfo>): ChoiceNode {
+  choice(content: ChoiceContent): ChoiceNode {
     let matches: Record<string, DebugContentNode> = {};
 
     for (let [key, value] of Object.entries(content.info.match)) {

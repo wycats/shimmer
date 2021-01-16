@@ -2,7 +2,6 @@ import type { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
-import { IntoReactive, Reactive } from "../../reactive/cell";
 import { isObject } from "../../utils/predicates";
 import {
   Content,
@@ -12,10 +11,11 @@ import {
   StaticTemplateContent,
   UpdatableDynamicContent,
 } from "../content";
+import type { Args } from "../dsl/utils";
 
-export interface BlockInfo<T = any> {
-  arg: Reactive<T>;
-  callback: (arg: Reactive<T>) => Content;
+export interface BlockInfo<A extends Args = any> {
+  args: A;
+  callback: BlockFunction<A>;
   content: Content;
 }
 
@@ -23,43 +23,30 @@ interface BlockState {
   content: StableContentResult;
 }
 
-export type BlockFunction<T> = (arg: IntoReactive<T>) => Content;
+export type BlockFunction<A extends Args> = (args: A) => Content;
 
-export function block<T>(callback: () => Content): Block<void>;
-
-export function block<T>(callback: (arg: Reactive<T>) => Content): Block<T>;
-export function block<T>(callback: (arg: Reactive<T>) => Content): Block<T> {
-  let b = new Block(callback);
-  return new Block((arg: IntoReactive<T>) => b.invoke(Reactive.from(arg)));
+export function createBlock<A extends Args>(
+  callback: BlockFunction<A>
+): Block<A> {
+  return new Block(callback);
 }
 
-// export class Block<T> {
-//   #function: BlockFunction<T>;
-
-//   constructor(func: BlockFunction<T>) {
-//     this.#function = func;
-//   }
-
-//   invoke(arg: Reactive<T>): Content {}
-// }
-
-export class Block<T> {
-  static is(value: unknown): value is Block<unknown> {
+export class Block<A extends Args> {
+  static is(value: unknown): value is Block<Args> {
     return isObject(value) && value instanceof Block;
   }
 
-  #callback: (arg: Reactive<T>) => Content;
+  #callback: (args: A) => Content;
 
-  constructor(callback: (arg: Reactive<T>) => Content) {
+  constructor(callback: BlockFunction<A>) {
     this.#callback = callback;
   }
 
-  invoke(arg: Reactive<T>): Content {
-    let reactive = Reactive.from(arg);
-    let content = this.#callback(reactive);
+  invoke(args: A): Content {
+    let content = this.#callback(args);
 
     let info = {
-      arg: reactive,
+      args,
       callback: this.#callback,
       content,
     };
@@ -68,7 +55,7 @@ export class Block<T> {
       return StaticContent.of(
         "block",
         {
-          arg: reactive,
+          args,
           callback: this.#callback,
           content,
         },

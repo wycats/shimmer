@@ -1,4 +1,4 @@
-import { assert } from "../../src/assertions";
+import { assert } from "../../src/index";
 
 export interface UrlDetails {
   path: string;

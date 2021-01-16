@@ -1,32 +1,29 @@
 import { StaticBounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
-import { build, IntoReactive, Reactive } from "../reactive/cell";
+import { build, Reactive } from "../reactive/cell";
 import { DynamicContent, StaticContent, TemplateContent } from "./content";
 
 export type CommentInfo = Reactive<string>;
+export type CommentContent = TemplateContent<"comment", CommentInfo>;
 
-export function comment(
-  value: IntoReactive<string>
-): TemplateContent<"comment", CommentInfo> {
+export function createComment(string: Reactive<string>): CommentContent {
   return build(() => {
-    let reactive = Reactive.from(value);
-
-    if (Reactive.isStatic(reactive)) {
-      return StaticContent.of("comment", reactive, (cursor, dom) => {
-        let text = initialize(reactive, cursor, dom);
+    if (Reactive.isStatic(string)) {
+      return StaticContent.of("comment", string, (cursor, dom) => {
+        let text = initialize(string, cursor, dom);
 
         return StaticBounds.single(text);
       });
     } else {
-      return DynamicContent.of("comment", reactive, {
+      return DynamicContent.of("comment", string, {
         isValid: () => true,
         shouldClear: true,
         poll: (text: SimplestCharacterData) => {
-          text.data = reactive.now;
+          text.data = string.now;
         },
         render: (cursor, dom) => {
-          let text = initialize(reactive, cursor, dom);
+          let text = initialize(string, cursor, dom);
           let bounds = StaticBounds.single(text);
           return { bounds, state: text };
         },

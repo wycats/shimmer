@@ -2,6 +2,7 @@ import {
   Cell,
   component,
   Dict,
+  EFFECTS,
   fragment,
   Owner,
   Pure,
@@ -9,7 +10,7 @@ import {
   Static,
   text,
 } from "../../../src/index";
-import { EFFECTS, el, on } from "../utils";
+import { el, on } from "../utils";
 
 export default component((owner: Owner) => () => {
   const multiple = Cell.of(1);
@@ -17,21 +18,22 @@ export default component((owner: Owner) => () => {
   return fragment(
     Counter(owner)({
       multiple,
-      updateMultiple: (callback: (prev: number) => number) =>
-        multiple.update(callback),
+      updateMultiple: new Static((callback: (prev: number) => number) =>
+        multiple.update(callback)
+      ),
     })
   );
 });
 
 const Counter = component(
-  (owner: Owner) => ({
-    updateMultiple: { now: updateMultiple },
-    multiple,
-  }: Dict<{
-    multiple: Reactive<number>;
-    updateMultiple: Static<(callback: (prev: number) => number) => void>;
-  }>) => {
+  (owner: Owner) => (
+    args: Dict<{
+      multiple: Reactive<number>;
+      updateMultiple: Static<(callback: (prev: number) => number) => void>;
+    }>
+  ) => {
     let count = Cell.of(0);
+    let { multiple, updateMultiple } = args.now;
     // let multiple = Cell.of(1);
 
     const change = (amount: number) => () =>
@@ -58,7 +60,9 @@ const Counter = component(
         "button",
         {
           type: "button",
-          [EFFECTS]: [on("click", () => updateMultiple((prev) => prev * 2))],
+          [EFFECTS]: [
+            on("click", () => updateMultiple.now((prev) => prev * 2)),
+          ],
         },
         text("Double It")
       )

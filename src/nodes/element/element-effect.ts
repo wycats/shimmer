@@ -1,27 +1,26 @@
 import type { SimplestElement } from "../../dom/simplest";
-import { IntoReactiveArgs, ReactiveArgs } from "../component";
+import type { Args } from "../dsl/utils";
 import {
   DynamicModifier,
   TemplateModifier,
   UpdatableModifier,
 } from "./modifier-content";
 
-export interface ElementEffectInfo<Args extends ReactiveArgs = ReactiveArgs> {
-  callback: (element: SimplestElement, ...args: Args) => void;
+export interface ElementEffectInfo<A extends Args = Args> {
+  callback: (element: SimplestElement, args: A) => void;
 }
 
-export function effect<Args extends ReactiveArgs>(
-  callback: (element: SimplestElement, ...args: Args) => void
-): (
-  ...args: IntoReactiveArgs<Args>
-) => TemplateModifier<"effect", ElementEffectInfo<Args>> {
-  return (
-    ...args: IntoReactiveArgs<Args>
-  ): TemplateModifier<"effect", ElementEffectInfo<Args>> => {
-    let a = ReactiveArgs.from<Args>(...args);
+export type EffectModifier<A extends Args = Args> = TemplateModifier<
+  "effect",
+  ElementEffectInfo<A>
+>;
 
+export function createEffect<A extends Args>(
+  callback: (element: SimplestElement, args: A) => void
+): (args: A) => TemplateModifier<"effect", ElementEffectInfo<A>> {
+  return (args: A): TemplateModifier<"effect", ElementEffectInfo<A>> => {
     return DynamicModifier.of("effect", { callback }, (cursor) => {
-      callback(cursor, ...a);
+      callback(cursor, args);
 
       return UpdatableModifier.of(cursor, () => {
         // todo: do something

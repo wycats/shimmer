@@ -1,47 +1,25 @@
 import { consumeTag, createTag, dirtyTag } from "@glimmer/validator";
 import { Pure } from "../glimmer/cache";
 import { isObject } from "../utils/predicates";
-
-// export interface ReactiveNode<T> {
-//   type: "value" | "record";
-//   get?<K extends keyof T>(this: ReactiveNode<object>, key: K): Reactive<T[K]>;
-// }
-
-// export type Reactive<T> = T extends SuppliedRecord
-//   ? ReactiveRecord<T>
-//   : Cell<T> | Static<T> | Pure<T>;
+import { Dict } from "./dict";
 
 export type IntoReactive<T> = Reactive<T> | Static<T> | T;
 
-export type Reactive<T> = Cell<T> | StaticReactive<T> | Pure<T> | Static<T>;
+export type Reactive<T> = Cell<T> | StaticReactive<T> | Pure<T> | Dict<T>;
 
-// export type DerefReactive<R extends Reactive> = R extends
-//   | Cell<infer T>
-//   | Static<infer T>
-//   | Pure<infer T>
-//   ? T
-//   : R;
-
-// export type ReactiveValue<T> = Cell<T> | Static<T> | Pure<T>;
-
-// export type IntoReactive<T> = T extends ReactiveRecord<infer U>
-//   ? U | ReactiveRecord<U>
-//   : T | ReactiveValue<T>;
-
-// export type ConvertIntoReactive<T> = T extends ReactiveValue<infer I>
-//   ? ReactiveValue<I>
-//   : T extends RecordType
-//   ? ReactiveRecord<T>
-//   : T extends object
-//   ? never
-//   : ReactiveValue<T>;
+console.log("CELL");
 
 export const Reactive = {
   static: <T>(value: T): StaticReactive<T> => new StaticReactive(value),
   cell: <T>(value: T): Cell<T> => new Cell(value),
 
   is: (value: unknown): value is Reactive<unknown> => {
-    return Cell.is(value) || StaticReactive.is(value) || Pure.is(value);
+    return (
+      Cell.is(value) ||
+      StaticReactive.is(value) ||
+      Pure.is(value) ||
+      Dict.is(value)
+    );
   },
 
   isStatic: (
@@ -52,21 +30,25 @@ export const Reactive = {
   from: intoReactive,
 };
 
-function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> | Static<T> {
+function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> {
   if (!isObject(reactive)) {
     return new StaticReactive(reactive);
+  }
+
+  if (Static.is(reactive)) {
+    return Reactive.static(reactive.now);
   }
 
   if (
     Cell.is(reactive) ||
     StaticReactive.is(reactive) ||
     Pure.is(reactive) ||
-    Static.is(reactive)
+    Dict.is(reactive)
   ) {
     return reactive;
   }
 
-  return new Static(reactive);
+  return Reactive.static(reactive);
 }
 
 export abstract class AbstractStatic<T = unknown> {

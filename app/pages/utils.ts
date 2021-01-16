@@ -6,22 +6,21 @@ import {
   Content,
   dom,
   effect,
+  EFFECTS,
   element,
   fragment,
   IntoReactive,
   match,
   Pure,
   Reactive,
+  VariantInfo,
+  Variants,
 } from "../../src/index";
 import type {
   AttributeModifier,
   EffectModifier,
   Modifier,
 } from "../../src/nodes/element/modifier-content";
-import { Bool } from "../choice";
-
-export const EFFECTS = Symbol("MODIFIERS");
-export type EFFECTS = typeof EFFECTS;
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
 
@@ -29,16 +28,18 @@ export type ModifiersSpec = Attributes & {
   readonly [EFFECTS]?: readonly EffectModifier[];
 };
 
-export function el(
-  tag: string,
-  ...rest:
-    | [attrs: ModifiersSpec | undefined, ...body: Content[]]
-    | [...body: Content[]]
-): Content {
-  let { modifiers, body } = normalizeEl(rest);
+export const el = element;
 
-  return element(tag, flatModifiers(modifiers), body);
-}
+// export function el(
+//   tag: string,
+//   ...rest:
+//     | [attrs: ModifiersSpec | undefined, ...body: Content[]]
+//     | [...body: Content[]]
+// ): Content {
+//   let { modifiers, body } = normalizeEl(rest);
+
+//   return element(tag, flatModifiers(modifiers), body);
+// }
 
 // function recordToAttrs(record: ModifiersSpec): Modifier[] {
 //   let modifiers: Modifier[] = [];
@@ -116,7 +117,7 @@ function normalizeModifiers(
 
 export const ToBool = (value: Reactive<unknown>): Reactive<Choice<Bool>> =>
   Pure.of(() => {
-    if (!!value.now) {
+    if (value.now) {
       return Bool.of("true", Reactive.static(true));
     } else {
       return Bool.of("false", Reactive.static(false));
@@ -136,11 +137,21 @@ export const If = <T, U>(
 };
 
 export const Cond = component(
-  () => (bool: Reactive<Choice<Bool>>, ifTrue: Content, ifFalse?: Content) => {
-    return match(bool, {
+  () => (
+    bool: Reactive<Choice<Bool>>,
+    ifTrue: Content,
+    ifFalse?: Content
+  ): Content => {
+    let res = match(bool, {
       true: ifTrue,
       false: ifFalse || comment(""),
     });
+
+    // if (res === undefined) {
+    //   debugger;
+    // }
+
+    return res;
   }
 );
 
@@ -177,3 +188,12 @@ export const on = effect(
     (element as Element).addEventListener(eventName.now, callback.now);
   }
 );
+
+export type Bool = {
+  true: VariantInfo<"true", Reactive<true>>;
+  false: VariantInfo<"false", Reactive<false>>;
+};
+
+console.log("BOOL");
+
+export const Bool = Variants.define<Bool>();

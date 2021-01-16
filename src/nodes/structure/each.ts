@@ -4,7 +4,7 @@ import { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
 import { Pure } from "../../glimmer/cache";
-import { Cell, IntoReactive, Reactive } from "../../reactive/cell";
+import { Cell, Reactive } from "../../reactive/cell";
 import { OptionalArray } from "../../utils/type";
 import {
   Content,
@@ -13,12 +13,10 @@ import {
   StableDynamicContent,
   UpdatableDynamicContent,
 } from "../content";
-import { fragment } from "../fragment";
+import { createFragment } from "../fragment";
 import type { BlockFunction } from "./block";
 
-export type ReactiveIterable<T> = Iterable<IntoReactive<T>>;
-
-export type IntoReactiveIterable<T> = IntoReactive<ReactiveIterable<T>>;
+export type ReactiveIterable<T> = Reactive<Iterable<Reactive<T>>>;
 
 export type EachInfo<T = any> = StableEachState<T>;
 
@@ -26,12 +24,12 @@ export interface EachState<T> {
   last: LastEach<T>;
 }
 
-export function each<T>(
-  value: IntoReactive<Iterable<IntoReactive<T>>>,
+export function createEach<T>(
+  reactive: Reactive<Iterable<Reactive<T>>>,
   key: (arg: T) => unknown,
-  block: BlockFunction<T>
+  block: BlockFunction<[Reactive<T>]>
 ): Content {
-  let reactive = Reactive.from(value);
+  // let reactive = Reactive.from(value);
 
   return initialize({ reactive, key, block });
 }
@@ -57,9 +55,9 @@ function initialize<T>({
   key: keyOf,
   block,
 }: {
-  reactive: Reactive<ReactiveIterable<T>>;
+  reactive: Reactive<Iterable<Reactive<T>>>;
   key: (arg: T) => unknown;
-  block: BlockFunction<T>;
+  block: BlockFunction<[Reactive<T>]>;
 }): Content {
   let iterableIsStatic = Reactive.isStatic(reactive);
 
@@ -72,10 +70,10 @@ function initialize<T>({
     let content: Content[] = [];
 
     for (let item of iterable) {
-      content.push(block(Reactive.from(item)));
+      content.push(block([item]));
     }
 
-    return fragment(...content);
+    return createFragment(content);
   } else {
     let info = {
       reactive,
@@ -125,7 +123,7 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
 
   #initialize = (
     artifacts: RenderArtifacts,
-    iterable: ReactiveIterable<T>,
+    iterable: Iterable<Reactive<T>>,
     cursor: Cursor,
     dom: SimplestDocument
   ) => {
@@ -150,7 +148,7 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
 
   #renderAll = (
     artifacts: RenderArtifacts,
-    iterable: ReactiveIterable<T>,
+    iterable: Iterable<Reactive<T>>,
     cursor: Cursor,
     dom: SimplestDocument
   ) => {
@@ -163,16 +161,11 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
     return render.patch(cursor, dom);
   };
 
-  #render = (
-    render: RenderEach,
-    item: IntoReactive<T>,
-    dom: SimplestDocument
-  ) => {
-    let reactive = Reactive.from(item);
+  #render = (render: RenderEach, item: Reactive<T>, dom: SimplestDocument) => {
     let state = new StableEach(this.#data, dom);
-    let key = state.keyOf(reactive.now);
+    let key = state.keyOf(item.now);
 
-    let stableCell = state.upsertEntry(key, reactive);
+    let stableCell = state.upsertEntry(key, item);
 
     render.add(key, () => state.render(stableCell.stable));
   };
@@ -191,7 +184,7 @@ class StableEach<T> {
     return this.#dom;
   }
 
-  get iterable(): ReactiveIterable<T> {
+  get iterable(): Iterable<Reactive<T>> {
     return this.#options.reactive.now;
   }
 
@@ -217,7 +210,7 @@ class StableEach<T> {
   }
 
   render(reactive: Reactive<T>): Content {
-    return this.#options.block(reactive);
+    return this.#options.block([reactive]);
   }
 
   upsert(reactive: Reactive<T>): StableEntry<T> {
@@ -230,15 +223,15 @@ class StableEach<T> {
 class LastEach<T> {
   constructor(
     readonly bounds: Bounds,
-    readonly iterable: ReactiveIterable<T>,
+    readonly iterable: Iterable<Reactive<T>>,
     readonly artifacts: RenderArtifacts
   ) {}
 }
 
 interface StableEachState<T> {
-  reactive: Reactive<ReactiveIterable<T>>;
+  reactive: ReactiveIterable<T>;
   key: (value: T) => unknown;
-  block: BlockFunction<T>;
+  block: BlockFunction<[Reactive<T>]>;
   stableMap: StableMap<T>;
 }
 

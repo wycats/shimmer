@@ -1,12 +1,12 @@
 import { registerDestructor } from "@glimmer/destroyable";
 import {
   App,
-  attr,
   Cell,
   Choice,
   component,
   Dict,
   each,
+  EFFECTS,
   element,
   fragment,
   IntoReactive,
@@ -17,10 +17,9 @@ import {
   text,
   tree,
 } from "../../src/index";
-import { Bool } from "../choice";
 import { Nav } from "./nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
-import { on } from "./utils";
+import { Bool, on } from "./utils";
 
 interface CountValue {
   id: number;
@@ -47,8 +46,8 @@ interface CountValue {
  */
 
 export const Contact = component(
-  () => (person: Dict<{ name: { first: Reactive<string> } }>) => {
-    return text(Pure.of(() => person.name.first.now));
+  () => (person: Dict<{ name: Dict<{ first: Reactive<string> }> }>) => {
+    return text(Pure.of(() => person.now.name.now.first.now));
   }
 );
 
@@ -58,30 +57,27 @@ export const Count = component(
 
     return fragment(
       Contact(owner)({
-        name: {
+        name: Dict.of({
           first: Pure.of(() => String(secondary.now)),
-        },
+        }),
       }),
       text(" "),
       element(
         "p",
-        [
-          attr(
-            "class",
-            Pure.of(() => `count-${counter.now.value}`)
-          ),
-        ],
+        { class: Pure.of(() => `count-${counter.now.value}`) },
         fragment(
           element(
             "button",
-            [on("click", () => secondary.update(rand))],
+            {
+              [EFFECTS]: [on("click", () => secondary.update(rand))],
+            },
             text("randomize")
           ),
           text(Pure.of(() => String(counter.now.value))),
           text("::"),
           element(
             "span",
-            [attr("class", "count")],
+            { class: "count" },
             text(Pure.of(() => String(secondary.now)))
           )
         )
