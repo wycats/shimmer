@@ -1,7 +1,7 @@
-import { Cache, getValue } from "@glimmer/validator";
+import { getValue, TrackedCache } from "./cache";
 
 export interface Render {
-  readonly render: Cache<void> | null;
+  readonly render: TrackedCache<void> | null;
 }
 
 class Glimmer {

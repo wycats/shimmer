@@ -1,12 +1,34 @@
 import { registerDestructor } from "@glimmer/destroyable";
-import { Cache, createCache, getValue } from "@glimmer/validator";
-import { unwrap } from "../assertions";
+import {
+  Cache as RawCache,
+  createCache as rawCreateCache,
+  getValue as rawGetValue,
+  isConst as rawIsConst,
+} from "@glimmer/validator";
+import { isPure, IS_PURE } from "../brands";
 import type { RenderedContent } from "../nodes/content";
 import { assertDynamicContext } from "../reactive/cell";
 import { Maybe } from "../utils/option";
 import { isObject } from "../utils/predicates";
 
-console.log("CACHE");
+declare const CACHE_KEY: unique symbol;
+export interface TrackedCache<T = unknown> {
+  [CACHE_KEY]: T;
+}
+export function createCache<T>(
+  fn: () => T,
+  debuggingLabel?: string | false
+): TrackedCache<T> {
+  return (rawCreateCache(fn, debuggingLabel) as unknown) as TrackedCache<T>;
+}
+
+export function getValue<T>(cache: TrackedCache<T>): T {
+  return rawGetValue((cache as unknown) as RawCache<T>) as T;
+}
+
+export function isConst(cache: Cache): boolean {
+  return rawIsConst((cache as unknown) as RawCache);
+}
 
 export interface EffectOptions<T> {
   initialize: () => T;
@@ -23,7 +45,10 @@ export class Effect<T> {
     initialize,
     update,
     destructor,
-  }: EffectOptions<T>): { cache: Cache<T>; destructor?: (last: T) => void } {
+  }: EffectOptions<T>): {
+    cache: TrackedCache<T>;
+    destructor?: (last: T) => void;
+  } {
     let last: Maybe<T> = Maybe.none();
 
     let cache = createCache(() => {
@@ -70,14 +95,14 @@ export class Effect<T> {
       });
     });
 
-    return new Effect(cache, destructor, unwrap(getValue(cache)));
+    return new Effect(cache, destructor, getValue(cache));
   }
 
   #last: T;
-  #cache: Cache<T>;
+  #cache: TrackedCache<T>;
 
   constructor(
-    cache: Cache<T>,
+    cache: TrackedCache<T>,
     destructor: ((last: T) => void) | undefined,
     last: T
   ) {
@@ -97,7 +122,7 @@ export class Effect<T> {
   }
 
   poll(): T {
-    return unwrap(getValue(this.#cache));
+    return getValue(this.#cache);
   }
 }
 
@@ -109,17 +134,13 @@ export class DynamicRenderedContent extends Effect<RenderedContent> {
   }): DynamicRenderedContent {
     let { cache, destructor } = Effect.cache(options);
 
-    return new DynamicRenderedContent(
-      cache,
-      destructor,
-      unwrap(getValue(cache))
-    );
+    return new DynamicRenderedContent(cache, destructor, getValue(cache));
   }
 }
 
 export class Pure<T> {
   static is(value: unknown): value is Pure<unknown> {
-    return isObject(value) && value instanceof Pure;
+    return isPure(value);
   }
 
   static of<T>(
@@ -148,10 +169,11 @@ export class Pure<T> {
   }
 
   readonly type = "value";
+  readonly [IS_PURE] = true;
 
-  #cache: Cache<T>;
+  #cache: TrackedCache<T>;
 
-  constructor(cache: Cache<T>) {
+  constructor(cache: TrackedCache<T>) {
     this.#cache = cache;
   }
 
@@ -160,10 +182,10 @@ export class Pure<T> {
       "getting the current JavaScript value of a reactive value (Derived)"
     );
 
-    return unwrap(getValue(this.#cache));
+    return getValue(this.#cache);
   }
 
   get debug(): T {
-    return unwrap(getValue(this.#cache));
+    return getValue(this.#cache);
   }
 }

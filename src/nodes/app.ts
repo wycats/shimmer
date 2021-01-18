@@ -1,7 +1,7 @@
 import { registerDestructor } from "@glimmer/destroyable";
-import { Cache, createCache } from "@glimmer/validator";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestDocument } from "../dom/simplest";
+import { createCache, TrackedCache } from "../glimmer/cache";
 import type { Render } from "../glimmer/glimmer";
 import type { DocService } from "../owner";
 import { Content, StableContentResult, StableDynamicContent } from "./content";
@@ -19,7 +19,7 @@ export class Doc implements DocService {
 }
 
 export class App implements Render {
-  readonly render: Cache<void> | null;
+  readonly render: TrackedCache<void> | null;
 
   #content: StableContentResult | null;
 

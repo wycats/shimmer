@@ -34,7 +34,6 @@ const Counter = component(
   ) => {
     let count = Cell.of(0);
     let { multiple, updateMultiple } = args.now;
-    // let multiple = Cell.of(1);
 
     const change = (amount: number) => () =>
       count.update((prev) => prev + amount);
