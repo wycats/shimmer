@@ -4,14 +4,14 @@ import {
   Cell,
   Choice,
   component,
-  ComponentData,
   each,
   EFFECTS,
   element,
   fragment,
   IntoReactive,
+  Invoke,
   match,
-  Owner,
+  PresentComponentDefinition,
   Pure,
   Reactive,
   text,
@@ -51,29 +51,28 @@ interface Person {
   };
 }
 
-interface ContactData extends ComponentData {
+interface ContactData extends PresentComponentDefinition {
   args: {
     person: Reactive<Person>;
   };
 }
 
-export const Contact = component<Owner, ContactData>(
-  (_owner: Owner) => ({ args: { person } }: ContactData) => {
-    return text(Pure.of(() => person.now.name.first.now));
-  }
-);
+export const Contact = component(({ args: { person } }: ContactData) => {
+  return text(Pure.of(() => person.now.name.first.now));
+});
 
 export const Count = component(
-  (owner: Owner) => ({
+  ({
+    $,
     args: { counter },
   }: {
+    $: Invoke;
     args: { counter: Reactive<CountValue> };
-    blocks: {};
   }) => {
     let secondary = Cell.of(rand());
 
     return fragment(
-      Contact(owner)({
+      $(Contact, {
         args: {
           person: {
             name: {
@@ -114,28 +113,25 @@ function rand() {
 type ReactiveCounts = Reactive<Iterable<IntoReactive<CountValue>>>;
 
 const Texts = component(
-  (owner: Owner) => ({
+  ({
+    $,
     args: { counts },
   }: {
+    $: Invoke;
     args: { counts: ReactiveCounts };
   }) => {
     return each<CountValue>(
       counts,
       (i) => String(i.id),
       (counter) => {
-        return Count(owner)({ args: { counter }, blocks: {} });
+        return $(Count, { args: { counter } });
       }
     );
   }
 );
 
 const Cond = component(
-  () => ({
-    args: { bool },
-  }: {
-    args: { bool: Reactive<Choice<Bool>> };
-    blocks: {};
-  }) => {
+  ({ args: { bool } }: { args: { bool: Reactive<Choice<Bool>> } }) => {
     return match(bool, {
       true: () => text("true"),
       false: () => text("false"),
@@ -144,19 +140,20 @@ const Cond = component(
 );
 
 const Hello = component(
-  (owner: Owner) => ({
+  ({
+    $,
     args: { counts, bool },
   }: {
+    $: Invoke;
     args: {
       counts: ReactiveCounts;
       bool: Reactive<Choice<Bool>>;
     };
-    blocks: {};
   }) => {
     return fragment(
-      Nav(owner)(),
-      Texts(owner)({ args: { counts } }),
-      Cond(owner)({ args: { bool } })
+      $(Nav),
+      $(Texts, { args: { counts } }),
+      $(Cond, { args: { bool } })
     );
   }
 );
@@ -193,7 +190,7 @@ export class IndexPage implements PageHooks<IndexState> {
     let doc = owner.service("doc");
     let { counts, bool } = state;
 
-    let hello = Hello(owner)({ args: { counts, bool } });
+    let hello = owner.$(Hello, { args: { counts, bool } });
     console.log(tree(hello));
 
     let app = doc.render(hello, cursor);

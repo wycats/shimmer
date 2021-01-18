@@ -78,8 +78,6 @@ export function diffArray<Insertion, Inserted>(
   prev: readonly KeyedNode<Inserted>[],
   next: readonly KeyedNode<Insertion | Inserted>[]
 ): Patches<Insertion, Inserted> {
-  // let next = nextValues.map((v) => new WrapperNode(key(v), v));
-
   let patch = getPatch([...prev], [...next], (a, b) => a.key === b.key);
 
   return normalize<Insertion, Inserted>(patch);

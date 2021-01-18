@@ -1,9 +1,9 @@
-import { component, Owner, text } from "../../../../../src/index";
+import { component, text } from "../../../../../src/index";
 import { el } from "../../../utils";
 import Message from "../message";
 
-export default component((owner: Owner) => () =>
-  Message(owner)({
+export default component(({ $ }) =>
+  $(Message, {
     args: {
       username: "Tomster",
       userIsActive: true,

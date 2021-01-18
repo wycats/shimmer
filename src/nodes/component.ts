@@ -13,12 +13,12 @@ export type ReactiveArg =
 
 export type ReactiveArgs = readonly ReactiveArg[];
 
-export type ComponentDefinition<A extends Args, O extends Owner> = (
+export type ComponentCallback<A extends Args, O extends Owner> = (
   owner: O
 ) => (args: A) => Content;
 
 export function createComponent<A extends Args, O extends Owner>(
-  definition: ComponentDefinition<A, O>
+  definition: ComponentCallback<A, O>
 ): (owner: O) => (args: A) => Content {
   return definition;
 }

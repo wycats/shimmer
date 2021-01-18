@@ -2,7 +2,6 @@ import {
   Choice,
   comment,
   component,
-  ComponentData,
   Content,
   dom,
   effect,
@@ -10,7 +9,7 @@ import {
   element,
   IntoReactive,
   match,
-  Owner,
+  PresentComponentDefinition,
   Pure,
   Reactive,
   VariantInfo,
@@ -48,18 +47,15 @@ export const If = <T, U>(
   return Pure.of(() => (condition.now ? trueBranch.now : falseBranch.now));
 };
 
-interface CondArgs extends ComponentData {
+interface CondArgs extends PresentComponentDefinition {
   args: {
     bool: Reactive<Choice<Bool>>;
   };
   blocks: { ifTrue: Block<[]>; ifFalse?: Block<[]> };
 }
 
-export const Cond = component<Owner, CondArgs>(
-  (_owner: Owner) => ({
-    args: { bool },
-    blocks: { ifTrue, ifFalse },
-  }: CondArgs): Content => {
+export const Cond = component<CondArgs>(
+  ({ args: { bool }, blocks: { ifTrue, ifFalse } }: CondArgs): Content => {
     let res = match(bool, {
       true: () => ifTrue.invoke([]),
       false: ifFalse ? () => ifFalse.invoke([]) : () => comment(""),

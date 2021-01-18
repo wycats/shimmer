@@ -1,8 +1,8 @@
-import { component, Owner, Reactive } from "../../../../../src/index";
+import { component, Reactive } from "../../../../../src/index";
 import Avatar from "../avatar";
 
-export default component((owner: Owner) => () =>
-  Avatar(owner)({
+export default component(({ $ }) =>
+  $(Avatar, {
     args: {
       title: Reactive.static("Tomster's avatar"),
       initial: Reactive.static("T"),

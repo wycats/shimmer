@@ -27,21 +27,17 @@ export class TutorialPage implements PageHooks<TutorialState> {
   ): App {
     let doc = owner.service("doc");
 
-    return doc.render(Template(owner)(), cursor);
+    return doc.render(Template(undefined, owner.$), cursor);
   }
 }
 
 export const Main = page(() => new TutorialPage());
 
-const Template = component((owner: Owner) => () => {
-  return fragment(
-    Nav(owner)(),
-    SubNav(owner)(),
-    el("div", { class: "tutorial" }, Page(owner)())
-  );
+const Template = component(({ $ }) => {
+  return fragment($(Nav), $(SubNav), el("div", { class: "tutorial" }, $(Page)));
 });
 
-const Page = component((owner: Owner) => () => {
+const Page = component(({ $ }) => {
   return fragment(
     el(
       "div",
@@ -58,9 +54,9 @@ const Page = component((owner: Owner) => () => {
     el(
       "div",
       { class: "messages" },
-      ReceivedMessage(owner)(),
-      SentMessage(owner)(),
-      NewMessageInput(owner)()
+      $(ReceivedMessage),
+      $(SentMessage),
+      $(NewMessageInput)
     )
   );
 });

@@ -1,17 +1,18 @@
 import {
   component,
-  ComponentData,
   fragment,
-  IntoContent,
-  Owner,
+  Invoke,
+  PresentComponentDefinition,
   Reactive,
+  Services,
 } from "../../../../src/index";
 import type { Block } from "../../../../src/nodes/structure/block";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";
 
-interface MessageArgs extends ComponentData {
+interface MessageArgs extends PresentComponentDefinition {
+  $: Invoke<Services>;
   args: {
     avatarTitle: Reactive<string>;
     avatarInitial: Reactive<string>;
@@ -23,8 +24,9 @@ interface MessageArgs extends ComponentData {
   blocks: { default: Block<[]> };
 }
 
-export default component<Owner, MessageArgs>(
-  (owner: Owner) => ({
+export default component(
+  ({
+    $,
     args: {
       avatarTitle,
       avatarInitial,
@@ -34,9 +36,9 @@ export default component<Owner, MessageArgs>(
       userLocalTime,
     },
     blocks: { default: body },
-  }: MessageArgs): IntoContent => {
+  }: MessageArgs) => {
     return fragment(
-      Avatar(owner)({
+      $(Avatar, {
         args: {
           title: avatarTitle,
           initial: avatarInitial,
@@ -46,7 +48,7 @@ export default component<Owner, MessageArgs>(
       }),
       el(
         "section",
-        Username(owner)({
+        $(Username, {
           args: { name: username, localTime: userLocalTime },
         }),
         body.invoke([])

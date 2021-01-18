@@ -2,7 +2,7 @@ import {
   component,
   fragment,
   IntoContent,
-  Owner,
+  Invoke,
   Pure,
   Reactive,
 } from "../../../../src/index";
@@ -20,10 +20,12 @@ function substring(
 }
 
 export default component(
-  (owner: Owner) => ({
+  ({
+    $,
     args: { userIsActive, isCurrentUser, username, userLocalTime },
     blocks: { default: body },
   }: {
+    $: Invoke;
     args: {
       userIsActive: Reactive<boolean>;
       isCurrentUser: Reactive<boolean>;
@@ -33,7 +35,7 @@ export default component(
     blocks: { default: Block<[]> };
   }): IntoContent => {
     return fragment(
-      Avatar(owner)({
+      $(Avatar, {
         args: {
           title: Pure.of(() => `${username.now}'s avatar`),
           initial: substring(username, Reactive.static(0), Reactive.static(1)),
@@ -43,7 +45,7 @@ export default component(
       }),
       el(
         "section",
-        Username(owner)({
+        $(Username, {
           args: { name: username, localTime: userLocalTime },
         }),
 

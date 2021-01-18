@@ -507,7 +507,7 @@
         "affectsGlobalScope": false
       },
       "./src/dom/bounds.ts": {
-        "version": "077955add567952bd4973dd42572ce71d1db2857cd72985ddd7090169bf27c60",
+        "version": "ba526422e45d391d9f4de04c129b0416412f365883f7590c1b1bb0d28356006b",
         "signature": "e427699e4da84da88f36a1fbb8d447972d390edc00a1d2086459bfe777e87680",
         "affectsGlobalScope": false
       },
@@ -537,7 +537,7 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/dsl/utils.ts": {
-        "version": "c3a7c238b2641eb5091d9caa98edbdd367331d689a63c1606466315a1f66d665",
+        "version": "d814d3cb8981221c5f6da8a6335d36bd93c40d5dc94063895f789351c7eeeea9",
         "signature": "7d06f23cb62d080054ea4ee3165be39efe980c31062257b55f0ffd84ac902178",
         "affectsGlobalScope": false
       },
@@ -552,7 +552,7 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/element/element.ts": {
-        "version": "bbdca914b40e271d80490c712647b55bbec0356277699584aeaffb4325f8a1a9",
+        "version": "e8d84a0ac7f0c65162433af74900127b5b487b8c1a48068030cc9e1b47fe459f",
         "signature": "11af87e9e955a3dc1fb4d9867aed932caba3e30c2bd4b25fb39cca69f2a2039d",
         "affectsGlobalScope": false
       },
@@ -562,7 +562,7 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/fragment.ts": {
-        "version": "7b64a628433a14d13c147a5b0921cbd2a9f0d1bc5a92bca7b18ad58515defed4",
+        "version": "00d9ae425c3b977b9c94c60ffc95c66fe217fc261e8eeba4863a8740cd306de2",
         "signature": "e6aa69719ecdaa769ab93fdef9ff9cd8ae7b75feefc52bf4c95c0a551d1625b8",
         "affectsGlobalScope": false
       },
@@ -602,7 +602,7 @@
         "affectsGlobalScope": false
       },
       "./src/array/normalize.ts": {
-        "version": "5de9a46495e4dff123dcb6176d1e10073c8dc9648d5dafd1fbb895e413db07a5",
+        "version": "5c50cf683bf67f4edd07c5e28527e29a25347524e59ca0714732c6939cb3c970",
         "signature": "ad9626c7240dbe9e679e0e3879ec265398d9ba300758a12cbc0759f228a5a8c1",
         "affectsGlobalScope": false
       },
@@ -651,9 +651,14 @@
         "signature": "14d4e291260bb2fa005090e5ae06a4c96dba3809a8db9806ede4fc9cf0b70689",
         "affectsGlobalScope": false
       },
+      "./src/nodes/dsl/dsl.ts": {
+        "version": "600da8e6be84c62c25d46b877b753a18bf3d9438219b9c65685aaa17b514c9fc",
+        "signature": "072b73ac97719ecc2f161f1b51cc9b9d0ed9c047ceb6fe99d9ba3aa4b5e1c3da",
+        "affectsGlobalScope": false
+      },
       "./src/owner.ts": {
-        "version": "9d0fc94710f6892fa1fe3e490f24ddb6c0e9fe18d120cbe9679931fb749c10f4",
-        "signature": "cb077603a7a55c7ea4df3792eb78f405e704ea4cad4a37855c2bf0e200e2ad1b",
+        "version": "587e6b8adc6a13720341285bd0462304ce97267c3ee171276a1e4d5671cd8bee",
+        "signature": "2242fdc2b9d0df06e70015c9eefa0a33e1fab1438b5681643059bc1fd29de56e",
         "affectsGlobalScope": false
       },
       "./src/nodes/app.ts": {
@@ -661,13 +666,8 @@
         "signature": "5bd8927fa789e2a82743541490d9cbf0a136327a5b8d3defee6cf5ff1db1fbf0",
         "affectsGlobalScope": false
       },
-      "./src/nodes/dsl/dsl.ts": {
-        "version": "ce20a7a7a1e68c58da548951c5b237d0c4fb81ca990f760e83bea45cb20a9516",
-        "signature": "9793b9106503c82fd595c48474093207b78cd70fb5190fe434494db299fb0953",
-        "affectsGlobalScope": false
-      },
       "./src/nodes/public.ts": {
-        "version": "86f32b82139d91cbb134d8368e2318c93e7fed53ad47c5572dd7ca4193910310",
+        "version": "5b72af919891be5f28ac57e663fc75b1dad5182c3ea55a5331166557d036c3f3",
         "signature": "5b72af919891be5f28ac57e663fc75b1dad5182c3ea55a5331166557d036c3f3",
         "affectsGlobalScope": false
       },
@@ -692,13 +692,13 @@
         "affectsGlobalScope": false
       },
       "./app/pages/utils.ts": {
-        "version": "bada652809eae70bd1e14138f6ae312f0db377a0497d748581bf9e96ae919472",
-        "signature": "50e1f777b8512fd65ca5e23098c38030a8218bb43e0ef00ccf4b3414f00d0952",
+        "version": "8f2e960b6183414fa1f251fe16ce25add15972fb3f7c2f549a26446191ca6eee",
+        "signature": "53fb81ef042216f5b8278f81a77ab0d41d16e24813e01e03057f65680f2b8b1c",
         "affectsGlobalScope": false
       },
       "./app/pages/nav.ts": {
-        "version": "12db7543557df5a142f2aa93f8c42c551c1059d87c2b50b06b1bac6b38a86f15",
-        "signature": "2477589691e02b12c64faa18fd05c93ff15544df4b1a0e4a32ab26b62a8afda9",
+        "version": "fcc0a2c4b86c006d1b649f7a62ba775aee22e8f717b13d580ce4300c4864f74d",
+        "signature": "3f6e7c4737321548da6a4a8dbabdb69e17bf312039ad6ee36cb93b1fc17ba7a4",
         "affectsGlobalScope": false
       },
       "./app/pages/page.ts": {
@@ -707,197 +707,197 @@
         "affectsGlobalScope": false
       },
       "./app/pages/index.ts": {
-        "version": "f41ba005941da6eb8f17c46d15b2a856d5191912081672bab59cd64cd956a454",
-        "signature": "572fcaca7acb51539296e0c6eaaf4a6126d6f77be5bae53a9cb2615f22afd0eb",
+        "version": "92b2913c313073edd635ef759b86eef237cdf5852fc18e85cd782db334f7e24d",
+        "signature": "9d2858f56aadb1575170622f307663738576e0b8d015f8a6cad5e63077f11c84",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/subnav.ts": {
-        "version": "ec4ecec0a2cb670edcb70c1f14a685320b93cda91e09596495e8c507357162fd",
-        "signature": "60000bba5b29b98154bb583c46425b40f93aff193e2e06a128daaf13aaedb6b6",
+        "version": "129f6a697a858f5480e9b33682ce0c7593957773614ce8721a276ec736533c87",
+        "signature": "2679cb9cc0540ccfbcc4699d5f009e0b64771b0e8b2e71d2cc512788e96208d5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part1.ts": {
-        "version": "da783e7a99ec605b1e3834ab74f7defed07daaa31ad3b11d3e2d964a0164ebb7",
+        "version": "a87872583d9c0a865007bcef53067b20f82a7cc1418b42ccfb3325d25fec1231",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/new-message-input.ts": {
-        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
-        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "version": "f51f4d38f5648f19ae058208b26d4609c366f6b19817c8baba882bb3ea539b68",
+        "signature": "36938f6c290d86395b69adfba3facd97175cd31052d642041d062bf4a5b16e69",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/received-message/avatar.ts": {
-        "version": "aacdb9b2d2ef1e53f9a2be43f5cca9c7da48ba5c258338c1239dd41deef67b13",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "1ace640553288e219086c963ccc8f84a398cfd7e0c3dd4deb3dd5a87fab322ee",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/received-message/username.ts": {
-        "version": "53f8a00bb9015031c02aaf27abc34e335a79d879283c22aa7eb26e6c40fd2b5c",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "3f91aa604a1cd9d756ab97ba54211f55803f6f8151c9facd61c86c46c71b4d0e",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/received-message/index.ts": {
-        "version": "1c215fda1958a70818089e948687a411ae8309ac9fbfb85bfcd205111077ff46",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "f0083d55f8b65abc87aec475ce032431c44a007f08fec7d020edb58720695027",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/sent-message/avatar.ts": {
-        "version": "ebfa95f97a525dfa8e62df4f3706e431a93305ef15d7703a3e295054671fba13",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "182768652050bcc54e44fc20f11349de5e44da371ff53acc2507a1b7fd13bfd9",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/sent-message/username.ts": {
-        "version": "1603b03962aa00ae24d96901cd013c99b5f79f655d839fc8cc86541ad385fa67",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "6a46ccd71cfef67526b50df57a0abb720c41e98fdcd648dcf8ce872ef36f3a8c",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/sent-message/index.ts": {
-        "version": "957628a7f1b6f05fe43327231816b0dbcd58440421b5376b76ace6a0ddcf459c",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "482a64a58ae4ed3582e2e8a5231a9f1e40155568b4c1b0cc15c5d46cf4262329",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2.ts": {
-        "version": "540ef08697f1a00cb31a53c5ff2cd9c1499f26c677ea5cb652f964a3f786f3e5",
+        "version": "68576809a30ad9603f7338ff0f184087a1c9e87f36407259efe26695acd4e40d",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/new-message-input.ts": {
-        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
-        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "version": "f51f4d38f5648f19ae058208b26d4609c366f6b19817c8baba882bb3ea539b68",
+        "signature": "36938f6c290d86395b69adfba3facd97175cd31052d642041d062bf4a5b16e69",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/avatar.ts": {
-        "version": "151dd3097f26f376b212d9377731dbba9cc51b25efff2d57140922da3c312c67",
-        "signature": "5a14298d356e966425b14840187dde1713851d9de7dbf9a0df9648334aa634e4",
+        "version": "09dad8f0cfeedaf15916dd65238646d035ea76a61df3f9bc91f5d20268538310",
+        "signature": "e8b3a8a2c1f1a3847c4df429941dd88613ca467f2b83a19ed90533c1b9dac5e4",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/received-message/avatar.ts": {
-        "version": "051d16faca59557cde8a5ecfaa819721e5dac58559738a512abd4a485c236637",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "f7e6f0e03872a6c95e99c03698bbb412bc0181d28418f8811566cd57bf079000",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/username.ts": {
-        "version": "10d31818776b1abf30e38edc97074962badce0d78beec3ee8829fd8e1b4314d6",
-        "signature": "ae19dcb766bf39bb48775d5fbc4fa7ed2f601dfcec45a9b0c22efee51b8136d9",
+        "version": "889802c846932f46a24745ad379bddd6563f86383ce9c8cf1ba97e08771a3d63",
+        "signature": "de1b9c60f66e88e6e2bd4897698983aef41d4f2df09c12be614efe0502be722e",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/received-message/username.ts": {
-        "version": "fd96eb7e3f386b4cf985370b1d8b3bdbdbd0c761af275d7c3c1680955ee4fe89",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "44f04ebbc3c76023b812f682b90c98a53c626f8bfcbb2458711b531b089a4ab0",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/received-message/index.ts": {
-        "version": "1c215fda1958a70818089e948687a411ae8309ac9fbfb85bfcd205111077ff46",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "f0083d55f8b65abc87aec475ce032431c44a007f08fec7d020edb58720695027",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/sent-message/avatar.ts": {
-        "version": "7797b53558e67035564830ecdd00fd3607747b341cfae62c6625430fbd440c1c",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "fb6097dd62b227496e5e2ed3b11c8552b31f071b060e5452c8ab5cad20641de3",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/sent-message/username.ts": {
-        "version": "ad287fb8c375f8a90fa9c5b001361a8f6a9ab5ea70f775bd40d3c213380a76b7",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "e7958c0a66c94625dc5b37bbdf7abe488aca22a31082860633516c0038333474",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/sent-message/index.ts": {
-        "version": "957628a7f1b6f05fe43327231816b0dbcd58440421b5376b76ace6a0ddcf459c",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "482a64a58ae4ed3582e2e8a5231a9f1e40155568b4c1b0cc15c5d46cf4262329",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3.ts": {
-        "version": "d494c3735db4e3477264ec83886abb9ced482fc7e92904aa7ffa1c00bc5e84e4",
+        "version": "e184b956e92b96ee725461e181afcdb4d269633de2694cc21abce355441ec681",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/new-message-input.ts": {
-        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
-        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "version": "f51f4d38f5648f19ae058208b26d4609c366f6b19817c8baba882bb3ea539b68",
+        "signature": "36938f6c290d86395b69adfba3facd97175cd31052d642041d062bf4a5b16e69",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/avatar.ts": {
-        "version": "dac75be60d196030b486d5866c4d5c0d9810daca567cca885eba4905954c5924",
-        "signature": "5a14298d356e966425b14840187dde1713851d9de7dbf9a0df9648334aa634e4",
+        "version": "395c47d91cebf5e74f7ce94f03ba1775fb13a3d8d6a965525cdf6b0c225402a8",
+        "signature": "e8b6d5fb2784e3d2c9df53cb2ac54d1e86d747afc5c3932c64fdc7320c2ea5fe",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/username.ts": {
-        "version": "728f91179ab70b81ffce0a236ad72b8f4997efbfe78e232b474bd96a271e5ada",
-        "signature": "ae19dcb766bf39bb48775d5fbc4fa7ed2f601dfcec45a9b0c22efee51b8136d9",
+        "version": "e62585f80123dc2c56621aa8f5757645e7b8303d1e06e9818ad1850f77ef6412",
+        "signature": "de1b9c60f66e88e6e2bd4897698983aef41d4f2df09c12be614efe0502be722e",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/message.ts": {
-        "version": "10709726b948c1c88029779342cb3ea7a7e5424062240f0a9b3a6a05d88c647b",
-        "signature": "472ac83bba3d70d5adbd0914aa983c548f5c60c5f09a98b4f9fc2f277c52a3bb",
+        "version": "9cca9e04798a53d49e1073013b9734bf042d2bf831422ee5123ec65599c3c582",
+        "signature": "e8f78ce50b4e07a03f7919364769ff181977da4f4928e4f469641c2415d48541",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/received-message/index.ts": {
-        "version": "823062482af6b3b2609ed434d367982236f6a531268d3f7bd13ad74bb6a15900",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "6abdb1685a041d4601ad98f3459c45631a84b4ea059d3dc76c437c2b1ea41d6c",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/sent-message/index.ts": {
-        "version": "5082d8db644fb78032c94b1ae19b76bb2f7003ffb145fd466db5312b48da5da6",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "09ffa9649a1b1c610e5d6de2370930a2ffc95382c32d36837f284e6ce4af07fa",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4.ts": {
-        "version": "9c5f2e5666f12d630d60eea7b92749a095ce2c4de647b7185d87dc011019f26a",
+        "version": "60a116e77a317f1093640241e8918c29a54a27ac153281a4cb1029dd36dcb607",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/new-message-input.ts": {
-        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
-        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "version": "f51f4d38f5648f19ae058208b26d4609c366f6b19817c8baba882bb3ea539b68",
+        "signature": "36938f6c290d86395b69adfba3facd97175cd31052d642041d062bf4a5b16e69",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/avatar.ts": {
-        "version": "151dd3097f26f376b212d9377731dbba9cc51b25efff2d57140922da3c312c67",
-        "signature": "5a14298d356e966425b14840187dde1713851d9de7dbf9a0df9648334aa634e4",
+        "version": "53a4fd65457977ec0e05966297ef00641eb4f1873c83bb0c0b416cc3206722a7",
+        "signature": "d411d8217fb9a72dd41b49fe06ef598e2a4f1578614304560c812f5e18e86124",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/username.ts": {
-        "version": "728f91179ab70b81ffce0a236ad72b8f4997efbfe78e232b474bd96a271e5ada",
-        "signature": "ae19dcb766bf39bb48775d5fbc4fa7ed2f601dfcec45a9b0c22efee51b8136d9",
+        "version": "e62585f80123dc2c56621aa8f5757645e7b8303d1e06e9818ad1850f77ef6412",
+        "signature": "de1b9c60f66e88e6e2bd4897698983aef41d4f2df09c12be614efe0502be722e",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/message.ts": {
-        "version": "449d133de86ebee8bf943616c345feb83d7a188cd0006c1fc21114b24223635c",
-        "signature": "a4cdaebe23a0ba038aa94faccfa5ca6b83d20f82824857ade62eac153c4717dc",
+        "version": "1d7789fd07e4cc156468d405a30c14b7f6bdbfca0fff7e6ebf35d291c4b4bc35",
+        "signature": "794229fec2f27f51dfd50a3ee3c48721d50c1250867bca72506350bb3407fa7d",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/received-message/index.ts": {
-        "version": "8ebd94b8caf04e2115f526da6eee48757bd618cbba2a7f0797e65dae0d5550b1",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "2615bbbb0d4f713985f921d1c35a36a32bd50c8849748b12878e588004d8b8ea",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/sent-message/index.ts": {
-        "version": "edbe5d471de4b8109bfe15ee230fb40bbcd1431ff3f4925af51d48ded824669f",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "a3d362188ebc16b0983454d9c48cc8f3d9b77361650df6dfc38f3dea9cd35fa0",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5.ts": {
-        "version": "5193890c9935d8d03b7e1e5b5eb42aeda97e0a8735806ff7352f405a01878f96",
+        "version": "c61ae76ba8d8636aa2ea92cbd7c8622791484b6b2febdf84248d0ca78e9aae8e",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/error.ts": {
-        "version": "484347a343b71dfed290a506fe329f20e54ed525dbe369d6ffc1cd446b36425b",
+        "version": "21e427df3c018722da8f2cef109a0552216590a0188762febe7e633a35ad0f96",
         "signature": "3cf08122ef1e63b8ef9e5dbcd307c1bfb36943db151d00d42496897ffa6ce6f2",
         "affectsGlobalScope": false
       },
       "./app/pages/state/counter.ts": {
-        "version": "ee5af8f3e61a5343120c683468a24a4710f8dee83a2ff28e184a9202ad9051cb",
-        "signature": "47e7e5d81fe7e7d4a429ececfc2a40eb4ef24ba32b03f04473c53a46bf5a8987",
+        "version": "e15e731f4539721e0bb53ba0610a8afeabad8046012016876dcf6f5be6ca4b16",
+        "signature": "c159bf9aa97b0c93e766d27c280c5d9bf9cfa033614ef6c3df07fbc46d63f7a8",
         "affectsGlobalScope": false
       },
       "./app/pages/state/index.ts": {
-        "version": "6a9e91078f7e157049a6288c6eec5fff5da8b96c34102dc6ae16800b8d6f89b0",
+        "version": "b2d41f56458af52cb29224b81248595d5e6edfba4bfbaf0cbe24ccc6dab7a2f4",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/fallback.ts": {
-        "version": "98dcab130e52308a813ffd68229077232d979a412468f767e7a9c9f3434d9e10",
+        "version": "0b2eb9dccda53dfd478060abd90419e4802dcfbc67f268af9d86a3a60d66ab43",
         "signature": "3cf08122ef1e63b8ef9e5dbcd307c1bfb36943db151d00d42496897ffa6ce6f2",
         "affectsGlobalScope": false
       },
@@ -912,58 +912,53 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/received-message/avatar.ts": {
-        "version": "c4fcd481656dff5156e2211c7fedfeb73052779012280148e04816bc97767254",
-        "signature": "f284611a98d4c8063225f5e22be1d725dd2e61c9d26a4978b2b31eb0bfa647b1",
+        "version": "1954346f1d4871a0bea184817886171ff45429336be579b09725bd4020e83d37",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/received-message/username.ts": {
-        "version": "7ca4570e351b1d4ac3913beadf3652c175a4d314e475f731a50c254340d4d881",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "4f65cd5ffa078df52bc1a4107d12ed2f45128f246f4ed2dece3aff97a656989c",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/sent-message/avatar.ts": {
-        "version": "1242cabd2843fb2ca07227bf8a48b4b07eb51541242d8c8071fb70afdc20f7e9",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "fb6097dd62b227496e5e2ed3b11c8552b31f071b060e5452c8ab5cad20641de3",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/sent-message/username.ts": {
-        "version": "aadbf98e90b58c4aa614b2873f438798891d4cb7a3a1c37f4912da282f15fc81",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "fc8e5571d0d732ba3ecf970bf18f2c4d6d88e076cf03303afcc5070e14c058f1",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/messages.ts": {
-        "version": "660bdfd01587e87a20e98bdf4efd7de49aeb8b1966df3c90e1555e72340235a6",
-        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "version": "2c4dc35ce77b25856465ff4fc1f2e3e08c20be5bcf6c9701bac44cfdbd78b48f",
+        "signature": "36938f6c290d86395b69adfba3facd97175cd31052d642041d062bf4a5b16e69",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/received-message/avatar.ts": {
-        "version": "5d40a1b48e52fc389b4fd797645a05e16c4bcb33b21e46a989d66e5199353900",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "1954346f1d4871a0bea184817886171ff45429336be579b09725bd4020e83d37",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/received-message/username.ts": {
-        "version": "7ca4570e351b1d4ac3913beadf3652c175a4d314e475f731a50c254340d4d881",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "4f65cd5ffa078df52bc1a4107d12ed2f45128f246f4ed2dece3aff97a656989c",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/sent-message/avatar.ts": {
-        "version": "1242cabd2843fb2ca07227bf8a48b4b07eb51541242d8c8071fb70afdc20f7e9",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "fb6097dd62b227496e5e2ed3b11c8552b31f071b060e5452c8ab5cad20641de3",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part5/sent-message/username.ts": {
-        "version": "aadbf98e90b58c4aa614b2873f438798891d4cb7a3a1c37f4912da282f15fc81",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "fc8e5571d0d732ba3ecf970bf18f2c4d6d88e076cf03303afcc5070e14c058f1",
+        "signature": "20af71d9ff89f8b7d844a541b1880cf6e91623b09d353226515e66d4c0c12898",
         "affectsGlobalScope": false
       },
       "./src/nodes/component.ts": {
-        "version": "5a69af648c06269c9e401c08baf3e763a973f07ee38a945159a5cae84ee08f15",
-        "signature": "3ff4bc4000da4577713383e39848f5614cf877bb5be6d28886536ab6e682709b",
-        "affectsGlobalScope": false
-      },
-      "./src/reactive/collection.ts": {
-        "version": "740255d32de519ece125f3ecf13619fa239cbfa26e374892037e843656c0fe54",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "version": "3154e6e82af0b1dfd0ffde9961fa50b096f0184493df10d531aa429a9080418d",
+        "signature": "b1870382e29073a3c9052de135c5c503f7d4af5c11c9af82a8ee7836d0e92aa3",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/@types/node@14.14.20/node_modules/@types/node/globals.d.ts": {
@@ -2189,7 +2184,8 @@
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/nodes/app.ts",
-        "./src/nodes/content.ts"
+        "./src/nodes/content.ts",
+        "./src/nodes/dsl/dsl.ts"
       ],
       "./src/reactive/cell.ts": [
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
@@ -2218,12 +2214,11 @@
         "./app/pages/page.ts",
         "./app/pages/utils.ts",
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/nav.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
+        "./src/nodes/structure/block.ts",
         "./src/owner.ts"
       ],
       "./app/pages/page.ts": [
@@ -2279,7 +2274,6 @@
       ],
       "./app/pages/tutorial/part3/avatar.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part3/new-message-input.ts": [
@@ -2312,7 +2306,6 @@
       ],
       "./app/pages/tutorial/part3/username.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part4.ts": [
@@ -2321,13 +2314,11 @@
       ],
       "./app/pages/tutorial/part4/avatar.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part4/message.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
-        "./src/owner.ts"
+        "./src/nodes/structure/block.ts"
       ],
       "./app/pages/tutorial/part4/new-message-input.ts": [
         "./src/index.ts",
@@ -2335,7 +2326,6 @@
       ],
       "./app/pages/tutorial/part4/received-message/avatar.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part4/received-message/index.ts": [
@@ -2360,7 +2350,6 @@
       ],
       "./app/pages/tutorial/part4/username.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part5.ts": [
@@ -2369,12 +2358,11 @@
       ],
       "./app/pages/tutorial/part5/avatar.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part5/message.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
+        "./src/nodes/structure/block.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part5/messages.ts": [
@@ -2411,7 +2399,6 @@
       ],
       "./app/pages/tutorial/part5/username.ts": [
         "./src/index.ts",
-        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/subnav.ts": [
@@ -2423,6 +2410,7 @@
         "./src/nodes/dsl/utils.ts",
         "./src/nodes/element/element-effect.ts",
         "./src/nodes/element/modifier-content.ts",
+        "./src/nodes/structure/block.ts",
         "./src/owner.ts"
       ],
       "./app/router/router.ts": [
@@ -3016,7 +3004,8 @@
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/nodes/app.ts",
-        "./src/nodes/content.ts"
+        "./src/nodes/content.ts",
+        "./src/nodes/dsl/dsl.ts"
       ],
       "./src/reactive/cell.ts": [
         "./src/brands.ts",
@@ -3269,7 +3258,6 @@
       "./src/nodes/text.ts",
       "./src/owner.ts",
       "./src/reactive/cell.ts",
-      "./src/reactive/collection.ts",
       "./src/utils/collection.ts",
       "./src/utils/option.ts",
       "./src/utils/predicates.ts",

@@ -1,10 +1,12 @@
-import { component, Owner, Reactive, text } from "../../../../src/index";
+import { component, Invoke, Reactive, text } from "../../../../src/index";
 import { Cond, el, ToBool } from "../../utils";
 
 export default component(
-  (owner: Owner) => ({
+  ({
+    $,
     args: { name, localTime },
   }: {
+    $: Invoke;
     args: {
       name: Reactive<string>;
       localTime: Reactive<string | undefined>;
@@ -14,7 +16,7 @@ export default component(
       "h4",
       { class: "username" },
       text(name),
-      Cond(owner)({
+      $(Cond, {
         args: { bool: ToBool(localTime) },
         blocks: {
           ifTrue: el(

@@ -3,7 +3,7 @@ import {
   Content,
   element,
   fragment,
-  Owner,
+  Invoke,
   Pure,
   Reactive,
   RouterService,
@@ -14,10 +14,8 @@ import { el } from "./utils";
 
 export function isActive(
   href: Reactive<string>,
-  owner: Owner
+  router: RouterService
 ): Reactive<boolean> {
-  let router = owner.service("router");
-
   return Pure.of(() => {
     let current = router.normalizeHref(href.now);
 
@@ -37,8 +35,8 @@ export function inFallback(router: RouterService): boolean {
   );
 }
 
-export const SimpleLink = component((_owner: Owner) => {
-  return ({
+export const SimpleLink = component(
+  ({
     args: { href },
     blocks: { default: body },
   }: {
@@ -46,42 +44,44 @@ export const SimpleLink = component((_owner: Owner) => {
     blocks: { default: Block<[]> };
   }): Content => {
     return el("a", { href }, body.invoke([]));
-  };
-});
+  }
+);
 
-export const Link = component((owner: Owner) => {
-  return ({
+export const Link = component(
+  ({
+    $,
     args: { href },
     blocks: { default: body },
   }: {
+    $: Invoke;
     args: { href: Reactive<string> };
     blocks: { default: Block<[]> };
   }) => {
-    let active = isActive(href, owner);
+    let active = isActive(href, $.service("router"));
 
     let activeClass = Pure.of(() => (active.now ? "active-url" : null));
 
     return el("a", { href, class: activeClass }, body.invoke([]));
-  };
-});
+  }
+);
 
-export const Nav = component((owner: Owner) => () => {
+export const Nav = component(({ $ }) => {
   return element(
     "nav",
     fragment(
-      Link(owner)({
+      $(Link, {
         args: { href: Reactive.static("#tutorial") },
         blocks: { default: () => text("Tutorial") },
       }),
-      Link(owner)({
+      $(Link, {
         args: { href: Reactive.static("#index") },
         blocks: { default: () => "Counts" },
       }),
-      Link(owner)({
+      $(Link, {
         args: { href: Reactive.static("#state") },
         blocks: { default: () => "State" },
       }),
-      Link(owner)({
+      $(Link, {
         args: { href: Reactive.static("#fallback") },
         blocks: { default: () => "Fallback" },
       })

@@ -1,10 +1,10 @@
-import { component, fragment, Owner, text } from "../../../../../src/index";
+import { component, fragment, text } from "../../../../../src/index";
 import { el } from "../../../utils";
 import Message from "../message";
 
 export default component(
-  (owner: Owner) => () =>
-    Message(owner)({
+  ({ $ }) =>
+    $(Message, {
       args: {
         username: "Tomster",
         userIsActive: true,

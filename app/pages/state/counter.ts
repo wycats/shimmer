@@ -3,18 +3,17 @@ import {
   component,
   EFFECTS,
   fragment,
-  Owner,
   Pure,
   Reactive,
   text,
 } from "../../../src/index";
 import { el, on } from "../utils";
 
-export default component((owner: Owner) => () => {
+export default component(({ $ }) => {
   const multiple = Cell.of(1);
 
   return fragment(
-    Counter(owner)({
+    $(Counter, {
       args: {
         multiple,
         updateMultiple: (callback: (prev: number) => number) =>
@@ -25,7 +24,7 @@ export default component((owner: Owner) => () => {
 });
 
 const Counter = component(
-  (_owner: Owner) => ({
+  ({
     args: { multiple, updateMultiple },
   }: {
     args: {

@@ -17,17 +17,14 @@ export class TutorialPage implements PageHooks<TutorialState> {
   ): App {
     let doc = owner.service("doc");
 
-    return doc.render(Template(owner)(), cursor);
+    return doc.render(Template(undefined, owner.$), cursor);
   }
 }
 
 export const Main = page(() => new TutorialPage());
 
-const Template = component((owner: Owner) => () => {
-  return fragment(
-    Nav(owner)(),
-    el("div", { class: "fallback" }, Page(owner)())
-  );
+const Template = component(({ $ }) => {
+  return fragment($(Nav), el("div", { class: "fallback" }, $(Page)));
 });
 
-const Page = component((owner: Owner) => () => Counter(owner)());
+const Page = component(({ $ }) => $(Counter));

@@ -23,16 +23,14 @@ export class TutorialPage implements PageHooks<TutorialState> {
   ): App {
     let doc = owner.service("doc");
 
-    return doc.render(Template(owner)(), cursor);
+    return doc.render(Template(undefined, owner.$), cursor);
   }
 }
 
 export const Main = page(() => new TutorialPage());
 
-const Template = component((owner: Owner) => () => {
-  return fragment(Nav(owner)(), el("div", { class: "error" }, Page(owner)()));
+const Template = component(({ $ }) => {
+  return fragment($(Nav), el("div", { class: "error" }, $(Page)));
 });
 
-const Page = component((_owner: Owner) => () =>
-  fragment(text("An error occurred"))
-);
+const Page = component(() => fragment(text("An error occurred")));

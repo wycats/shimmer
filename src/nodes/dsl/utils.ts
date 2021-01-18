@@ -28,8 +28,6 @@ export type ComponentArgs = Record<
   Reactive<unknown> | StaticValue<unknown>
 >;
 
-// type IntoComponentArg<>
-
 export type IntoComponentArgs<
   A extends ComponentArgs | undefined
 > = A extends ComponentArgs
@@ -53,54 +51,6 @@ export function intoComponentArgs<A extends ComponentArgs>(
 
   return out as A;
 }
-
-// export type Dict<A extends object> = {
-//   [P in keyof A]: A[P] extends IntoArg<infer I> ? I : never;
-// } & {
-//   [IS_DICT]: true;
-// };
-
-// export function dict<T extends object>(value: IntoDictObject<T>): Dict<T> {
-//   return (new Proxy(
-//     { into: value as any },
-//     {
-//       get({ into }, prop: any) {
-//         if (prop === IS_DICT) {
-//           return true;
-//         }
-
-//         let inner = into[prop] as IntoArg<unknown>;
-//         return intoInnerArg(inner);
-//       },
-//     }
-//   ) as unknown) as Dict<T>;
-// }
-
-// type IntoDictObject<A> = {
-//   [P in keyof A]: IntoArg<A[P]>;
-// };
-
-// export function intoInnerArg<T>(
-//   into: undefined | StaticValue<T> | Reactive<T> | T
-// ): Arg<T> {
-//   if (isReactive(into) || isStaticValue(into) || isContent(into)) {
-//     return into as Arg<T>;
-//   } else if (isObjectLiteral(into)) {
-//     return dict(into) as Arg<T>;
-//   } else {
-//     return StaticReactive.of(into) as Arg<T>;
-//   }
-// }
-
-// export function intoComponentArg<A extends Arg<any>>(into: IntoArg<A>): A {
-//   if (isReactive(into)) {
-//     return into as A;
-//   } else if (isObjectLiteral(into)) {
-//     return dict(into) as A;
-//   } else {
-//     return StaticReactive.of(into) as A;
-//   }
-// }
 
 export type Args = readonly Reactive<any>[];
 export type IntoArgs<A extends Args> = {

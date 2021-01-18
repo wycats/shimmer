@@ -1,21 +1,8 @@
-import {
-  component,
-  ComponentData,
-  Owner,
-  Reactive,
-} from "../../../../../src/index";
+import { component } from "../../../../../src/index";
 import Avatar from "../avatar";
 
-interface ReceivedMessageData extends ComponentData {
-  args: {
-    title: Reactive<string>;
-    initial: Reactive<string>;
-    isActive: Reactive<boolean>;
-  };
-}
-
-export default component<Owner, ReceivedMessageData>((owner: Owner) => () =>
-  Avatar(owner)({
+export default component(({ $ }) =>
+  $(Avatar, {
     args: {
       title: "Tomster's avatar",
       initial: "T",

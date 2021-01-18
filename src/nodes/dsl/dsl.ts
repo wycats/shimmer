@@ -1,7 +1,7 @@
 import { userError } from "../../assertions";
 import type { SimplestElement } from "../../dom/simplest";
 import { Pure } from "../../glimmer/cache";
-import type { Owner } from "../../owner";
+import type { Invoke, Services } from "../../owner";
 import { Reactive } from "../../reactive/cell";
 import { CommentContent, createComment } from "../comment";
 import { Content } from "../content";
@@ -247,21 +247,38 @@ export function element(...into: IntoElementArgs): ElementContent {
 
 export type Blocks = Record<string, Block>;
 
-export interface ComponentData {
+export interface PresentComponentDefinition {
   args?: ComponentArgs;
   attrs?: Modifiers;
   blocks?: Blocks;
 }
 
-type IntoComponentData<C extends ComponentData> = {
-  args?: IntoComponentArgs<C["args"]>;
-  attrs?: IntoModifiers;
-  blocks?: IntoBlocksFor<C["blocks"]>;
-};
+export type ComponentDefinition = PresentComponentDefinition | [];
+
+export interface ComponentData extends PresentComponentDefinition {
+  $: Invoke<Services>;
+}
+
+export type IntoComponentDefinition<
+  D extends ComponentDefinition
+> = D extends PresentComponentDefinition
+  ? {
+      args?: IntoComponentArgs<D["args"]>;
+      attrs?: IntoModifiers;
+      blocks?: IntoBlocksFor<D["blocks"]>;
+    }
+  : undefined;
 
 export function intoComponentData<C extends ComponentData>(
-  args: IntoComponentData<C>
+  args: IntoComponentDefinition<C>,
+  $: Invoke
 ): C {
+  if (args === undefined) {
+    return {
+      $,
+    } as C;
+  }
+
   let componentArgs = intoComponentArgs(args.args);
   let componentAttrs = intoModifiers(args.attrs);
   let componentBlocks = intoBlocks(args.blocks);
@@ -270,6 +287,7 @@ export function intoComponentData<C extends ComponentData>(
     args: componentArgs,
     attrs: componentAttrs,
     blocks: componentBlocks,
+    $,
   } as C;
 }
 
@@ -300,37 +318,32 @@ function intoBlocks<B extends Blocks>(
   return out as B;
 }
 
-export function component<O extends Owner>(
-  callback: (owner: O) => () => IntoContent
-): (owner: O) => () => Content;
-export function component<O extends Owner, C extends ComponentData>(
-  callback: (owner: O) => (args: C) => IntoContent
-): (owner: O) => ({ args, attrs, blocks }: IntoComponentData<C>) => Content;
-export function component<O extends Owner, C extends ComponentData>(
-  callback: (owner: O) => (args?: C) => IntoContent
-): (owner: O) => ({ args, attrs, blocks }: IntoComponentData<C>) => Content {
-  return (owner: O) => {
-    return (intoData: IntoComponentData<C> = {}): Content => {
-      let data = intoComponentData(intoData);
+export type Component<C extends ComponentDefinition, S extends Services> = (
+  args: IntoComponentDefinition<C>,
+  $: Invoke<S>
+) => Content;
 
-      let content = callback(owner)(data);
-      return intoContent(content);
-    };
+export function component<S extends Services>(
+  callback: (args: { $: Invoke<S> }) => IntoContent
+): Component<[], S>;
+export function component<S extends Services>(
+  callback: () => IntoContent
+): Component<[], Services>;
+export function component<C extends PresentComponentDefinition>(
+  callback: (args: C) => IntoContent
+): Component<C, Services>;
+export function component<
+  C extends PresentComponentDefinition,
+  S extends Services
+>(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S>;
+export function component<
+  C extends PresentComponentDefinition,
+  S extends Services
+>(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S> {
+  return (intoData: IntoComponentDefinition<any>, $: Invoke): Content => {
+    let data = intoComponentData<any>(intoData, $);
+
+    let content = callback(data);
+    return intoContent(content);
   };
 }
-// export function component<O extends Owner, A extends Arg>(
-//   into: IntoComponentDefinition<O, A>
-// ): (owner: O) => ComponentFunction<A> {
-//   return (owner: O): ComponentFunction<A> => {
-//     return (arg?: IntoArg<A>): Content => {
-//       if (arg === undefined) {
-//         let content = into(owner)();
-//         return intoContent(content);
-//       } else {
-//         let a = intoArg(arg);
-//         let content = into(owner)({ args: a });
-//         return intoContent(content);
-//       }
-//     };
-//   };
-// }

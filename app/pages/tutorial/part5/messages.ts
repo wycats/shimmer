@@ -1,11 +1,4 @@
-import {
-  component,
-  each,
-  Owner,
-  Pure,
-  Reactive,
-  text,
-} from "../../../../src/index";
+import { component, each, Pure, Reactive, text } from "../../../../src/index";
 import MessageData from "./message";
 
 interface MessageData {
@@ -61,12 +54,12 @@ const messages: MessageData[] = [
   },
 ];
 
-export default component((owner: Owner) => () => {
+export default component(({ $ }) => {
   return each(
     messages,
     () => Math.random(),
     (message) =>
-      MessageData(owner)({
+      $(MessageData, {
         args: {
           username: Pure.of(() => message.now.username),
           userIsActive: Pure.of(() => message.now.active),

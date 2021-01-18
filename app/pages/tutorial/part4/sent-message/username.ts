@@ -1,8 +1,8 @@
-import { component, Owner } from "../../../../../src/index";
+import { component } from "../../../../../src/index";
 import Username from "../username";
 
-export default component((owner: Owner) => () =>
-  Username(owner)({
+export default component(({ $ }) =>
+  $(Username, {
     args: {
       name: "Zoey",
       localTime: undefined,

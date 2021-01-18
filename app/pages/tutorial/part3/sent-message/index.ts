@@ -1,14 +1,14 @@
-import { component, fragment, Owner, text } from "../../../../../src/index";
+import { component, fragment, text } from "../../../../../src/index";
 import { el } from "../../../utils";
 import SentMessageAvatar from "./avatar";
 import SentMessageUsername from "./username";
 
-export default component((owner: Owner) => () =>
+export default component(({ $ }) =>
   fragment(
-    SentMessageAvatar(owner)(),
+    $(SentMessageAvatar),
     el(
       "section",
-      SentMessageUsername(owner)(),
+      $(SentMessageUsername),
       el("p", text("Hey!")),
       el(
         "p",

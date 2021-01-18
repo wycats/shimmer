@@ -1,9 +1,9 @@
 import type { Modifiers, Reactive } from "../../../../src/index";
-import { component, Owner, text } from "../../../../src/index";
+import { component, text } from "../../../../src/index";
 import { Classes, el, If } from "../../utils";
 
 export default component(
-  (_owner: Owner) => ({
+  ({
     args: { title, initial, isActive },
     attrs,
   }: {

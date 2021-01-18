@@ -1,8 +1,8 @@
-import { component, Owner } from "../../../../../src/index";
+import { component } from "../../../../../src/index";
 import Avatar from "../avatar";
 
-export default component((owner: Owner) => () =>
-  Avatar(owner)({
+export default component(({ $ }) =>
+  $(Avatar, {
     args: {
       title: "Tomster's avatar",
       initial: "T",

@@ -1,6 +1,6 @@
-import { component, Owner, text } from "../../../../src/index";
+import { component, text } from "../../../../src/index";
 import { el } from "../../utils";
 
-export default component((_owner: Owner) => () =>
+export default component(() =>
   el("form", el("input"), el("button", { type: "submit" }, text("Send")))
 );

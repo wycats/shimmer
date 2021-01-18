@@ -15,15 +15,6 @@ export const Bounds = {
       return new DynamicBounds(first, last);
     }
   },
-
-  // single: (into: IntoBounds): Bounds => {
-  //   if (into instanceof AbstractBounds) {
-  //     return Bounds.spanning(into, into);
-  //   } else {
-  //     let bounds = StaticBounds.single(into);
-  //     return Bounds.spanning(bounds, bounds);
-  //   }
-  // },
 };
 
 export abstract class AbstractBounds {
@@ -106,14 +97,6 @@ export class DynamicBounds extends AbstractBounds {
   static single(bounds: Bounds): DynamicBounds {
     return new DynamicBounds(bounds, bounds);
   }
-
-  // static of(first: Bounds, last: Bounds): Bounds {
-  //   if (first instanceof StaticBounds && last instanceof StaticBounds) {
-  //     return StaticBounds.of(first.bounds.firstNode, last.bounds.lastNode);
-  //   }
-
-  //   return new DynamicBounds(first, last);
-  // }
 
   readonly kind = "dynamic";
 

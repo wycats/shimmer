@@ -105,7 +105,6 @@ export function initializeFragment(
 ): {
   bounds: Bounds;
 } & FragmentState {
-  // let [first, ...rest] = content;
   let [first, rest] = content.split();
 
   let dynamic: StableDynamicContent[] = [];
@@ -129,8 +128,6 @@ export function initializeFragment(
 
     nodes.push(tail);
   }
-
-  // console.log("done", { nodes, dynamic });
 
   return {
     bounds: Bounds.spanning(head, tail),
