@@ -2,7 +2,7 @@ import type { CommentContent } from "../nodes/comment";
 import type { Content, ContentType, TemplateContent } from "../nodes/content";
 import type { ElementInfo } from "../nodes/element/element";
 import type { FragmentContent } from "../nodes/fragment";
-import type { BlockInfo } from "../nodes/structure/block";
+import type { Block, BlockInfo } from "../nodes/structure/block";
 import type { ChoiceContent } from "../nodes/structure/choice";
 import type { EachInfo } from "../nodes/structure/each";
 import type { TextContent } from "../nodes/text";
@@ -38,7 +38,7 @@ interface EachNode extends DebugNode {
 interface ChoiceNode extends DebugNode {
   type: "choice";
   data: unknown;
-  matches: Record<string, DebugContentNode>;
+  matches: Record<string, Block>;
 }
 
 interface ElementNode extends DebugNode {
@@ -110,10 +110,10 @@ class TreeBuilder {
   }
 
   choice(content: ChoiceContent): ChoiceNode {
-    let matches: Record<string, DebugContentNode> = {};
+    let matches: Record<string, Block> = {};
 
     for (let [key, value] of Object.entries(content.info.match)) {
-      matches[key] = this.content(value);
+      matches[key] = value;
     }
 
     return {

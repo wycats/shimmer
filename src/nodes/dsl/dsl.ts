@@ -1,3 +1,4 @@
+import { userError } from "../../assertions";
 import type { SimplestElement } from "../../dom/simplest";
 import { Pure } from "../../glimmer/cache";
 import type { Owner } from "../../owner";
@@ -9,14 +10,17 @@ import { createElement, ElementArgs, ElementContent } from "../element/element";
 import { createEffect, EffectModifier } from "../element/element-effect";
 import type { AttributeModifier, Modifier } from "../element/modifier-content";
 import { createFragment } from "../fragment";
-import { BlockFunction, createBlock } from "../structure/block";
+import { Block } from "../structure/block";
 import { Choice, Choices, createMatch, Match } from "../structure/choice";
 import { createEach } from "../structure/each";
 import { createText, TextContent } from "../text";
 import {
   Args,
+  ComponentArgs,
   intoArgs,
   IntoArgs,
+  intoComponentArgs,
+  IntoComponentArgs,
   intoContent,
   intoReactive,
   IntoReactive,
@@ -43,46 +47,60 @@ export function fragment(...parts: readonly IntoContent[]): Content {
 
 export function match<C extends Choices>(
   value: IntoReactive<Choice<C>>,
-  matcher: Match<C, IntoContent>
+  matcher: Match<C, IntoBlockFunction<[]>>
 ): Content {
   let reactive = intoReactive(value);
 
-  let out: Match<Choices, Content> = {};
+  let out: Match<Choices, Block<[]>> = {};
 
-  for (let [key, value] of Object.entries(matcher)) {
-    out[key] = intoContent(value);
+  for (let [key, block] of Object.entries(matcher)) {
+    out[key] = coerceIntoBlock(block);
   }
 
-  let match = out as Match<C, Content>;
+  let match = out as Match<C, Block<[]>>;
 
   return createMatch(reactive, match);
 }
 
-export type IntoBlockFunction<A extends Args> = (...args: A) => IntoContent;
+export type IntoAnyBlockFunction = (...args: any[]) => IntoContent;
 
-export function intoBlockFunction<A extends Args>(
-  into: IntoBlockFunction<A>
-): BlockFunction<A> {
-  return (args: A): Content => {
-    let content = into(...args);
-    return intoContent(content);
-  };
-}
+export type IntoBlockFunction<A extends Args> = A extends []
+  ? () => IntoContent
+  : (...args: A) => IntoContent;
 
-export function block<A extends Args>(
-  callback: IntoBlockFunction<A>
-): (...args: IntoArgs<A>) => Content {
-  let block = createBlock(
-    (args: A): Content => {
-      let content = callback(...args);
-      return intoContent(content);
-    }
-  );
+// export type IntoBlockFunction<A extends Args> = (
+//   ...args: any[]
+// ) => A extends [] ? () => IntoContent : (...args: A) => IntoContent;
 
-  return (...into: IntoArgs<A>) => {
-    let args = intoArgs(into);
-    return block.invoke(args);
-  };
+export type IntoBlock<A extends Args> =
+  | IntoBlockFunction<A>
+  | Block<A>
+  | IntoContent;
+
+function coerceIntoBlock<A extends Args>(into: IntoBlock<A>): Block<A>;
+function coerceIntoBlock<A extends Args>(into: undefined): undefined;
+function coerceIntoBlock<A extends Args>(
+  into: IntoBlock<A> | undefined
+): Block<A> | undefined;
+function coerceIntoBlock<A extends Args>(
+  into: IntoBlock<A> | undefined
+): Block<A> | undefined {
+  if (into === undefined) {
+    return undefined;
+  }
+
+  if (Block.is(into)) {
+    return into;
+  } else if (typeof into === "function") {
+    return Block.of((args: A) => intoContent(into(...args)));
+  } else {
+    userError(
+      typeof into === "string" || Content.is(into),
+      `intoBlock must be called with IntoContent (string or Content)`
+    );
+
+    return Block.of(() => intoContent(into));
+  }
 }
 
 export function attr(
@@ -133,20 +151,43 @@ function* intoIterable<T>(
 export function each<T>(
   into: IntoReactiveIterable<T>,
   key: (arg: T) => unknown,
-  intoBlock: IntoBlockFunction<[Reactive<T>]>
+  intoBlock: IntoBlock<[Reactive<T>]>
 ): Content {
   let reactive = intoReactiveIterable(into);
-  let block = intoBlockFunction(intoBlock);
+  let block = coerceIntoBlock(intoBlock);
 
   return createEach(reactive, key, block);
 }
 
-export interface IntoModifiers {
-  [key: string]: IntoReactive<string | null>;
-  [EFFECTS]?: EffectModifier<any>[];
+export type Modifiers = readonly Modifier[];
+
+export type IntoModifiers =
+  | {
+      [key: string]: IntoReactive<string | null>;
+      [EFFECTS]?: EffectModifier<any>[];
+    }
+  | Modifiers;
+
+function isModifiers(into: IntoModifiers): into is readonly Modifier[] {
+  return Array.isArray(into);
 }
 
-function intoModifiers(into: IntoModifiers): readonly Modifier[] {
+function intoModifiers(into: undefined): undefined;
+function intoModifiers(into: IntoModifiers): readonly Modifier[];
+function intoModifiers(
+  into: IntoModifiers | undefined
+): readonly Modifier[] | undefined;
+function intoModifiers(
+  into: IntoModifiers | undefined
+): readonly Modifier[] | undefined {
+  if (into === undefined) {
+    return into;
+  }
+
+  if (isModifiers(into)) {
+    return into;
+  }
+
   let modifiers: Modifier[] = [];
 
   let effects = into[EFFECTS];
@@ -206,16 +247,92 @@ export function element(...into: IntoElementArgs): ElementContent {
   return createElement(args);
 }
 
-export type IntoComponentDefinition<O extends Owner, A extends Args> = (
-  owner: O
-) => (...args: A) => IntoContent;
+export type Blocks = Record<string, Block>;
 
-export function component<O extends Owner, A extends Args>(
-  into: IntoComponentDefinition<O, A>
-): (owner: O) => (...args: IntoArgs<A>) => Content {
-  return (owner: O) => (...args: IntoArgs<A>) => {
-    let a = intoArgs(args);
-    let content = into(owner)(...a);
-    return intoContent(content);
+export interface ComponentData {
+  args?: ComponentArgs;
+  attrs?: Modifiers;
+  blocks?: Blocks;
+}
+
+type IntoComponentData<C extends ComponentData> = {
+  args?: IntoComponentArgs<C["args"]>;
+  attrs?: IntoModifiers;
+  blocks?: IntoBlocksFor<C["blocks"]>;
+};
+
+export function intoComponentData<C extends ComponentData>(
+  args: IntoComponentData<C>
+): C {
+  let componentArgs = intoComponentArgs(args.args);
+  let componentAttrs = intoModifiers(args.attrs);
+  let componentBlocks = intoBlocks(args.blocks);
+
+  return {
+    args: componentArgs,
+    attrs: componentAttrs,
+    blocks: componentBlocks,
+  } as C;
+}
+
+type IntoBlocksFor<B extends Blocks | undefined> = B extends Blocks
+  ? {
+      [P in keyof B]: B[P] extends Block<infer Args> ? IntoBlock<Args> : never;
+    }
+  : {};
+
+function intoBlocks<B extends Blocks>(blocks: undefined): undefined;
+function intoBlocks<B extends Blocks>(blocks: IntoBlocksFor<B>): B;
+function intoBlocks<B extends Blocks>(
+  blocks: IntoBlocksFor<B> | undefined
+): B | undefined;
+function intoBlocks<B extends Blocks>(
+  blocks: IntoBlocksFor<B> | undefined
+): B | undefined {
+  if (blocks === undefined) {
+    return undefined;
+  }
+
+  let out: Blocks = {};
+
+  for (let [key, value] of Object.entries(blocks)) {
+    out[key] = coerceIntoBlock(value);
+  }
+
+  return out as B;
+}
+
+export function component<O extends Owner>(
+  callback: (owner: O) => () => IntoContent
+): (owner: O) => () => Content;
+export function component<O extends Owner, C extends ComponentData>(
+  callback: (owner: O) => (args: C) => IntoContent
+): (owner: O) => ({ args, attrs, blocks }: IntoComponentData<C>) => Content;
+export function component<O extends Owner, C extends ComponentData>(
+  callback: (owner: O) => (args?: C) => IntoContent
+): (owner: O) => ({ args, attrs, blocks }: IntoComponentData<C>) => Content {
+  return (owner: O) => {
+    return (intoData: IntoComponentData<C> = {}): Content => {
+      let data = intoComponentData(intoData);
+
+      let content = callback(owner)(data);
+      return intoContent(content);
+    };
   };
 }
+// export function component<O extends Owner, A extends Arg>(
+//   into: IntoComponentDefinition<O, A>
+// ): (owner: O) => ComponentFunction<A> {
+//   return (owner: O): ComponentFunction<A> => {
+//     return (arg?: IntoArg<A>): Content => {
+//       if (arg === undefined) {
+//         let content = into(owner)();
+//         return intoContent(content);
+//       } else {
+//         let a = intoArg(arg);
+//         let content = into(owner)({ args: a });
+//         return intoContent(content);
+//       }
+//     };
+//   };
+// }

@@ -1,3 +1,4 @@
+import { isStaticReactive } from "../brands";
 import { StaticBounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
@@ -11,7 +12,7 @@ export function createText(
   string: Reactive<string>
 ): TemplateContent<"text", Reactive<string>> {
   return build(() => {
-    if (Reactive.isStatic(string)) {
+    if (isStaticReactive(string)) {
       return StaticContent.of("text", string, (cursor, dom) => {
         let text = initialize(string, cursor, dom);
 

@@ -1,33 +1,15 @@
 import { consumeTag, createTag, dirtyTag } from "@glimmer/validator";
-import { isPure } from "../brands";
+import { isReactive, IS_CELL, IS_STATIC, IS_STATIC_REACTIVE } from "../brands";
 import type { Pure } from "../glimmer/cache";
 import { isObject } from "../utils/predicates";
-import { Dict } from "./dict";
 
-export type IntoReactive<T> = Reactive<T> | Static<T> | T;
+export type IntoReactive<T> = Reactive<T> | T;
 
-export type Reactive<T> = Cell<T> | StaticReactive<T> | Pure<T> | Dict<T>;
-
-console.log("CELL");
+export type Reactive<T> = Cell<T> | StaticReactive<T> | Pure<T>;
 
 export const Reactive = {
   static: <T>(value: T): StaticReactive<T> => new StaticReactive(value),
   cell: <T>(value: T): Cell<T> => new Cell(value),
-
-  is: (value: unknown): value is Reactive<unknown> => {
-    return (
-      Cell.is(value) ||
-      StaticReactive.is(value) ||
-      isPure(value) ||
-      Dict.is(value)
-    );
-  },
-
-  isStatic: (
-    value: Reactive<unknown> | Static<unknown>
-  ): value is StaticReactive<unknown> =>
-    value instanceof StaticReactive || value instanceof Static,
-
   from: intoReactive,
 };
 
@@ -36,16 +18,7 @@ function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> {
     return new StaticReactive(reactive);
   }
 
-  if (Static.is(reactive)) {
-    return Reactive.static(reactive.now);
-  }
-
-  if (
-    Cell.is(reactive) ||
-    StaticReactive.is(reactive) ||
-    isPure(reactive) ||
-    Dict.is(reactive)
-  ) {
+  if (isReactive(reactive)) {
     return reactive;
   }
 
@@ -53,10 +26,6 @@ function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> {
 }
 
 export abstract class AbstractStatic<T = unknown> {
-  static is<T, S>(this: { new (now: T): S }, value: unknown): value is S {
-    return isObject(value) && value instanceof this;
-  }
-
   readonly type = "value";
 
   #now: T;
@@ -70,9 +39,17 @@ export abstract class AbstractStatic<T = unknown> {
   }
 }
 
-export class Static<T = unknown> extends AbstractStatic<T> {}
+export class StaticValue<T = unknown> extends AbstractStatic<T> {
+  readonly [IS_STATIC] = true;
+}
 
 export class StaticReactive<T = unknown> extends AbstractStatic<T> {
+  static of<T>(value: T): StaticReactive<T> {
+    return new StaticReactive(value);
+  }
+
+  readonly [IS_STATIC_REACTIVE] = true;
+
   get now(): T {
     assertDynamicContext(
       "getting the current JavaScript value of a reactive value (Static)"
@@ -91,10 +68,7 @@ export class Cell<T = unknown> {
     return new Cell(value);
   }
 
-  static is(value: unknown): value is Cell {
-    return isObject(value) && value instanceof Cell;
-  }
-
+  readonly [IS_CELL] = true;
   readonly type = "value";
 
   #value: T;

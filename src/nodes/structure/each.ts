@@ -1,5 +1,6 @@
 import { diffArray, KeyedNode, Patches } from "../../array/normalize";
 import { assert, unwrap } from "../../assertions";
+import { isStaticReactive } from "../../brands";
 import { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
@@ -14,7 +15,7 @@ import {
   UpdatableDynamicContent,
 } from "../content";
 import { createFragment } from "../fragment";
-import type { BlockFunction } from "./block";
+import type { Block } from "./block";
 
 export type ReactiveIterable<T> = Reactive<Iterable<Reactive<T>>>;
 
@@ -27,7 +28,7 @@ export interface EachState<T> {
 export function createEach<T>(
   reactive: Reactive<Iterable<Reactive<T>>>,
   key: (arg: T) => unknown,
-  block: BlockFunction<[Reactive<T>]>
+  block: Block<[Reactive<T>]>
 ): Content {
   // let reactive = Reactive.from(value);
 
@@ -57,9 +58,9 @@ function initialize<T>({
 }: {
   reactive: Reactive<Iterable<Reactive<T>>>;
   key: (arg: T) => unknown;
-  block: BlockFunction<[Reactive<T>]>;
+  block: Block<[Reactive<T>]>;
 }): Content {
-  let iterableIsStatic = Reactive.isStatic(reactive);
+  let iterableIsStatic = isStaticReactive(reactive);
 
   // If the iterable is static, we won't need to re-iterate the iterable later, but
   // elements of the iterable might still change. This means we can iterate the
@@ -70,7 +71,7 @@ function initialize<T>({
     let content: Content[] = [];
 
     for (let item of iterable) {
-      content.push(block([item]));
+      content.push(block.invoke([item]));
     }
 
     return createFragment(content);
@@ -210,7 +211,7 @@ class StableEach<T> {
   }
 
   render(reactive: Reactive<T>): Content {
-    return this.#options.block([reactive]);
+    return this.#options.block.invoke([reactive]);
   }
 
   upsert(reactive: Reactive<T>): StableEntry<T> {
@@ -231,7 +232,7 @@ class LastEach<T> {
 interface StableEachState<T> {
   reactive: ReactiveIterable<T>;
   key: (value: T) => unknown;
-  block: BlockFunction<[Reactive<T>]>;
+  block: Block<[Reactive<T>]>;
   stableMap: StableMap<T>;
 }
 

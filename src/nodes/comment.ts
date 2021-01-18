@@ -1,3 +1,4 @@
+import { isStaticReactive } from "../brands";
 import { StaticBounds } from "../dom/bounds";
 import type { Cursor } from "../dom/cursor";
 import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
@@ -9,7 +10,7 @@ export type CommentContent = TemplateContent<"comment", CommentInfo>;
 
 export function createComment(string: Reactive<string>): CommentContent {
   return build(() => {
-    if (Reactive.isStatic(string)) {
+    if (isStaticReactive(string)) {
       return StaticContent.of("comment", string, (cursor, dom) => {
         let text = initialize(string, cursor, dom);
 

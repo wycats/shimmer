@@ -1,6 +1,6 @@
 import {
   component,
-  Dict,
+  Content,
   element,
   fragment,
   Owner,
@@ -9,6 +9,7 @@ import {
   RouterService,
   text,
 } from "../../src/index";
+import type { Block } from "../../src/nodes/structure/block";
 import { el } from "./utils";
 
 export function isActive(
@@ -37,22 +38,30 @@ export function inFallback(router: RouterService): boolean {
 }
 
 export const SimpleLink = component((_owner: Owner) => {
-  return (args: Dict<{ href: Reactive<string> }>, body: Reactive<string>) => {
-    let { href } = args.now;
-
-    return el("a", { href }, text(body));
+  return ({
+    args: { href },
+    blocks: { default: body },
+  }: {
+    args: { href: Reactive<string> };
+    blocks: { default: Block<[]> };
+  }): Content => {
+    return el("a", { href }, body.invoke([]));
   };
 });
 
 export const Link = component((owner: Owner) => {
-  return (args: Dict<{ href: Reactive<string> }>, body: Reactive<string>) => {
-    let { href } = args.now;
-
+  return ({
+    args: { href },
+    blocks: { default: body },
+  }: {
+    args: { href: Reactive<string> };
+    blocks: { default: Block<[]> };
+  }) => {
     let active = isActive(href, owner);
 
     let activeClass = Pure.of(() => (active.now ? "active-url" : null));
 
-    return el("a", { href, class: activeClass }, text(body));
+    return el("a", { href, class: activeClass }, body.invoke([]));
   };
 });
 
@@ -60,10 +69,22 @@ export const Nav = component((owner: Owner) => () => {
   return element(
     "nav",
     fragment(
-      Link(owner)({ href: Reactive.static("#tutorial") }, "Tutorial"),
-      Link(owner)({ href: Reactive.static("#index") }, "Counts"),
-      Link(owner)({ href: Reactive.static("#state") }, "State"),
-      Link(owner)({ href: Reactive.static("#fallback") }, "Fallback")
+      Link(owner)({
+        args: { href: Reactive.static("#tutorial") },
+        blocks: { default: () => text("Tutorial") },
+      }),
+      Link(owner)({
+        args: { href: Reactive.static("#index") },
+        blocks: { default: () => "Counts" },
+      }),
+      Link(owner)({
+        args: { href: Reactive.static("#state") },
+        blocks: { default: () => "State" },
+      }),
+      Link(owner)({
+        args: { href: Reactive.static("#fallback") },
+        blocks: { default: () => "Fallback" },
+      })
     )
   );
 });

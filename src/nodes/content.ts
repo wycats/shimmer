@@ -1,3 +1,4 @@
+import { IS_CONTENT } from "../brands";
 import {
   AbstractBounds,
   Bounds,
@@ -73,6 +74,7 @@ export class StaticTemplateContent<
   Info = unknown
 > extends AbstractTemplateContent<Type, Info> {
   readonly isStatic = true;
+  readonly [IS_CONTENT] = true;
 
   declare readonly content: {
     type: Type;
@@ -245,6 +247,7 @@ export class DynamicContent<
     });
   }
 
+  readonly [IS_CONTENT] = true;
   readonly isStatic = false;
 
   declare readonly content: {

@@ -496,19 +496,14 @@
         "signature": "b9df383b51045bbe9944e75cc896468bdd32b73f73580a2c4fcf1b3a4a11df53",
         "affectsGlobalScope": false
       },
-      "./src/utils/predicates.ts": {
-        "version": "35f27f533bfa779a6d50225ea79ef66f4c43c4ce72c1e4d3194eb138ecd14160",
-        "signature": "92e2fc9daf09669ef4fc2a9da793db4dfb8dc89e7df87d6c46a90c80668e1265",
-        "affectsGlobalScope": false
-      },
-      "./src/brands.ts": {
-        "version": "03b1a1766211257d892405b9a966c3af80d65f2cbf2655c230baa0546277d67a",
-        "signature": "7eec59cb25bf545fb67e461131e1857f66098a780a748363701a0c4b1d206f43",
-        "affectsGlobalScope": false
-      },
       "./src/assertions.ts": {
         "version": "4e48c648388e1bd09f83997541615a4763d96773823b01738149b18163c96816",
         "signature": "3d5403580a8c965f86f171843e628cfd8fbcdca01abec87319da612a7e042bc9",
+        "affectsGlobalScope": false
+      },
+      "./src/utils/predicates.ts": {
+        "version": "35f27f533bfa779a6d50225ea79ef66f4c43c4ce72c1e4d3194eb138ecd14160",
+        "signature": "92e2fc9daf09669ef4fc2a9da793db4dfb8dc89e7df87d6c46a90c80668e1265",
         "affectsGlobalScope": false
       },
       "./src/dom/cursor.ts": {
@@ -521,34 +516,29 @@
         "signature": "8f44cb6c95f34dc1450ab1778d88011cc5b7c220dc8f115a4b33aef209d78414",
         "affectsGlobalScope": false
       },
-      "./src/reactive/dict.ts": {
-        "version": "2f73d1469be77005e5f547a20e5d5393d50698f5796a263daf129ded73203cff",
-        "signature": "a06c04c04ef9cc8c68b369614d8c81e38699fa37f860d306be35ca2f44840154",
-        "affectsGlobalScope": false
-      },
       "./src/reactive/cell.ts": {
-        "version": "7c194a702df3ddd789098f9c87f3855a9cb3590af61712da02aecefb9be0c28e",
-        "signature": "3115b412a072876e0e8bc4288979471e73b4218cb28838ee0c839f095b435b7f",
+        "version": "ced287d6f84ee81faf0f17edc70260bbca143e913756ae479f568881911a9457",
+        "signature": "6f8b37cd4f3c311f48c51185a92bab02614ee0c4e038d84a109ac9c4356fa00b",
         "affectsGlobalScope": false
       },
       "./src/nodes/comment.ts": {
-        "version": "f8a7d2af58eef057aacfeba5d5d0ad017b7a0b01e7534d76abe89d2fc95a1af5",
+        "version": "152bb5d26a938482793063875d1a330931b23fd3de0ced0be42cbed066ffaa5f",
         "signature": "2444948b1458a913234623f40812bffb6677ea68683a9ef0f5450b09d3c2175e",
         "affectsGlobalScope": false
       },
       "./src/nodes/element/attribute.ts": {
-        "version": "7b153ef69b32ae9b6f087ff2231b8525bb04cb74261714809846033f12fc1a4c",
-        "signature": "eddc7d6a12404bd8b2fb33faa003ba0c8995ea3d8b0b7fc186c2e60cbe32ac86",
+        "version": "040d61eed979802db7511f96f5957a834edac80b64eb482c3c0814c3ec2facef",
+        "signature": "32c7c329685dd9b22df72bfa4d4f153e29461d0e0876adcc94de9fed7484e343",
         "affectsGlobalScope": false
       },
       "./src/nodes/text.ts": {
-        "version": "59f110d9eab716369606060089cdce3b00d4283ea0eb757ac6bc0550a7b8ea0d",
+        "version": "7c2a97a489bc68ac6e111e7ae39f216f48c89ac1e531b407d77ea914e840a7b1",
         "signature": "14ea5f67de3703fc923c699461aa124bf25d907d422e690fcc1cd27f1c67b5e1",
         "affectsGlobalScope": false
       },
       "./src/nodes/dsl/utils.ts": {
-        "version": "1f8e026dd97a79433b1adfe9af309e6e031c3874cff559603c21baa4c1b133a3",
-        "signature": "1eb30f450ca405a427db7a1cf340d99d462b24d24ed6d7aaba3cf80739d5e109",
+        "version": "c3a7c238b2641eb5091d9caa98edbdd367331d689a63c1606466315a1f66d665",
+        "signature": "7d06f23cb62d080054ea4ee3165be39efe980c31062257b55f0ffd84ac902178",
         "affectsGlobalScope": false
       },
       "./src/nodes/element/element-effect.ts": {
@@ -577,8 +567,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/block.ts": {
-        "version": "c90ac93995c26792a96a90ab7613e96edf16ef2e1978233f5c4182d8d527b593",
-        "signature": "c10664a0a721c3a36561cf11d81d3886e1960880192bee65751a821d3e8a64f7",
+        "version": "344dd5e959d75f1f33eb4e022de34f56e1f79e64707e7a1c11110c21eec25a5b",
+        "signature": "900eb2c7a48b223194a7bffe081ccc340b2ac830171d29a60615058f927d4826",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/fast-array-diff@1.0.0/node_modules/fast-array-diff/dist/diff/same.d.ts": {
@@ -617,13 +607,18 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/each.ts": {
-        "version": "8f07eb10e0ca5f426c2672f395cbb566d3fac6bc1107912e7d05e1899e17d4a8",
-        "signature": "e866db0751ea7e591d533b76057b11f212bc5f39ac3a08f44f130ffa22e09206",
+        "version": "770439cd9e0a896c80588573c4a185123492ecd4f5a9ca7d520d0684f9ced6cc",
+        "signature": "ded57ae83dc60298937658912e1b1499e7c22e299b353135c100bd0d4d67dc74",
         "affectsGlobalScope": false
       },
       "./src/nodes/content.ts": {
-        "version": "87d638a2d261b981605a84f4d74c982faa923bbbddf106ddd1677857b34fac4c",
-        "signature": "721a50de3a76c3d726d9eca703d322afc72b9549e45a83ace1fc7d2d3f2dd161",
+        "version": "459468aa02efab390c4efa2368e541e461884aed7cb05245925b6ca1657f9109",
+        "signature": "986e9db523cb2415edf949cf0da71c695006638396e454a928e24929503a3fce",
+        "affectsGlobalScope": false
+      },
+      "./src/brands.ts": {
+        "version": "c81faed265fb20b3b22e08593905cd022b0faa416f456778f87fe6d9525cf33f",
+        "signature": "d46ab014fcbd8fdf20f56ca69f5c70da6f2f882087d2eef0b8ae8e376a56ed33",
         "affectsGlobalScope": false
       },
       "./src/utils/option.ts": {
@@ -647,13 +642,13 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/choice.ts": {
-        "version": "c8c99191abd537125d60d9b3b13c111631de8822b77937054c993e6473e1a3ad",
-        "signature": "78f6470b582005c8555842f9d0b9ebe55730358e8aaff92f930e40ac202c38f9",
+        "version": "9ce75d398e9b385189eb6f79cb74955a85d0500b90d4d35b8a738426ea306938",
+        "signature": "94470b9ce08333d2f31b3c8e8a5146462c02c268e2ac58075e5d214b4676f9da",
         "affectsGlobalScope": false
       },
       "./src/debug/tree.ts": {
-        "version": "278ee1c3e9a546c2e9088c685e84c400eb00da88f56f84b6c0199d3ec46974ae",
-        "signature": "77ae413ac5a8e18965b200693100bbf70ea5d3520a77a0cf16205c670447d48f",
+        "version": "9ccabc15e4d1712eccb069cb3a7b71629bc82a22b5af18443b921b5dfbdff9d7",
+        "signature": "14d4e291260bb2fa005090e5ae06a4c96dba3809a8db9806ede4fc9cf0b70689",
         "affectsGlobalScope": false
       },
       "./src/owner.ts": {
@@ -667,8 +662,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/dsl/dsl.ts": {
-        "version": "a0da7da6f7a16c6345beced893a260f3fa7d98411000dbe3281cc15f6b55d889",
-        "signature": "f5eb3e1bc1729003961c204e9ef0d3b00674bc4e18285f40a3e807e6ad05455d",
+        "version": "60a7022cae0f937562a3f8dfd519f1cdada940e5bbbc743801e892d7c7f060f5",
+        "signature": "9793b9106503c82fd595c48474093207b78cd70fb5190fe434494db299fb0953",
         "affectsGlobalScope": false
       },
       "./src/nodes/public.ts": {
@@ -682,8 +677,8 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "abc23bfe78d4713af6d8e4dbc641542b2606cc4a0c7c9585810ca2451c9862fc",
-        "signature": "5cad1b2d6b30794e26f1accd079b75ff033d5d4d81e3cec9df55a132224b0efe",
+        "version": "eb6983862934d861d4d22b862f8cfa462213a95a7790b6fa03b3e6997b8111df",
+        "signature": "59787ae1b3088b8002ac576f6a8d8f1a7cdb9bc1a24dbf9460d69e851ee7ea22",
         "affectsGlobalScope": false
       },
       "./app/router/url-bar.ts": {
@@ -697,13 +692,13 @@
         "affectsGlobalScope": false
       },
       "./app/pages/utils.ts": {
-        "version": "03d9a30f5c93de7c7372e8a8021d8f1f813d5bdc49a7d5a5d168b682183e6b3b",
-        "signature": "e4fc82e565e6695e334c4f53294968997a171ebd4eec35c3e2017450d4a5f393",
+        "version": "bada652809eae70bd1e14138f6ae312f0db377a0497d748581bf9e96ae919472",
+        "signature": "50e1f777b8512fd65ca5e23098c38030a8218bb43e0ef00ccf4b3414f00d0952",
         "affectsGlobalScope": false
       },
       "./app/pages/nav.ts": {
-        "version": "a8633b3feab079303b3bad8423adee37740745383c4093339ac0c6a90274e339",
-        "signature": "bb5f8b8aa7d5e58260c7c2c3cdbb1f1dd2212be0cb50fc8e684a7c2d3d72918a",
+        "version": "12db7543557df5a142f2aa93f8c42c551c1059d87c2b50b06b1bac6b38a86f15",
+        "signature": "2477589691e02b12c64faa18fd05c93ff15544df4b1a0e4a32ab26b62a8afda9",
         "affectsGlobalScope": false
       },
       "./app/pages/page.ts": {
@@ -712,12 +707,12 @@
         "affectsGlobalScope": false
       },
       "./app/pages/index.ts": {
-        "version": "4c380c452d38fec914bcf0ab239de030262493dca5c2f794cbfe09b84f418b3b",
-        "signature": "664a8714d23ea6a7d08c9225164f93ae296e4fb2cd832f75df39fc845b934baa",
+        "version": "914449418838d642367fdbc16b669bffe0780e5aa0c29ded4e338817681a2a3b",
+        "signature": "572fcaca7acb51539296e0c6eaaf4a6126d6f77be5bae53a9cb2615f22afd0eb",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/subnav.ts": {
-        "version": "bef4b039233ddb05227b5695ec61b0619dd8211ce3d48456d282d92b94bb38fc",
+        "version": "ec4ecec0a2cb670edcb70c1f14a685320b93cda91e09596495e8c507357162fd",
         "signature": "60000bba5b29b98154bb583c46425b40f93aff193e2e06a128daaf13aaedb6b6",
         "affectsGlobalScope": false
       },
@@ -772,22 +767,22 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/avatar.ts": {
-        "version": "b9818cec1b60208ed9fb9e7cefa0b44e745a0c14af60cd9a41b560d3a98d8a55",
-        "signature": "1cea219c927eaa77fd22b233f9ef91dbc48dc59d19a6cb1a270d1382583de4a5",
+        "version": "151dd3097f26f376b212d9377731dbba9cc51b25efff2d57140922da3c312c67",
+        "signature": "5a14298d356e966425b14840187dde1713851d9de7dbf9a0df9648334aa634e4",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/received-message/avatar.ts": {
-        "version": "0aa4f256e9dc1b865bcb8e27787b1943e2ceb02c952291d5b6595b78b8785cc5",
+        "version": "051d16faca59557cde8a5ecfaa819721e5dac58559738a512abd4a485c236637",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/username.ts": {
-        "version": "c622687bb3ca3221e98b39e67a7cab39153eaba066fe039161230f2d0e927ca7",
-        "signature": "91238c9261d22f3e1767ff10fb12994073e5fb17b423e5c51f11a5d1e03f9f61",
+        "version": "10d31818776b1abf30e38edc97074962badce0d78beec3ee8829fd8e1b4314d6",
+        "signature": "ae19dcb766bf39bb48775d5fbc4fa7ed2f601dfcec45a9b0c22efee51b8136d9",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/received-message/username.ts": {
-        "version": "4fda64842daa74073b6735e9abc11e4160b41a920d1d75589f6cae3f9249a116",
+        "version": "fd96eb7e3f386b4cf985370b1d8b3bdbdbd0c761af275d7c3c1680955ee4fe89",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
@@ -797,12 +792,12 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/sent-message/avatar.ts": {
-        "version": "ecdda8955339ba2c99b5d0aebbe26119605470f7bce54ffebe6c7f6c8a884824",
+        "version": "7797b53558e67035564830ecdd00fd3607747b341cfae62c6625430fbd440c1c",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/sent-message/username.ts": {
-        "version": "f71781cacc1ad0a38bfe11ab58ba2224a850a1f2ee22800d64c3a730af93bcf1",
+        "version": "ad287fb8c375f8a90fa9c5b001361a8f6a9ab5ea70f775bd40d3c213380a76b7",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
@@ -822,27 +817,27 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/avatar.ts": {
-        "version": "0d01d56fe7042c4830ae2737a380c4af1abcbd3b16110339ac3b20092878b87b",
-        "signature": "a4e0f3253701c1815d495fa2c48d8833d05ca3818e9827625d49db23a3e2ae52",
+        "version": "dac75be60d196030b486d5866c4d5c0d9810daca567cca885eba4905954c5924",
+        "signature": "5a14298d356e966425b14840187dde1713851d9de7dbf9a0df9648334aa634e4",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/username.ts": {
-        "version": "c622687bb3ca3221e98b39e67a7cab39153eaba066fe039161230f2d0e927ca7",
-        "signature": "91238c9261d22f3e1767ff10fb12994073e5fb17b423e5c51f11a5d1e03f9f61",
+        "version": "728f91179ab70b81ffce0a236ad72b8f4997efbfe78e232b474bd96a271e5ada",
+        "signature": "ae19dcb766bf39bb48775d5fbc4fa7ed2f601dfcec45a9b0c22efee51b8136d9",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/message.ts": {
-        "version": "391e0823fdacaa9bca35f81b6f46a1281558bdd398076f8504696cce2051c977",
-        "signature": "d1f918b6d600bae4df5f00155efd336db337ce6057c36ef02d8afdecf530614d",
+        "version": "10709726b948c1c88029779342cb3ea7a7e5424062240f0a9b3a6a05d88c647b",
+        "signature": "472ac83bba3d70d5adbd0914aa983c548f5c60c5f09a98b4f9fc2f277c52a3bb",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/received-message/index.ts": {
-        "version": "d8a5f2c55546bc0de1a4c2f75eb8f0574b7423b06deffe3834b9d3f7e4d66e15",
+        "version": "823062482af6b3b2609ed434d367982236f6a531268d3f7bd13ad74bb6a15900",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/sent-message/index.ts": {
-        "version": "ad409635769921a2b9aac294cc675fc81152adaa6b8d5e10437c2c9b1404e799",
+        "version": "5082d8db644fb78032c94b1ae19b76bb2f7003ffb145fd466db5312b48da5da6",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
@@ -851,8 +846,38 @@
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
+      "./app/pages/tutorial/part5/new-message-input.ts": {
+        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
+        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/avatar.ts": {
+        "version": "151dd3097f26f376b212d9377731dbba9cc51b25efff2d57140922da3c312c67",
+        "signature": "5a14298d356e966425b14840187dde1713851d9de7dbf9a0df9648334aa634e4",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/username.ts": {
+        "version": "728f91179ab70b81ffce0a236ad72b8f4997efbfe78e232b474bd96a271e5ada",
+        "signature": "ae19dcb766bf39bb48775d5fbc4fa7ed2f601dfcec45a9b0c22efee51b8136d9",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/message.ts": {
+        "version": "449d133de86ebee8bf943616c345feb83d7a188cd0006c1fc21114b24223635c",
+        "signature": "a4cdaebe23a0ba038aa94faccfa5ca6b83d20f82824857ade62eac153c4717dc",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/received-message/index.ts": {
+        "version": "8ebd94b8caf04e2115f526da6eee48757bd618cbba2a7f0797e65dae0d5550b1",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/sent-message/index.ts": {
+        "version": "edbe5d471de4b8109bfe15ee230fb40bbcd1431ff3f4925af51d48ded824669f",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
       "./app/pages/tutorial/part5.ts": {
-        "version": "9c5f2e5666f12d630d60eea7b92749a095ce2c4de647b7185d87dc011019f26a",
+        "version": "5193890c9935d8d03b7e1e5b5eb42aeda97e0a8735806ff7352f405a01878f96",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
@@ -862,7 +887,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/state/counter.ts": {
-        "version": "7fdebaa5b735f7ee10eda1c49ff57b618ae6b2b24b66e6a55114f44748d9778d",
+        "version": "ee5af8f3e61a5343120c683468a24a4710f8dee83a2ff28e184a9202ad9051cb",
         "signature": "47e7e5d81fe7e7d4a429ececfc2a40eb4ef24ba32b03f04473c53a46bf5a8987",
         "affectsGlobalScope": false
       },
@@ -887,28 +912,53 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/received-message/avatar.ts": {
-        "version": "0aa4f256e9dc1b865bcb8e27787b1943e2ceb02c952291d5b6595b78b8785cc5",
-        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "version": "c4fcd481656dff5156e2211c7fedfeb73052779012280148e04816bc97767254",
+        "signature": "f284611a98d4c8063225f5e22be1d725dd2e61c9d26a4978b2b31eb0bfa647b1",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/received-message/username.ts": {
-        "version": "4fda64842daa74073b6735e9abc11e4160b41a920d1d75589f6cae3f9249a116",
+        "version": "7ca4570e351b1d4ac3913beadf3652c175a4d314e475f731a50c254340d4d881",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/sent-message/avatar.ts": {
-        "version": "ecdda8955339ba2c99b5d0aebbe26119605470f7bce54ffebe6c7f6c8a884824",
+        "version": "1242cabd2843fb2ca07227bf8a48b4b07eb51541242d8c8071fb70afdc20f7e9",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/sent-message/username.ts": {
-        "version": "f71781cacc1ad0a38bfe11ab58ba2224a850a1f2ee22800d64c3a730af93bcf1",
+        "version": "aadbf98e90b58c4aa614b2873f438798891d4cb7a3a1c37f4912da282f15fc81",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/messages.ts": {
+        "version": "660bdfd01587e87a20e98bdf4efd7de49aeb8b1966df3c90e1555e72340235a6",
+        "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/received-message/avatar.ts": {
+        "version": "5d40a1b48e52fc389b4fd797645a05e16c4bcb33b21e46a989d66e5199353900",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/received-message/username.ts": {
+        "version": "7ca4570e351b1d4ac3913beadf3652c175a4d314e475f731a50c254340d4d881",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/sent-message/avatar.ts": {
+        "version": "1242cabd2843fb2ca07227bf8a48b4b07eb51541242d8c8071fb70afdc20f7e9",
+        "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
+        "affectsGlobalScope": false
+      },
+      "./app/pages/tutorial/part5/sent-message/username.ts": {
+        "version": "aadbf98e90b58c4aa614b2873f438798891d4cb7a3a1c37f4912da282f15fc81",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./src/nodes/component.ts": {
-        "version": "0a885dc64ef894b878d1522f50d212590a4e09686dc03f1978b5ef0d9ce13b2d",
-        "signature": "11f5d6229c9df3349cc8cd3da5d97d85e5112d8142f9740cb07f5f2656e02641",
+        "version": "5a69af648c06269c9e401c08baf3e763a973f07ee38a945159a5cae84ee08f15",
+        "signature": "3ff4bc4000da4577713383e39848f5614cf877bb5be6d28886536ab6e682709b",
         "affectsGlobalScope": false
       },
       "./src/reactive/collection.ts": {
@@ -1244,7 +1294,8 @@
       ],
       "./app/pages/nav.ts": [
         "./app/pages/utils.ts",
-        "./src/index.ts"
+        "./src/index.ts",
+        "./src/nodes/structure/block.ts"
       ],
       "./app/pages/page.ts": [
         "./src/index.ts"
@@ -1394,8 +1445,7 @@
       "./app/pages/tutorial/part4/received-message/index.ts": [
         "./app/pages/tutorial/part4/message.ts",
         "./app/pages/utils.ts",
-        "./src/index.ts",
-        "./src/nodes/structure/block.ts"
+        "./src/index.ts"
       ],
       "./app/pages/tutorial/part4/received-message/username.ts": [
         "./app/pages/tutorial/part4/username.ts",
@@ -1408,8 +1458,7 @@
       "./app/pages/tutorial/part4/sent-message/index.ts": [
         "./app/pages/tutorial/part4/message.ts",
         "./app/pages/utils.ts",
-        "./src/index.ts",
-        "./src/nodes/structure/block.ts"
+        "./src/index.ts"
       ],
       "./app/pages/tutorial/part4/sent-message/username.ts": [
         "./app/pages/tutorial/part4/username.ts",
@@ -1422,10 +1471,59 @@
       "./app/pages/tutorial/part5.ts": [
         "./app/pages/nav.ts",
         "./app/pages/page.ts",
-        "./app/pages/tutorial/part4/new-message-input.ts",
-        "./app/pages/tutorial/part4/received-message/index.ts",
-        "./app/pages/tutorial/part4/sent-message/index.ts",
+        "./app/pages/tutorial/part5/new-message-input.ts",
+        "./app/pages/tutorial/part5/received-message/index.ts",
+        "./app/pages/tutorial/part5/sent-message/index.ts",
         "./app/pages/tutorial/subnav.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/avatar.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/message.ts": [
+        "./app/pages/tutorial/part5/avatar.ts",
+        "./app/pages/tutorial/part5/username.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts",
+        "./src/nodes/structure/block.ts"
+      ],
+      "./app/pages/tutorial/part5/messages.ts": [
+        "./app/pages/tutorial/part5/message.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/new-message-input.ts": [
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/received-message/avatar.ts": [
+        "./app/pages/tutorial/part5/avatar.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/received-message/index.ts": [
+        "./app/pages/tutorial/part5/message.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/received-message/username.ts": [
+        "./app/pages/tutorial/part5/username.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/sent-message/avatar.ts": [
+        "./app/pages/tutorial/part5/avatar.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/sent-message/index.ts": [
+        "./app/pages/tutorial/part5/message.ts",
+        "./app/pages/utils.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/sent-message/username.ts": [
+        "./app/pages/tutorial/part5/username.ts",
+        "./src/index.ts"
+      ],
+      "./app/pages/tutorial/part5/username.ts": [
         "./app/pages/utils.ts",
         "./src/index.ts"
       ],
@@ -1435,7 +1533,8 @@
       ],
       "./app/pages/utils.ts": [
         "./src/index.ts",
-        "./src/nodes/element/modifier-content.ts"
+        "./src/nodes/element/modifier-content.ts",
+        "./src/nodes/structure/block.ts"
       ],
       "./app/router/router.ts": [
         "./app/router/url-bar.ts",
@@ -1890,6 +1989,8 @@
       ],
       "./src/brands.ts": [
         "./src/glimmer/cache.ts",
+        "./src/nodes/content.ts",
+        "./src/reactive/cell.ts",
         "./src/utils/predicates.ts"
       ],
       "./src/debug/tree.ts": [
@@ -1942,7 +2043,6 @@
         "./src/nodes/public.ts",
         "./src/owner.ts",
         "./src/reactive/cell.ts",
-        "./src/reactive/dict.ts",
         "./src/utils/public.ts"
       ],
       "./src/nodes/app.ts": [
@@ -1955,6 +2055,7 @@
         "./src/owner.ts"
       ],
       "./src/nodes/comment.ts": [
+        "./src/brands.ts",
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
@@ -1966,11 +2067,10 @@
         "./src/nodes/dsl/utils.ts",
         "./src/nodes/structure/block.ts",
         "./src/owner.ts",
-        "./src/reactive/cell.ts",
-        "./src/reactive/dict.ts",
-        "./src/utils/predicates.ts"
+        "./src/reactive/cell.ts"
       ],
       "./src/nodes/content.ts": [
+        "./src/brands.ts",
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
@@ -1984,6 +2084,7 @@
         "./src/utils/predicates.ts"
       ],
       "./src/nodes/dsl/dsl.ts": [
+        "./src/assertions.ts",
         "./src/dom/simplest.ts",
         "./src/glimmer/cache.ts",
         "./src/nodes/comment.ts",
@@ -2002,13 +2103,13 @@
         "./src/reactive/cell.ts"
       ],
       "./src/nodes/dsl/utils.ts": [
+        "./src/brands.ts",
         "./src/nodes/content.ts",
         "./src/nodes/text.ts",
-        "./src/reactive/cell.ts",
-        "./src/reactive/dict.ts",
-        "./src/utils/predicates.ts"
+        "./src/reactive/cell.ts"
       ],
       "./src/nodes/element/attribute.ts": [
+        "./src/brands.ts",
         "./src/nodes/element/modifier-content.ts",
         "./src/reactive/cell.ts"
       ],
@@ -2056,15 +2157,18 @@
         "./src/utils/predicates.ts"
       ],
       "./src/nodes/structure/choice.ts": [
+        "./src/brands.ts",
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
         "./src/nodes/content.ts",
+        "./src/nodes/structure/block.ts",
         "./src/reactive/cell.ts"
       ],
       "./src/nodes/structure/each.ts": [
         "./src/array/normalize.ts",
         "./src/assertions.ts",
+        "./src/brands.ts",
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
@@ -2076,6 +2180,7 @@
         "./src/utils/type.ts"
       ],
       "./src/nodes/text.ts": [
+        "./src/brands.ts",
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
@@ -2092,12 +2197,6 @@
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
         "./src/brands.ts",
         "./src/glimmer/cache.ts",
-        "./src/reactive/dict.ts",
-        "./src/utils/predicates.ts"
-      ],
-      "./src/reactive/dict.ts": [
-        "./src/glimmer/cache.ts",
-        "./src/reactive/cell.ts",
         "./src/utils/predicates.ts"
       ],
       "./src/utils/public.ts": [
@@ -2230,7 +2329,6 @@
       "./app/pages/tutorial/part4/message.ts": [
         "./src/index.ts",
         "./src/nodes/dsl/utils.ts",
-        "./src/nodes/structure/block.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part4/new-message-input.ts": [
@@ -2239,6 +2337,7 @@
       ],
       "./app/pages/tutorial/part4/received-message/avatar.ts": [
         "./src/index.ts",
+        "./src/nodes/dsl/utils.ts",
         "./src/owner.ts"
       ],
       "./app/pages/tutorial/part4/received-message/index.ts": [
@@ -2270,20 +2369,62 @@
         "./app/pages/page.ts",
         "./src/index.ts"
       ],
+      "./app/pages/tutorial/part5/avatar.ts": [
+        "./src/index.ts",
+        "./src/nodes/dsl/utils.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/message.ts": [
+        "./src/index.ts",
+        "./src/nodes/dsl/utils.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/messages.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/new-message-input.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/received-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/received-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/received-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/sent-message/avatar.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/sent-message/index.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/sent-message/username.ts": [
+        "./src/index.ts",
+        "./src/owner.ts"
+      ],
+      "./app/pages/tutorial/part5/username.ts": [
+        "./src/index.ts",
+        "./src/nodes/dsl/utils.ts",
+        "./src/owner.ts"
+      ],
       "./app/pages/tutorial/subnav.ts": [
         "./src/index.ts",
         "./src/owner.ts"
       ],
       "./app/pages/utils.ts": [
         "./src/index.ts",
-        "./src/nodes/comment.ts",
+        "./src/nodes/dsl/utils.ts",
         "./src/nodes/element/element-effect.ts",
-        "./src/nodes/element/element.ts",
         "./src/nodes/element/modifier-content.ts",
-        "./src/nodes/fragment.ts",
-        "./src/nodes/structure/block.ts",
-        "./src/nodes/structure/each.ts",
-        "./src/nodes/text.ts",
         "./src/owner.ts"
       ],
       "./app/router/router.ts": [
@@ -2733,10 +2874,13 @@
         "./node_modules/.pnpm/fast-array-diff@1.0.0/node_modules/fast-array-diff/dist/index.d.ts"
       ],
       "./src/brands.ts": [
-        "./src/glimmer/cache.ts"
+        "./src/glimmer/cache.ts",
+        "./src/nodes/content.ts",
+        "./src/reactive/cell.ts"
       ],
       "./src/debug/tree.ts": [
-        "./src/nodes/content.ts"
+        "./src/nodes/content.ts",
+        "./src/nodes/structure/block.ts"
       ],
       "./src/dom/bounds.ts": [
         "./src/dom/cursor.ts",
@@ -2767,7 +2911,6 @@
         "./src/nodes/public.ts",
         "./src/owner.ts",
         "./src/reactive/cell.ts",
-        "./src/reactive/dict.ts",
         "./src/utils/public.ts"
       ],
       "./src/nodes/app.ts": [
@@ -2787,10 +2930,10 @@
         "./src/nodes/dsl/utils.ts",
         "./src/nodes/structure/block.ts",
         "./src/owner.ts",
-        "./src/reactive/cell.ts",
-        "./src/reactive/dict.ts"
+        "./src/reactive/cell.ts"
       ],
       "./src/nodes/content.ts": [
+        "./src/brands.ts",
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
@@ -2857,6 +3000,7 @@
       ],
       "./src/nodes/structure/choice.ts": [
         "./src/nodes/content.ts",
+        "./src/nodes/structure/block.ts",
         "./src/reactive/cell.ts"
       ],
       "./src/nodes/structure/each.ts": [
@@ -2877,8 +3021,8 @@
         "./src/nodes/content.ts"
       ],
       "./src/reactive/cell.ts": [
-        "./src/glimmer/cache.ts",
-        "./src/reactive/dict.ts"
+        "./src/brands.ts",
+        "./src/glimmer/cache.ts"
       ],
       "./src/utils/public.ts": [
         "./src/utils/collection.ts",
@@ -2926,6 +3070,17 @@
       "./app/pages/tutorial/part4/sent-message/username.ts",
       "./app/pages/tutorial/part4/username.ts",
       "./app/pages/tutorial/part5.ts",
+      "./app/pages/tutorial/part5/avatar.ts",
+      "./app/pages/tutorial/part5/message.ts",
+      "./app/pages/tutorial/part5/messages.ts",
+      "./app/pages/tutorial/part5/new-message-input.ts",
+      "./app/pages/tutorial/part5/received-message/avatar.ts",
+      "./app/pages/tutorial/part5/received-message/index.ts",
+      "./app/pages/tutorial/part5/received-message/username.ts",
+      "./app/pages/tutorial/part5/sent-message/avatar.ts",
+      "./app/pages/tutorial/part5/sent-message/index.ts",
+      "./app/pages/tutorial/part5/sent-message/username.ts",
+      "./app/pages/tutorial/part5/username.ts",
       "./app/pages/tutorial/subnav.ts",
       "./app/pages/utils.ts",
       "./app/router/router.ts",
@@ -3117,7 +3272,6 @@
       "./src/owner.ts",
       "./src/reactive/cell.ts",
       "./src/reactive/collection.ts",
-      "./src/reactive/dict.ts",
       "./src/utils/collection.ts",
       "./src/utils/option.ts",
       "./src/utils/predicates.ts",
@@ -3283,6 +3437,50 @@
       ],
       [
         "./app/pages/tutorial/part5.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/message.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/messages.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/new-message-input.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/received-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/received-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/received-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/sent-message/avatar.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/sent-message/index.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/sent-message/username.ts",
+        1
+      ],
+      [
+        "./app/pages/tutorial/part5/username.ts",
         1
       ],
       [
@@ -3823,6 +4021,10 @@
       ],
       [
         "./src/index.ts",
+        1
+      ],
+      [
+        "./src/into.ts",
         1
       ],
       [

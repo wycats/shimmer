@@ -1,4 +1,5 @@
-import { Reactive } from "../../reactive/cell";
+import { isStatic } from "../../brands";
+import type { Reactive } from "../../reactive/cell";
 import {
   DynamicModifier,
   StaticModifier,
@@ -17,7 +18,7 @@ export function createAttr(
   name: string,
   value: Reactive<string | null>
 ): AttributeModifier {
-  if (Reactive.isStatic(value)) {
+  if (isStatic(value)) {
     return StaticModifier.of("attribute", { name, value }, (cursor) => {
       if (value.now !== null) {
         cursor.setAttributeNS(null, name, value.now);

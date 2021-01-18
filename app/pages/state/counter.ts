@@ -1,13 +1,11 @@
 import {
   Cell,
   component,
-  Dict,
   EFFECTS,
   fragment,
   Owner,
   Pure,
   Reactive,
-  Static,
   text,
 } from "../../../src/index";
 import { el, on } from "../utils";
@@ -17,23 +15,25 @@ export default component((owner: Owner) => () => {
 
   return fragment(
     Counter(owner)({
-      multiple,
-      updateMultiple: new Static((callback: (prev: number) => number) =>
-        multiple.update(callback)
-      ),
+      args: {
+        multiple,
+        updateMultiple: (callback: (prev: number) => number) =>
+          multiple.update(callback),
+      },
     })
   );
 });
 
 const Counter = component(
-  (_owner: Owner) => (
-    args: Dict<{
+  (_owner: Owner) => ({
+    args: { multiple, updateMultiple },
+  }: {
+    args: {
       multiple: Reactive<number>;
-      updateMultiple: Static<(callback: (prev: number) => number) => void>;
-    }>
-  ) => {
+      updateMultiple: Reactive<(callback: (prev: number) => number) => void>;
+    };
+  }) => {
     let count = Cell.of(0);
-    let { multiple, updateMultiple } = args.now;
 
     const change = (amount: number) => () =>
       count.update((prev) => prev + amount);

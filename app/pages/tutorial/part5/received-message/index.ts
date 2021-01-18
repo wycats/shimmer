@@ -8,8 +8,8 @@ export default component((owner: Owner) => () =>
       username: "Tomster",
       userIsActive: true,
       userLocalTime: "4:56pm",
-      avatarTitle: "Tomster's avatar",
-      avatarInitial: "T",
+      // avatarTitle: "Tomster's avatar",
+      // avatarInitial: "T",
       isCurrentUser: false,
     },
     blocks: {

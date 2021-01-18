@@ -1,6 +1,5 @@
 import {
   component,
-  Dict,
   element,
   fragment,
   Owner,
@@ -12,26 +11,26 @@ export const SubNav = component((owner: Owner) => () => {
   return element(
     "nav",
     fragment(
-      SimpleLink(owner)(
-        Dict.of({ href: Reactive.static("#tutorial?part=1") }),
-        "Part 1"
-      ),
-      SimpleLink(owner)(
-        Dict.of({ href: Reactive.static("#tutorial?part=2") }),
-        "Part 2"
-      ),
-      SimpleLink(owner)(
-        Dict.of({ href: Reactive.static("#tutorial?part=3") }),
-        "Part 3"
-      ),
-      SimpleLink(owner)(
-        Dict.of({ href: Reactive.static("#tutorial?part=4") }),
-        "Part 4"
-      ),
-      SimpleLink(owner)(
-        Dict.of({ href: Reactive.static("#tutorial?part=5") }),
-        "Part 5"
-      )
+      SimpleLink(owner)({
+        args: { href: Reactive.static("#tutorial?part=1") },
+        blocks: { default: "Part 1" },
+      }),
+      SimpleLink(owner)({
+        args: { href: Reactive.static("#tutorial?part=2") },
+        blocks: { default: "Part 2" },
+      }),
+      SimpleLink(owner)({
+        args: { href: Reactive.static("#tutorial?part=3") },
+        blocks: { default: "Part 3" },
+      }),
+      SimpleLink(owner)({
+        args: { href: Reactive.static("#tutorial?part=4") },
+        blocks: { default: "Part 4" },
+      }),
+      SimpleLink(owner)({
+        args: { href: Reactive.static("#tutorial?part=5") },
+        blocks: { default: "Part 5" },
+      })
     )
   );
 });

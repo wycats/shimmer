@@ -1,3 +1,4 @@
+import { isStatic } from "../../brands";
 import type { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
@@ -7,8 +8,9 @@ import {
   DynamicContent,
   StableDynamicContent,
   TemplateContent,
-  UpdatableDynamicContent,
+  UpdatableDynamicContent
 } from "../content";
+import type { Block } from "./block";
 
 console.log("CHOICE");
 
@@ -58,7 +60,7 @@ export type Choice<C extends Choices> = Variant<C, keyof C>;
 
 export interface ChoiceInfo<C extends Choices = Choices> {
   value: Reactive<Choice<C>>;
-  match: Match<C, Content>;
+  match: Match<C, Block<[]>>;
 }
 
 export type ChoiceContent<C extends Choices = Choices> = TemplateContent<
@@ -73,12 +75,12 @@ interface ChoiceState<C extends Choices> {
 
 export function createMatch<C extends Choices>(
   reactive: Reactive<Choice<C>>,
-  match: Match<C, Content>
+  match: Match<C, Block<[]>>
 ): Content {
   return build(() => {
-    if (Reactive.isStatic(reactive)) {
+    if (isStatic(reactive)) {
       let { discriminant } = reactive.now;
-      return match[discriminant];
+      return match[discriminant].invoke([]);
     }
 
     let data: ChoiceInfo<C> = { value: reactive, match };
@@ -126,13 +128,13 @@ class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
 
 function initialize<C extends Choices>(
   reactive: Reactive<Choice<C>>,
-  match: Match<C, Content>,
+  match: Match<C, Block<[]>>,
   cursor: Cursor,
   dom: SimplestDocument
 ): { bounds: Bounds; content: StableDynamicContent | null } {
   let { discriminant } = reactive.now;
-  let choice = match[discriminant] as Content;
-  let result = choice.render(cursor, dom);
+  let choice = match[discriminant];
+  let result = choice.invoke([]).render(cursor, dom);
 
   if (result instanceof StableDynamicContent) {
     return { bounds: result, content: result };

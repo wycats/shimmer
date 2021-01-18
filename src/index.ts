@@ -12,6 +12,5 @@ export * from "./nodes/content";
 export * from "./nodes/public";
 export * from "./owner";
 export * from "./reactive/cell";
-export * from "./reactive/dict";
 export * from "./utils/public";
 export type { dom };

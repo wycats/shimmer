@@ -2,6 +2,7 @@ import {
   Choice,
   comment,
   component,
+  ComponentData,
   Content,
   dom,
   effect,
@@ -9,12 +10,14 @@ import {
   element,
   IntoReactive,
   match,
+  Owner,
   Pure,
   Reactive,
   VariantInfo,
   Variants,
 } from "../../src/index";
 import type { EffectModifier } from "../../src/nodes/element/modifier-content";
+import type { Block } from "../../src/nodes/structure/block";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
 
@@ -45,20 +48,22 @@ export const If = <T, U>(
   return Pure.of(() => (condition.now ? trueBranch.now : falseBranch.now));
 };
 
-export const Cond = component(
-  () => (
-    bool: Reactive<Choice<Bool>>,
-    ifTrue: Content,
-    ifFalse?: Content
-  ): Content => {
-    let res = match(bool, {
-      true: ifTrue,
-      false: ifFalse || comment(""),
-    });
+interface CondArgs extends ComponentData {
+  args: {
+    bool: Reactive<Choice<Bool>>;
+  };
+  blocks: { ifTrue: Block<[]>; ifFalse?: Block<[]> };
+}
 
-    // if (res === undefined) {
-    //   debugger;
-    // }
+export const Cond = component<Owner, CondArgs>(
+  (_owner: Owner) => ({
+    args: { bool },
+    blocks: { ifTrue, ifFalse },
+  }: CondArgs): Content => {
+    let res = match(bool, {
+      true: () => ifTrue.invoke([]),
+      false: ifFalse ? () => ifFalse.invoke([]) : () => comment(""),
+    });
 
     return res;
   }

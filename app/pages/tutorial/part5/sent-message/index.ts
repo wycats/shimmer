@@ -2,20 +2,6 @@ import { component, fragment, Owner, text } from "../../../../../src/index";
 import { el } from "../../../utils";
 import Message from "../message";
 
-// interface SentMessageArgs extends ComponentArgs {
-//   args: {
-//     username: Reactive<string>;
-//     userIsActive: Reactive<boolean>;
-//     userLocalTime: Reactive<string>;
-//     avatarTitle: Reactive<string>;
-//     avatarInitial: Reactive<string>;
-//     isCurrentUser: Reactive<boolean>;
-//   };
-//   blocks: {
-//     default: BlockFunction;
-//   };
-// }
-
 export default component(
   (owner: Owner) => () =>
     Message(owner)({
@@ -23,8 +9,8 @@ export default component(
         username: "Tomster",
         userIsActive: true,
         userLocalTime: "4:56pm",
-        avatarTitle: "Tomster's avatar",
-        avatarInitial: "T",
+        // avatarTitle: "Tomster's avatar",
+        // avatarInitial: "T",
         isCurrentUser: false,
       },
       blocks: {

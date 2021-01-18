@@ -4,7 +4,7 @@ import {
   Cell,
   Choice,
   component,
-  Dict,
+  ComponentData,
   each,
   EFFECTS,
   element,
@@ -45,21 +45,42 @@ interface CountValue {
  * 2. return IntoReactive(inner)
  */
 
-export const Contact = component(
-  () => (person: Dict<{ name: Dict<{ first: Reactive<string> }> }>) => {
-    return text(Pure.of(() => person.now.name.now.first.now));
+interface Person {
+  name: {
+    first: Reactive<string>;
+  };
+}
+
+interface ContactData extends ComponentData {
+  args: {
+    person: Reactive<Person>;
+  };
+}
+
+export const Contact = component<Owner, ContactData>(
+  (_owner: Owner) => ({ args: { person } }: ContactData) => {
+    return text(Pure.of(() => person.now.name.first.now));
   }
 );
 
 export const Count = component(
-  (owner: Owner) => (counter: Reactive<CountValue>) => {
+  (owner: Owner) => ({
+    args: { counter },
+  }: {
+    args: { counter: Reactive<CountValue> };
+    blocks: {};
+  }) => {
     let secondary = Cell.of(rand());
 
     return fragment(
       Contact(owner)({
-        name: Dict.of({
-          first: Pure.of(() => String(secondary.now)),
-        }),
+        args: {
+          person: {
+            name: {
+              first: Pure.of(() => String(secondary.now)),
+            },
+          },
+        },
       }),
       text(" "),
       element(
@@ -92,20 +113,49 @@ function rand() {
 
 type ReactiveCounts = Reactive<Iterable<IntoReactive<CountValue>>>;
 
-const Texts = component((owner: Owner) => (counts: ReactiveCounts) => {
-  return each<CountValue>(counts, (i) => String(i.id), Count(owner));
-});
+const Texts = component(
+  (owner: Owner) => ({
+    args: { counts },
+  }: {
+    args: { counts: ReactiveCounts };
+  }) => {
+    return each<CountValue>(
+      counts,
+      (i) => String(i.id),
+      (counter) => Count(owner)({ args: { counter }, blocks: {} })
+    );
+  }
+);
 
-const Cond = component(() => (bool: Reactive<Choice<Bool>>) => {
-  return match(bool, {
-    true: text("true"),
-    false: text("false"),
-  });
-});
+const Cond = component(
+  () => ({
+    args: { bool },
+  }: {
+    args: { bool: Reactive<Choice<Bool>> };
+    blocks: {};
+  }) => {
+    return match(bool, {
+      true: () => text("true"),
+      false: () => text("false"),
+    });
+  }
+);
 
 const Hello = component(
-  (owner: Owner) => (counts: ReactiveCounts, bool: Reactive<Choice<Bool>>) => {
-    return fragment(Nav(owner)(), Texts(owner)(counts), Cond(owner)(bool));
+  (owner: Owner) => ({
+    args: { counts, bool },
+  }: {
+    args: {
+      counts: ReactiveCounts;
+      bool: Reactive<Choice<Bool>>;
+    };
+    blocks: {};
+  }) => {
+    return fragment(
+      Nav(owner)(),
+      Texts(owner)({ args: { counts } }),
+      Cond(owner)({ args: { bool } })
+    );
   }
 );
 
@@ -141,7 +191,7 @@ export class IndexPage implements PageHooks<IndexState> {
     let doc = owner.service("doc");
     let { counts, bool } = state;
 
-    let hello = Hello(owner)(counts, bool);
+    let hello = Hello(owner)({ args: { counts, bool } });
     console.log(tree(hello));
 
     let app = doc.render(hello, cursor);

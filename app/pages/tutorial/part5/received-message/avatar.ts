@@ -1,11 +1,12 @@
 import { component, Owner } from "../../../../../src/index";
-import Username from "../username";
+import Avatar from "../avatar";
 
 export default component((owner: Owner) => () =>
-  Username(owner)({
+  Avatar(owner)({
     args: {
-      name: "Zoey",
-      localTime: undefined,
+      title: "Tomster's avatar",
+      initial: "T",
+      isActive: true,
     },
   })
 );

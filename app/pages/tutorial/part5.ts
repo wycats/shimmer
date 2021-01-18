@@ -9,9 +9,9 @@ import {
 import { Nav } from "../nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "../page";
 import { el } from "../utils";
-import NewMessageInput from "./part4/new-message-input";
-import ReceivedMessage from "./part4/received-message";
-import SentMessage from "./part4/sent-message";
+import NewMessageInput from "./part5/new-message-input";
+import ReceivedMessage from "./part5/received-message";
+import SentMessage from "./part5/sent-message";
 import { SubNav } from "./subnav";
 
 interface TutorialState {}

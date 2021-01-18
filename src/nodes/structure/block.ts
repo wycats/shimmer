@@ -15,7 +15,7 @@ import type { Args } from "../dsl/utils";
 
 export interface BlockInfo<A extends Args = any> {
   args: A;
-  callback: BlockFunction<A>;
+  callback: (args: A) => Content;
   content: Content;
 }
 
@@ -23,22 +23,18 @@ interface BlockState {
   content: StableContentResult;
 }
 
-export type BlockFunction<A extends Args> = (args: A) => Content;
-
-export function createBlock<A extends Args>(
-  callback: BlockFunction<A>
-): Block<A> {
-  return new Block(callback);
-}
-
-export class Block<A extends Args> {
+export class Block<A extends Args = any> {
   static is(value: unknown): value is Block<Args> {
     return isObject(value) && value instanceof Block;
   }
 
+  static of<A extends Args>(callback: (args: A) => Content): Block<A> {
+    return new Block(callback);
+  }
+
   #callback: (args: A) => Content;
 
-  constructor(callback: BlockFunction<A>) {
+  constructor(callback: (args: A) => Content) {
     this.#callback = callback;
   }
 
