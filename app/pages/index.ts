@@ -122,7 +122,9 @@ const Texts = component(
     return each<CountValue>(
       counts,
       (i) => String(i.id),
-      (counter) => Count(owner)({ args: { counter }, blocks: {} })
+      (counter) => {
+        return Count(owner)({ args: { counter }, blocks: {} });
+      }
     );
   }
 );

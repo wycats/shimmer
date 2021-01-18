@@ -97,7 +97,7 @@ export interface DynamicContentHooks<State> {
   readonly shouldClear: boolean;
 
   isValid(state: State): boolean;
-  poll(state: State): void;
+  poll(state: State, dom: SimplestDocument): void;
   render(
     cursor: Cursor,
     dom: SimplestDocument,
@@ -122,7 +122,7 @@ export abstract class UpdatableDynamicContent<State = unknown>
   readonly shouldClear: boolean = true;
 
   abstract isValid(state: State): boolean;
-  abstract poll(state: State): void;
+  abstract poll(state: State, dom: SimplestDocument): void;
   abstract render(
     cursor: Cursor,
     dom: SimplestDocument,
@@ -144,8 +144,8 @@ export class ConcreteUpdatableDynamicContent<
     return this.#hooks.isValid(state);
   }
 
-  poll(state: State): void {
-    return this.#hooks.poll(state);
+  poll(state: State, dom: SimplestDocument): void {
+    return this.#hooks.poll(state, dom);
   }
 
   render(
@@ -168,6 +168,10 @@ export type StaticRenderFunction = (
 ) => Bounds;
 
 export class StableDynamicContent<State = unknown> extends AbstractBounds {
+  static is(value: unknown): value is StableDynamicContent {
+    return isObject(value) && value instanceof StableDynamicContent;
+  }
+
   static of<State>(
     hooks: DynamicContentHooks<State>,
     info: { type: ContentType; info: unknown }
@@ -220,7 +224,7 @@ export class StableDynamicContent<State = unknown> extends AbstractBounds {
 
   poll(): void {
     if (this.#hooks.isValid(this.#last.state)) {
-      this.#hooks.poll(this.#last.state);
+      this.#hooks.poll(this.#last.state, this.#dom);
       return;
     }
 

@@ -30,8 +30,6 @@ export function createEach<T>(
   key: (arg: T) => unknown,
   block: Block<[Reactive<T>]>
 ): Content {
-  // let reactive = Reactive.from(value);
-
   return initialize({ reactive, key, block });
 }
 

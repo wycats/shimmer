@@ -1,12 +1,12 @@
 import type { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
-import { Effect } from "../../glimmer/cache";
 import { isObject } from "../../utils/predicates";
 import {
   Content,
   DynamicContent,
   StableContentResult,
+  StableDynamicContent,
   StaticContent,
   StaticTemplateContent,
   UpdatableDynamicContent,
@@ -21,6 +21,20 @@ export interface BlockInfo<A extends Args = any> {
 
 interface BlockState {
   content: StableContentResult;
+}
+
+export function createBlock<A extends Args>(
+  callback: (args: A) => Content
+): (args: A) => Content {
+  return callback;
+}
+
+export class InvokedBlock {
+  #callback: () => Content;
+
+  constructor(callback: () => Content) {
+    this.#callback = callback;
+  }
 }
 
 export class Block<A extends Args = any> {
@@ -76,7 +90,7 @@ class UpdatableBlock extends UpdatableDynamicContent<BlockState> {
   }
 
   poll(state: BlockState): void {
-    if (Effect.is(state.content)) {
+    if (StableDynamicContent.is(state.content)) {
       state.content.poll();
     }
 

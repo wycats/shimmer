@@ -68,10 +68,6 @@ export type IntoBlockFunction<A extends Args> = A extends []
   ? () => IntoContent
   : (...args: A) => IntoContent;
 
-// export type IntoBlockFunction<A extends Args> = (
-//   ...args: any[]
-// ) => A extends [] ? () => IntoContent : (...args: A) => IntoContent;
-
 export type IntoBlock<A extends Args> =
   | IntoBlockFunction<A>
   | Block<A>
@@ -92,7 +88,9 @@ function coerceIntoBlock<A extends Args>(
   if (Block.is(into)) {
     return into;
   } else if (typeof into === "function") {
-    return Block.of((args: A) => intoContent(into(...args)));
+    return Block.of((args: A) => {
+      return intoContent(into(...args));
+    });
   } else {
     userError(
       typeof into === "string" || Content.is(into),

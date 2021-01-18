@@ -1,6 +1,5 @@
 import { unwrap, userError } from "../assertions";
 import type { StableDynamicContent } from "../nodes/content";
-import { isObject } from "../utils/predicates";
 import { Cursor } from "./cursor";
 import type { SimplestNode, SimplestParentNode } from "./simplest";
 
@@ -28,10 +27,6 @@ export const Bounds = {
 };
 
 export abstract class AbstractBounds {
-  static is(value: unknown): value is StaticBounds {
-    return isObject(value) && value instanceof AbstractBounds;
-  }
-
   #parent: SimplestParentNode;
 
   constructor(parent: SimplestParentNode) {

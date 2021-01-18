@@ -501,19 +501,19 @@
         "signature": "3d5403580a8c965f86f171843e628cfd8fbcdca01abec87319da612a7e042bc9",
         "affectsGlobalScope": false
       },
-      "./src/utils/predicates.ts": {
-        "version": "35f27f533bfa779a6d50225ea79ef66f4c43c4ce72c1e4d3194eb138ecd14160",
-        "signature": "92e2fc9daf09669ef4fc2a9da793db4dfb8dc89e7df87d6c46a90c80668e1265",
-        "affectsGlobalScope": false
-      },
       "./src/dom/cursor.ts": {
         "version": "3852b440ee16158d6f778ccfc8111154210baa739072af60183528ad24b671c8",
         "signature": "ac9f530c7e92540f4a1681e000de4359d9f4581d9c61dcbe8f442fd4e4d6d1d4",
         "affectsGlobalScope": false
       },
       "./src/dom/bounds.ts": {
-        "version": "7377cb83700e8ef888d4af625f14df320869e989e9e7c1fe3ce462818ca321cc",
-        "signature": "8f44cb6c95f34dc1450ab1778d88011cc5b7c220dc8f115a4b33aef209d78414",
+        "version": "077955add567952bd4973dd42572ce71d1db2857cd72985ddd7090169bf27c60",
+        "signature": "e427699e4da84da88f36a1fbb8d447972d390edc00a1d2086459bfe777e87680",
+        "affectsGlobalScope": false
+      },
+      "./src/utils/predicates.ts": {
+        "version": "35f27f533bfa779a6d50225ea79ef66f4c43c4ce72c1e4d3194eb138ecd14160",
+        "signature": "92e2fc9daf09669ef4fc2a9da793db4dfb8dc89e7df87d6c46a90c80668e1265",
         "affectsGlobalScope": false
       },
       "./src/reactive/cell.ts": {
@@ -567,8 +567,8 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/block.ts": {
-        "version": "344dd5e959d75f1f33eb4e022de34f56e1f79e64707e7a1c11110c21eec25a5b",
-        "signature": "900eb2c7a48b223194a7bffe081ccc340b2ac830171d29a60615058f927d4826",
+        "version": "d4cd8e8efd8db3f4de0215eca66230a423191ecf80a0ab639d2620d42e03e6a9",
+        "signature": "ea6bf5d3554ba1724f2e833c59e4095dc6a8262964ccaa5dd297d35124713db5",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/fast-array-diff@1.0.0/node_modules/fast-array-diff/dist/diff/same.d.ts": {
@@ -607,13 +607,13 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/each.ts": {
-        "version": "770439cd9e0a896c80588573c4a185123492ecd4f5a9ca7d520d0684f9ced6cc",
+        "version": "61aafb8616e5783d0db91698a8ab9fc562a8fbcdca89c5ac5ad55c3fbd99cceb",
         "signature": "ded57ae83dc60298937658912e1b1499e7c22e299b353135c100bd0d4d67dc74",
         "affectsGlobalScope": false
       },
       "./src/nodes/content.ts": {
-        "version": "459468aa02efab390c4efa2368e541e461884aed7cb05245925b6ca1657f9109",
-        "signature": "986e9db523cb2415edf949cf0da71c695006638396e454a928e24929503a3fce",
+        "version": "f65e37f98f26e38b0ba21924e186c32be697b00de3b42c3351ee922516e17938",
+        "signature": "623f0a5f220d24a7528f360c7f5d261c06a32d8dd0e62b83a6d049362266fe74",
         "affectsGlobalScope": false
       },
       "./src/brands.ts": {
@@ -662,7 +662,7 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/dsl/dsl.ts": {
-        "version": "60a7022cae0f937562a3f8dfd519f1cdada940e5bbbc743801e892d7c7f060f5",
+        "version": "ce20a7a7a1e68c58da548951c5b237d0c4fb81ca990f760e83bea45cb20a9516",
         "signature": "9793b9106503c82fd595c48474093207b78cd70fb5190fe434494db299fb0953",
         "affectsGlobalScope": false
       },
@@ -707,7 +707,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/index.ts": {
-        "version": "914449418838d642367fdbc16b669bffe0780e5aa0c29ded4e338817681a2a3b",
+        "version": "f41ba005941da6eb8f17c46d15b2a856d5191912081672bab59cd64cd956a454",
         "signature": "572fcaca7acb51539296e0c6eaaf4a6126d6f77be5bae53a9cb2615f22afd0eb",
         "affectsGlobalScope": false
       },
@@ -2007,8 +2007,7 @@
         "./src/assertions.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
-        "./src/nodes/content.ts",
-        "./src/utils/predicates.ts"
+        "./src/nodes/content.ts"
       ],
       "./src/dom/cursor.ts": [
         "./src/dom/simplest.ts"
@@ -2151,7 +2150,6 @@
         "./src/dom/bounds.ts",
         "./src/dom/cursor.ts",
         "./src/dom/simplest.ts",
-        "./src/glimmer/cache.ts",
         "./src/nodes/content.ts",
         "./src/nodes/dsl/utils.ts",
         "./src/utils/predicates.ts"
