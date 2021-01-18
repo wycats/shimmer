@@ -36,7 +36,7 @@ export function inFallback(router: RouterService): boolean {
   );
 }
 
-export const SimpleLink = component((owner: Owner) => {
+export const SimpleLink = component((_owner: Owner) => {
   return (args: Dict<{ href: Reactive<string> }>, body: Reactive<string>) => {
     let { href } = args.now;
 

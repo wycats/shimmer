@@ -26,7 +26,7 @@ export default component((owner: Owner) => () => {
 });
 
 const Counter = component(
-  (owner: Owner) => (
+  (_owner: Owner) => (
     args: Dict<{
       multiple: Reactive<number>;
       updateMultiple: Static<(callback: (prev: number) => number) => void>;

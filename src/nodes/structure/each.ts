@@ -1,5 +1,5 @@
 import { diffArray, KeyedNode, Patches } from "../../array/normalize";
-import { assert } from "../../assertions";
+import { assert, unwrap } from "../../assertions";
 import { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
@@ -354,12 +354,12 @@ class RenderEach {
       move: (node, from, to) => {
         trace("moving", node);
 
-        let next = nextNodes[to]!;
+        let next = unwrap(nextNodes[to]);
         let cursor = next.inner.bounds.cursorBefore;
 
         let [content] = nextNodes.splice(from, 1);
-        content!.inner.bounds.move(cursor);
-        nextNodes.splice(to, 0, content!);
+        unwrap(content).inner.bounds.move(cursor);
+        nextNodes.splice(to, 0, unwrap(content));
       },
     });
 
@@ -376,7 +376,7 @@ class RenderEach {
 
 const TRACE = false;
 
-function trace(...args: any[]): void {
+function trace(...args: unknown[]): void {
   if (TRACE) {
     console.log(...args);
   }

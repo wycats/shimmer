@@ -317,13 +317,13 @@
         "affectsGlobalScope": false
       },
       "./src/array/normalize.ts": {
-        "version": "41c754b2275d4ecb72d95efa48852a167aa843057cad7e1c01c06cecfc0b4724",
+        "version": "5de9a46495e4dff123dcb6176d1e10073c8dc9648d5dafd1fbb895e413db07a5",
         "signature": "ad9626c7240dbe9e679e0e3879ec265398d9ba300758a12cbc0759f228a5a8c1",
         "affectsGlobalScope": false
       },
       "./src/assertions.ts": {
-        "version": "b3073f0b6418aa4066a6c0bab31025ce4e4c1229e123de6cf9a904ba7396abcd",
-        "signature": "fb1563c9c8b9bea2f317f3eb0067a0098ba7f579235dda9eeb226ec40bee0b27",
+        "version": "4e48c648388e1bd09f83997541615a4763d96773823b01738149b18163c96816",
+        "signature": "3d5403580a8c965f86f171843e628cfd8fbcdca01abec87319da612a7e042bc9",
         "affectsGlobalScope": false
       },
       "./src/dom/cursor.ts": {
@@ -556,14 +556,19 @@
         "signature": "92e2fc9daf09669ef4fc2a9da793db4dfb8dc89e7df87d6c46a90c80668e1265",
         "affectsGlobalScope": false
       },
+      "./src/brands.ts": {
+        "version": "03b1a1766211257d892405b9a966c3af80d65f2cbf2655c230baa0546277d67a",
+        "signature": "7eec59cb25bf545fb67e461131e1857f66098a780a748363701a0c4b1d206f43",
+        "affectsGlobalScope": false
+      },
       "./src/reactive/dict.ts": {
         "version": "2f73d1469be77005e5f547a20e5d5393d50698f5796a263daf129ded73203cff",
         "signature": "a06c04c04ef9cc8c68b369614d8c81e38699fa37f860d306be35ca2f44840154",
         "affectsGlobalScope": false
       },
       "./src/reactive/cell.ts": {
-        "version": "571a2c35de2d5512f9046eca7d5f4fc100cb3f447d5679877d77eb242706931e",
-        "signature": "e201f9c0f8a883af91e41f3aaba3b5a65ba55be15c7765481d5a22420b88c6a4",
+        "version": "7c194a702df3ddd789098f9c87f3855a9cb3590af61712da02aecefb9be0c28e",
+        "signature": "3115b412a072876e0e8bc4288979471e73b4218cb28838ee0c839f095b435b7f",
         "affectsGlobalScope": false
       },
       "./src/utils/option.ts": {
@@ -572,7 +577,7 @@
         "affectsGlobalScope": false
       },
       "./src/glimmer/cache.ts": {
-        "version": "031e0de9bb8501e49b5b0913d82977ed44863beb05f5d5d2c5471efe17af820d",
+        "version": "9ac05b4d27d80bba810033aabd567c7b6c5747e61767162803eafefd252fedd5",
         "signature": "1a8689a7f94818ab9e8b91a7568c7603985dafa0d03631cc8062277040f242e0",
         "affectsGlobalScope": false
       },
@@ -622,7 +627,7 @@
         "affectsGlobalScope": false
       },
       "./src/nodes/structure/each.ts": {
-        "version": "6041527c9323b59f0de9d4d999d3d9d5d9542b3b46d02e1dc3a56571c77a16ed",
+        "version": "8f07eb10e0ca5f426c2672f395cbb566d3fac6bc1107912e7d05e1899e17d4a8",
         "signature": "e866db0751ea7e591d533b76057b11f212bc5f39ac3a08f44f130ffa22e09206",
         "affectsGlobalScope": false
       },
@@ -632,7 +637,7 @@
         "affectsGlobalScope": false
       },
       "./src/dom/bounds.ts": {
-        "version": "603e087345a36a72e6a38ac8f646dc2439617c78dce5b31d2a57da792fd9884e",
+        "version": "7377cb83700e8ef888d4af625f14df320869e989e9e7c1fe3ce462818ca321cc",
         "signature": "8f44cb6c95f34dc1450ab1778d88011cc5b7c220dc8f115a4b33aef209d78414",
         "affectsGlobalScope": false
       },
@@ -687,17 +692,17 @@
         "affectsGlobalScope": false
       },
       "./app/router/router.ts": {
-        "version": "99a75895e86ec7aaf55c7303ac88665b912d178ccaa46090d2f4b5fc1f0ad9a8",
+        "version": "7093266cd963f73f1201691ee2945bdcc7e482f34ba0157f9bf9eaa4817bbecf",
         "signature": "5ffa7baa143c5ccb99fd518366afeb4f80bb8065078a0f386f3fd1978ae83eb7",
         "affectsGlobalScope": false
       },
       "./app/pages/utils.ts": {
-        "version": "6acc9204490f44f866f3ca6d07aa6c9a39758fcf351c1514f6168dd1a070f705",
+        "version": "03d9a30f5c93de7c7372e8a8021d8f1f813d5bdc49a7d5a5d168b682183e6b3b",
         "signature": "e4fc82e565e6695e334c4f53294968997a171ebd4eec35c3e2017450d4a5f393",
         "affectsGlobalScope": false
       },
       "./app/pages/nav.ts": {
-        "version": "76fa64b5f3a41170d9969489eedb401b56e64474377eda856ddfd48422684954",
+        "version": "a8633b3feab079303b3bad8423adee37740745383c4093339ac0c6a90274e339",
         "signature": "bb5f8b8aa7d5e58260c7c2c3cdbb1f1dd2212be0cb50fc8e684a7c2d3d72918a",
         "affectsGlobalScope": false
       },
@@ -707,7 +712,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/index.ts": {
-        "version": "e56f44e1d892af2aa5f83b672015ef69411f741ae45784668e71bac4cdab47ae",
+        "version": "4c380c452d38fec914bcf0ab239de030262493dca5c2f794cbfe09b84f418b3b",
         "signature": "664a8714d23ea6a7d08c9225164f93ae296e4fb2cd832f75df39fc845b934baa",
         "affectsGlobalScope": false
       },
@@ -717,22 +722,22 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part1.ts": {
-        "version": "973a86546aa0d0275302ff3cb34fac586b95890729ca15162d56131455bfcf8f",
+        "version": "da783e7a99ec605b1e3834ab74f7defed07daaa31ad3b11d3e2d964a0164ebb7",
         "signature": "77c48b47dbddecb7696dca1024f4a9e4e5fd76098b360b3d179e82b575e693f0",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/new-message-input.ts": {
-        "version": "6aa266d22fd79cf8c5f9249c6ed24d53894cce190fddc509cbc319389ff76eab",
+        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
         "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/received-message/avatar.ts": {
-        "version": "36e46fd36834610d2785faf5a3fbf4cbcefd56f8ee83b52e19891c6bbba59177",
+        "version": "aacdb9b2d2ef1e53f9a2be43f5cca9c7da48ba5c258338c1239dd41deef67b13",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/received-message/username.ts": {
-        "version": "e2b91366d1e5af96ae4538df63cc18ffac1c4e349df9081d22063fe0d9c0b2f2",
+        "version": "53f8a00bb9015031c02aaf27abc34e335a79d879283c22aa7eb26e6c40fd2b5c",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
@@ -742,12 +747,12 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/sent-message/avatar.ts": {
-        "version": "e34f9b0e30ab16c66b6df9dfdf804fb26a67f6ca84daca10e3ce00d1edb903a6",
+        "version": "ebfa95f97a525dfa8e62df4f3706e431a93305ef15d7703a3e295054671fba13",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part2/sent-message/username.ts": {
-        "version": "c2d36ce7d6e2e58c8851c3eba170f4b31b41badc719abf05d348b1fd2a8a2c05",
+        "version": "1603b03962aa00ae24d96901cd013c99b5f79f655d839fc8cc86541ad385fa67",
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
@@ -762,7 +767,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part3/new-message-input.ts": {
-        "version": "6aa266d22fd79cf8c5f9249c6ed24d53894cce190fddc509cbc319389ff76eab",
+        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
         "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
         "affectsGlobalScope": false
       },
@@ -812,7 +817,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/tutorial/part4/new-message-input.ts": {
-        "version": "6aa266d22fd79cf8c5f9249c6ed24d53894cce190fddc509cbc319389ff76eab",
+        "version": "aed4b4e939e88fc6b0ba5cdfef363d9935cc4bc554657ad83007dd966b7222e8",
         "signature": "8fec213072d9dc3b562bdb5c074f45a98ae339f2187743d44048d68540b6dc26",
         "affectsGlobalScope": false
       },
@@ -857,7 +862,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/state/counter.ts": {
-        "version": "e533b3b31da0245768c7500b8eb8c2bcb6d9e8a3345a8c7256f6fb63f09c4c28",
+        "version": "18396c90d8b8e3647163c13ef85de6ede39409fb2cd8d64706ae4041517c1d12",
         "signature": "47e7e5d81fe7e7d4a429ececfc2a40eb4ef24ba32b03f04473c53a46bf5a8987",
         "affectsGlobalScope": false
       },
@@ -877,7 +882,7 @@
         "affectsGlobalScope": false
       },
       "./app/pages/patch-example.ts": {
-        "version": "16fb05517e8e38df0b7c269cecb4141ada7c854853cd681b569948172889fc46",
+        "version": "15652c69751294daf64d3d255f12bc37bb343197a555b2a5d9086c03ef0c863d",
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
@@ -901,16 +906,6 @@
         "signature": "315f5542bf12d1c47a993152c501d729763b72bef573a17acc402273f18570b5",
         "affectsGlobalScope": false
       },
-      "./src/hello-world.ts": {
-        "version": "5da3f5061a76f6c77454260d20154ac7c6a6b50b0ff3c5eb28adf88fa5d84823",
-        "signature": "71f7b335c9bf8618e4bee69e6d6d40e7be015c3903a87dd5169343520d5899fb",
-        "affectsGlobalScope": false
-      },
-      "./src/array/arraydiff.ts": {
-        "version": "afcdafb71e539af1e8318919e6c3ceae00629d19548e027280731548a1492f90",
-        "signature": "c0fe392723b70ae94a4805352a3ea6449850e4ef715005fa4c185c38250ac70f",
-        "affectsGlobalScope": false
-      },
       "./src/nodes/component.ts": {
         "version": "0a885dc64ef894b878d1522f50d212590a4e09686dc03f1978b5ef0d9ce13b2d",
         "signature": "11f5d6229c9df3349cc8cd3da5d97d85e5112d8142f9740cb07f5f2656e02641",
@@ -919,11 +914,6 @@
       "./src/reactive/collection.ts": {
         "version": "740255d32de519ece125f3ecf13619fa239cbfa26e374892037e843656c0fe54",
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
-        "affectsGlobalScope": false
-      },
-      "./src/reactive/proxy.ts": {
-        "version": "56d0e250f2f97028d754f28df1beecacf26563ae75ed6bd8e6281180a366e50a",
-        "signature": "53758f5aa42c02dd0da81fbca68e030e8a2259207c850fb667ae07d2cb2f00f5",
         "affectsGlobalScope": false
       },
       "./node_modules/.pnpm/@types/node@14.14.20/node_modules/@types/node/globals.d.ts": {
@@ -1204,8 +1194,6 @@
       "noEmit": true,
       "isolatedModules": true,
       "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
       "noFallthroughCasesInSwitch": true,
       "noUncheckedIndexedAccess": true,
       "noPropertyAccessFromIndexSignature": true,
@@ -1900,6 +1888,10 @@
         "./node_modules/.pnpm/fast-array-diff@1.0.0/node_modules/fast-array-diff/dist/index.d.ts",
         "./src/utils/collection.ts"
       ],
+      "./src/brands.ts": [
+        "./src/glimmer/cache.ts",
+        "./src/utils/predicates.ts"
+      ],
       "./src/debug/tree.ts": [
         "./src/nodes/comment.ts",
         "./src/nodes/content.ts",
@@ -1923,6 +1915,7 @@
       "./src/glimmer/cache.ts": [
         "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "./src/assertions.ts",
         "./src/nodes/content.ts",
         "./src/reactive/cell.ts",
         "./src/utils/option.ts",
@@ -2097,16 +2090,13 @@
       ],
       "./src/reactive/cell.ts": [
         "./node_modules/.pnpm/@glimmer/validator@0.73.1/node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "./src/brands.ts",
         "./src/glimmer/cache.ts",
         "./src/reactive/dict.ts",
         "./src/utils/predicates.ts"
       ],
       "./src/reactive/dict.ts": [
         "./src/glimmer/cache.ts",
-        "./src/reactive/cell.ts",
-        "./src/utils/predicates.ts"
-      ],
-      "./src/reactive/proxy.ts": [
         "./src/reactive/cell.ts",
         "./src/utils/predicates.ts"
       ],
@@ -2742,6 +2732,9 @@
       "./src/array/normalize.ts": [
         "./node_modules/.pnpm/fast-array-diff@1.0.0/node_modules/fast-array-diff/dist/index.d.ts"
       ],
+      "./src/brands.ts": [
+        "./src/glimmer/cache.ts"
+      ],
       "./src/debug/tree.ts": [
         "./src/nodes/content.ts"
       ],
@@ -2887,9 +2880,6 @@
         "./src/glimmer/cache.ts",
         "./src/reactive/dict.ts"
       ],
-      "./src/reactive/proxy.ts": [
-        "./src/reactive/cell.ts"
-      ],
       "./src/utils/public.ts": [
         "./src/utils/collection.ts",
         "./src/utils/type.ts"
@@ -2900,140 +2890,23 @@
       "./app/pages/error.ts",
       "./app/pages/fallback.ts",
       "./app/pages/index.ts",
-      [
-        "./app/pages/nav.ts",
-        [
-          {
-            "file": "./app/pages/nav.ts",
-            "start": 723,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/nav.ts",
       "./app/pages/page.ts",
       "./app/pages/patch-example.ts",
-      [
-        "./app/pages/state/counter.ts",
-        [
-          {
-            "file": "./app/pages/state/counter.ts",
-            "start": 475,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/state/counter.ts",
       "./app/pages/state/index.ts",
-      [
-        "./app/pages/tutorial/part1.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part1.ts",
-            "start": 886,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/tutorial/part1.ts",
       "./app/pages/tutorial/part2.ts",
-      [
-        "./app/pages/tutorial/part2/new-message-input.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part2/new-message-input.ts",
-            "start": 125,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
-      [
-        "./app/pages/tutorial/part2/received-message/avatar.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part2/received-message/avatar.ts",
-            "start": 131,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/tutorial/part2/new-message-input.ts",
+      "./app/pages/tutorial/part2/received-message/avatar.ts",
       "./app/pages/tutorial/part2/received-message/index.ts",
-      [
-        "./app/pages/tutorial/part2/received-message/username.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part2/received-message/username.ts",
-            "start": 131,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
-      [
-        "./app/pages/tutorial/part2/sent-message/avatar.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part2/sent-message/avatar.ts",
-            "start": 131,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/tutorial/part2/received-message/username.ts",
+      "./app/pages/tutorial/part2/sent-message/avatar.ts",
       "./app/pages/tutorial/part2/sent-message/index.ts",
-      [
-        "./app/pages/tutorial/part2/sent-message/username.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part2/sent-message/username.ts",
-            "start": 131,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/tutorial/part2/sent-message/username.ts",
       "./app/pages/tutorial/part3.ts",
       "./app/pages/tutorial/part3/avatar.ts",
-      [
-        "./app/pages/tutorial/part3/new-message-input.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part3/new-message-input.ts",
-            "start": 125,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/tutorial/part3/new-message-input.ts",
       "./app/pages/tutorial/part3/received-message/avatar.ts",
       "./app/pages/tutorial/part3/received-message/index.ts",
       "./app/pages/tutorial/part3/received-message/username.ts",
@@ -3044,20 +2917,7 @@
       "./app/pages/tutorial/part4.ts",
       "./app/pages/tutorial/part4/avatar.ts",
       "./app/pages/tutorial/part4/message.ts",
-      [
-        "./app/pages/tutorial/part4/new-message-input.ts",
-        [
-          {
-            "file": "./app/pages/tutorial/part4/new-message-input.ts",
-            "start": 125,
-            "length": 5,
-            "messageText": "'owner' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/tutorial/part4/new-message-input.ts",
       "./app/pages/tutorial/part4/received-message/avatar.ts",
       "./app/pages/tutorial/part4/received-message/index.ts",
       "./app/pages/tutorial/part4/received-message/username.ts",
@@ -3067,43 +2927,8 @@
       "./app/pages/tutorial/part4/username.ts",
       "./app/pages/tutorial/part5.ts",
       "./app/pages/tutorial/subnav.ts",
-      [
-        "./app/pages/utils.ts",
-        [
-          {
-            "file": "./app/pages/utils.ts",
-            "start": 1244,
-            "length": 11,
-            "messageText": "'normalizeEl' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          },
-          {
-            "file": "./app/pages/utils.ts",
-            "start": 1855,
-            "length": 13,
-            "messageText": "'flatModifiers' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
-      [
-        "./app/router/router.ts",
-        [
-          {
-            "file": "./app/router/router.ts",
-            "start": 2610,
-            "length": 8,
-            "messageText": "'#details' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          }
-        ]
-      ],
+      "./app/pages/utils.ts",
+      "./app/router/router.ts",
       "./app/router/url-bar.ts",
       "./node_modules/.pnpm/@glimmer/destroyable@0.73.1/node_modules/@glimmer/destroyable/dist/types/index.d.ts",
       "./node_modules/.pnpm/@glimmer/global-context@0.73.1/node_modules/@glimmer/global-context/dist/types/index.d.ts",
@@ -3262,9 +3087,9 @@
       "./node_modules/.pnpm/typescript@4.2.0-dev.20210115/node_modules/typescript/lib/lib.esnext.weakref.d.ts",
       "./node_modules/.pnpm/typescript@4.2.0-dev.20210115/node_modules/typescript/lib/lib.scripthost.d.ts",
       "./node_modules/.pnpm/typescript@4.2.0-dev.20210115/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
-      "./src/array/arraydiff.ts",
       "./src/array/normalize.ts",
       "./src/assertions.ts",
+      "./src/brands.ts",
       "./src/debug/tree.ts",
       "./src/dom/bounds.ts",
       "./src/dom/cursor.ts",
@@ -3272,7 +3097,6 @@
       "./src/glimmer/cache.ts",
       "./src/glimmer/glimmer.ts",
       "./src/glimmer/setup.ts",
-      "./src/hello-world.ts",
       "./src/index.ts",
       "./src/nodes/app.ts",
       "./src/nodes/comment.ts",
@@ -3294,7 +3118,6 @@
       "./src/reactive/cell.ts",
       "./src/reactive/collection.ts",
       "./src/reactive/dict.ts",
-      "./src/reactive/proxy.ts",
       "./src/utils/collection.ts",
       "./src/utils/option.ts",
       "./src/utils/predicates.ts",
@@ -3960,6 +3783,10 @@
       ],
       [
         "./src/assertions.ts",
+        1
+      ],
+      [
+        "./src/brands.ts",
         1
       ],
       [

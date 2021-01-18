@@ -1,5 +1,4 @@
 import {
-  attr,
   Choice,
   comment,
   component,
@@ -8,7 +7,6 @@ import {
   effect,
   EFFECTS,
   element,
-  fragment,
   IntoReactive,
   match,
   Pure,
@@ -16,11 +14,7 @@ import {
   VariantInfo,
   Variants,
 } from "../../src/index";
-import type {
-  AttributeModifier,
-  EffectModifier,
-  Modifier,
-} from "../../src/nodes/element/modifier-content";
+import type { EffectModifier } from "../../src/nodes/element/modifier-content";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
 
@@ -29,91 +23,6 @@ export type ModifiersSpec = Attributes & {
 };
 
 export const el = element;
-
-// export function el(
-//   tag: string,
-//   ...rest:
-//     | [attrs: ModifiersSpec | undefined, ...body: Content[]]
-//     | [...body: Content[]]
-// ): Content {
-//   let { modifiers, body } = normalizeEl(rest);
-
-//   return element(tag, flatModifiers(modifiers), body);
-// }
-
-// function recordToAttrs(record: ModifiersSpec): Modifier[] {
-//   let modifiers: Modifier[] = [];
-
-//   for (let [key, value] of Object.entries(record)) {
-//     modifiers.push(attr(key, value));
-//   }
-
-//   let effects = record[EFFECTS];
-
-//   if (effects) {
-//     modifiers.push(...effects);
-//   }
-
-//   return modifiers;
-// }
-
-interface NormalizedElement {
-  modifiers?: NormalizedModifiers;
-  body?: Content;
-}
-
-function normalizeEl(
-  args:
-    | [modifiers: ModifiersSpec | undefined, ...body: Content[]]
-    | [...body: Content[]]
-): NormalizedElement {
-  if (Content.is(args[0])) {
-    return { body: fragment(...(args as Content[])) };
-  } else {
-    let [rawModifiers, ...body] = args;
-
-    let modifiers = normalizeModifiers(rawModifiers);
-
-    if (body.length > 0) {
-      return { modifiers, body: fragment(...(body as Content[])) };
-    } else {
-      return { modifiers };
-    }
-  }
-}
-
-interface NormalizedModifiers {
-  attrs: readonly AttributeModifier[] | null;
-  effects: readonly EffectModifier[] | null;
-}
-
-function flatModifiers(modifiers: NormalizedModifiers | undefined): Modifier[] {
-  if (modifiers === undefined) {
-    return [];
-  }
-
-  let attrs = modifiers.attrs === null ? [] : modifiers.attrs;
-  let effects = modifiers.effects === null ? [] : modifiers.effects;
-
-  return [...attrs, ...effects];
-}
-
-function normalizeModifiers(
-  spec: ModifiersSpec | undefined
-): NormalizedModifiers {
-  if (spec === undefined) {
-    return { attrs: null, effects: null };
-  }
-
-  let attrs: AttributeModifier[] = [];
-  let effects = spec[EFFECTS];
-
-  for (let [key, value] of Object.entries(spec)) {
-    attrs.push(attr(key, value));
-  }
-
-  return { attrs: attrs.length === 0 ? null : attrs, effects: effects || null };
-}
 
 export const ToBool = (value: Reactive<unknown>): Reactive<Choice<Bool>> =>
   Pure.of(() => {

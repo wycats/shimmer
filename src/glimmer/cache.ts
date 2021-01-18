@@ -1,5 +1,6 @@
 import { registerDestructor } from "@glimmer/destroyable";
 import { Cache, createCache, getValue } from "@glimmer/validator";
+import { unwrap } from "../assertions";
 import type { RenderedContent } from "../nodes/content";
 import { assertDynamicContext } from "../reactive/cell";
 import { Maybe } from "../utils/option";
@@ -69,7 +70,7 @@ export class Effect<T> {
       });
     });
 
-    return new Effect(cache, destructor, getValue(cache)!);
+    return new Effect(cache, destructor, unwrap(getValue(cache)));
   }
 
   #last: T;
@@ -96,7 +97,7 @@ export class Effect<T> {
   }
 
   poll(): T {
-    return getValue(this.#cache)!;
+    return unwrap(getValue(this.#cache));
   }
 }
 
@@ -108,7 +109,11 @@ export class DynamicRenderedContent extends Effect<RenderedContent> {
   }): DynamicRenderedContent {
     let { cache, destructor } = Effect.cache(options);
 
-    return new DynamicRenderedContent(cache, destructor, getValue(cache)!);
+    return new DynamicRenderedContent(
+      cache,
+      destructor,
+      unwrap(getValue(cache))
+    );
   }
 }
 
@@ -155,10 +160,10 @@ export class Pure<T> {
       "getting the current JavaScript value of a reactive value (Derived)"
     );
 
-    return getValue(this.#cache)!;
+    return unwrap(getValue(this.#cache));
   }
 
   get debug(): T {
-    return getValue(this.#cache)!;
+    return unwrap(getValue(this.#cache));
   }
 }

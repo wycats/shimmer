@@ -99,7 +99,7 @@ export class Router implements RouterService {
     return this.#bar.currentLogicalPath() === logicalURL;
   }
 
-  #remove = () => {
+  #remove = (): void => {
     if (this.#page) {
       this.#page.clear();
       destroy(this.#page);
@@ -108,7 +108,7 @@ export class Router implements RouterService {
     }
   };
 
-  #set = (page: App | Loading) => {
+  #set = (page: App | Loading): void => {
     this.#remove();
 
     GLIMMER.addRenderable(page);

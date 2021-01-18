@@ -4,6 +4,7 @@ import {
   enumerate,
   keyedArray,
   KeyedNode,
+  unwrap,
   zip,
 } from "../../src/index";
 
@@ -56,7 +57,7 @@ patch.applyPatch(newArray, {
   },
   move: (object, from, to) => {
     let [obj] = newArray.splice(from, 1);
-    newArray.splice(to, 0, obj!);
+    newArray.splice(to, 0, unwrap(obj));
 
     trace("move  ", { header: { from, to }, object, newArray });
   },

@@ -51,7 +51,7 @@ export class Patches<Insertion, Inserted> {
   applyPatch(
     array: KeyedNode<Inserted>[],
     application: Application<Insertion, Inserted>
-  ) {
+  ): void {
     for (let remove of this.#remove) {
       application.remove(remove.node, remove.from);
     }

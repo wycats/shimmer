@@ -1,5 +1,6 @@
 import { consumeTag, createTag, dirtyTag } from "@glimmer/validator";
-import { Pure } from "../glimmer/cache";
+import { isPure } from "../brands";
+import type { Pure } from "../glimmer/cache";
 import { isObject } from "../utils/predicates";
 import { Dict } from "./dict";
 
@@ -17,7 +18,7 @@ export const Reactive = {
     return (
       Cell.is(value) ||
       StaticReactive.is(value) ||
-      Pure.is(value) ||
+      isPure(value) ||
       Dict.is(value)
     );
   },
@@ -42,7 +43,7 @@ function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> {
   if (
     Cell.is(reactive) ||
     StaticReactive.is(reactive) ||
-    Pure.is(reactive) ||
+    isPure(reactive) ||
     Dict.is(reactive)
   ) {
     return reactive;
@@ -103,7 +104,7 @@ export class Cell<T = unknown> {
     this.#value = value;
   }
 
-  get now() {
+  get now(): T {
     assertDynamicContext(
       "getting the current JavaScript value of a reactive value (Cell)"
     );
@@ -116,7 +117,7 @@ export class Cell<T = unknown> {
     return this.now;
   }
 
-  update(callback: (oldValue: T) => T) {
+  update(callback: (oldValue: T) => T): void {
     dirtyTag(this.#tag);
     this.#value = callback(this.#value);
   }

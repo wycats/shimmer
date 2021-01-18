@@ -38,7 +38,7 @@ const Template = component((owner: Owner) => () => {
   );
 });
 
-const Page = component((owner: Owner) => () => {
+const Page = component((_owner: Owner) => () => {
   return fragment(
     el(
       "div",

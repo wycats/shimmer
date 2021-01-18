@@ -152,7 +152,7 @@ export class IndexPage implements PageHooks<IndexState> {
     return app;
   }
 
-  #increment = (state: IndexState) => {
+  #increment = (state: IndexState): void => {
     state.tick++;
     console.log("tick", state.tick);
 

@@ -1,4 +1,4 @@
-import { userError } from "../assertions";
+import { unwrap, userError } from "../assertions";
 import type { StableDynamicContent } from "../nodes/content";
 import { isObject } from "../utils/predicates";
 import { Cursor } from "./cursor";
@@ -159,7 +159,7 @@ export class StaticBounds extends AbstractBounds {
     readonly firstNode: SimplestNode,
     readonly lastNode: SimplestNode
   ) {
-    super(firstNode.parentNode!);
+    super(unwrap(firstNode.parentNode));
   }
 
   get bounds(): Bounds {
