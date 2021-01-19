@@ -1,4 +1,4 @@
-import type { SimplestDocument, SimplestElement } from "../../dom/simplest";
+import type { SimplestDocument, SimplestElement } from "../../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
 import { isObject } from "../../utils/predicates";
 import type { AttributeModifier } from "./attribute";

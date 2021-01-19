@@ -1,12 +1,10 @@
 import { defineConfig } from "vite";
 
-console.log("hi");
-
 export default defineConfig({
   alias: {
     "@shimmer/core": "/packages/@shimmer/core/index.ts",
-  },
-  server: {
-    open: "/index.html",
+    "@shimmer/dsl": "/packages/@shimmer/dsl/index.ts",
+    "@shimmer/debug": "/packages/@shimmer/debug/index.ts",
+    "@shimmer/dom": "/packages/@shimmer/dom/index.ts",
   },
 });

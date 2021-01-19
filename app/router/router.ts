@@ -1,15 +1,14 @@
 import { destroy, registerDestructor } from "@glimmer/destroyable";
-import type { SimplestDocument } from "@shimmer/core";
 import {
   App,
   Cell,
-  Cursor,
   Doc,
   GLIMMER,
   Owner,
   Render,
   RouterService,
 } from "@shimmer/core";
+import { Cursor, SimplestDocument } from "@shimmer/dom";
 import {
   HashUrl,
   InitializedUrlBar,

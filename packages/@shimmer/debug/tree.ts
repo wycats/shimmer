@@ -1,11 +1,15 @@
-import type { CommentContent } from "../nodes/comment";
-import type { Content, ContentType, TemplateContent } from "../nodes/content";
-import type { ElementInfo } from "../nodes/element/element";
-import type { FragmentContent } from "../nodes/fragment";
-import type { Block, BlockInfo } from "../nodes/structure/block";
-import type { ChoiceContent } from "../nodes/structure/choice";
-import type { EachInfo } from "../nodes/structure/each";
-import type { TextContent } from "../nodes/text";
+import type { CommentContent } from "../core/nodes/comment";
+import type {
+  Content,
+  ContentType,
+  TemplateContent,
+} from "../core/nodes/content";
+import type { ElementInfo } from "../core/nodes/element/element";
+import type { FragmentContent } from "../core/nodes/fragment";
+import type { Block, BlockInfo } from "../core/nodes/structure/block";
+import type { ChoiceContent } from "../core/nodes/structure/choice";
+import type { EachInfo } from "../core/nodes/structure/each";
+import type { TextContent } from "../core/nodes/text";
 
 export function tree(content: Content): DebugContentNode {
   return new TreeBuilder().content(content);

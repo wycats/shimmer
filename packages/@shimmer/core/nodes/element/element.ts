@@ -1,6 +1,6 @@
-import { Bounds, StaticBounds } from "../../dom/bounds";
-import { Cursor } from "../../dom/cursor";
-import type { SimplestDocument } from "../../dom/simplest";
+import { Bounds, StaticBounds } from "../../../dom/bounds";
+import { Cursor } from "../../../dom/cursor";
+import type { SimplestDocument } from "../../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
 import {
   Content,

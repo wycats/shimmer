@@ -1,9 +1,9 @@
+import { Bounds } from "../../../dom/bounds";
+import type { Cursor } from "../../../dom/cursor";
+import type { SimplestDocument } from "../../../dom/simplest";
 import { diffArray, KeyedNode, Patches } from "../../array/normalize";
 import { assert, unwrap } from "../../assertions";
 import { isStaticReactive } from "../../brands";
-import { Bounds } from "../../dom/bounds";
-import type { Cursor } from "../../dom/cursor";
-import type { SimplestDocument } from "../../dom/simplest";
 import { Pure } from "../../glimmer/cache";
 import { Cell, Reactive } from "../../reactive/cell";
 import { OptionalArray } from "../../utils/type";

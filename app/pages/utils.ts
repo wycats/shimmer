@@ -2,7 +2,6 @@ import type { Block, EffectModifier } from "@shimmer/core";
 import {
   Choice,
   Content,
-  dom,
   EFFECTS,
   IntoReactive,
   PresentComponentDefinition,
@@ -11,6 +10,7 @@ import {
   VariantInfo,
   Variants,
 } from "@shimmer/core";
+import type { SimplestElement } from "@shimmer/dom";
 import { comment, def, effect, element, match } from "@shimmer/dsl";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
@@ -86,7 +86,7 @@ export const Classes = (
 
 export const on = effect(
   (
-    element: dom.SimplestElement,
+    element: SimplestElement,
     eventName: Reactive<string>,
     callback: Reactive<EventListener>
   ) => {

@@ -1,12 +1,12 @@
-import { IS_CONTENT } from "../brands";
 import {
   AbstractBounds,
   Bounds,
   DynamicBounds,
   StaticBounds,
-} from "../dom/bounds";
-import type { Cursor } from "../dom/cursor";
-import type { SimplestDocument, SimplestNode } from "../dom/simplest";
+} from "../../dom/bounds";
+import type { Cursor } from "../../dom/cursor";
+import type { SimplestDocument, SimplestNode } from "../../dom/simplest";
+import { IS_CONTENT } from "../brands";
 import type { DynamicRenderedContent } from "../glimmer/cache";
 import { isObject } from "../utils/predicates";
 import type { CommentInfo } from "./comment";

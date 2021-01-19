@@ -34,10 +34,10 @@ import {
   Pure,
   Reactive,
   Services,
-  SimplestElement,
   TextContent,
   userError,
 } from "@shimmer/core";
+import type { SimplestElement } from "@shimmer/dom";
 import {
   intoArgs,
   IntoArgs,

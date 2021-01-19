@@ -1,5 +1,5 @@
-import type { Cursor } from "./dom/cursor";
-import type { SimplestDocument } from "./dom/simplest";
+import type { Cursor } from "../dom/cursor";
+import type { SimplestDocument } from "../dom/simplest";
 import type { App } from "./nodes/app";
 import type { Content } from "./nodes/content";
 import type {

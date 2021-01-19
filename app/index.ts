@@ -1,4 +1,5 @@
-import type { App, Cursor, Owner } from "@shimmer/core";
+import type { App, Owner } from "@shimmer/core";
+import type { Cursor } from "@shimmer/dom";
 import { Router, RoutesWithOwner } from "./router/router";
 import type { UrlDetails } from "./router/url-bar";
 

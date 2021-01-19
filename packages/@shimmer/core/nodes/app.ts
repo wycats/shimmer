@@ -1,6 +1,6 @@
 import { registerDestructor } from "@glimmer/destroyable";
-import type { Cursor } from "../dom/cursor";
-import type { SimplestDocument } from "../dom/simplest";
+import type { Cursor } from "../../dom/cursor";
+import type { SimplestDocument } from "../../dom/simplest";
 import { createCache, TrackedCache } from "../glimmer/cache";
 import type { Render } from "../glimmer/glimmer";
 import type { DocService } from "../owner";

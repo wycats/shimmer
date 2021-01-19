@@ -5,28 +5,35 @@
   "main": "index.js",
   "type": "module",
   "private": true,
+  "workspaces": [
+    "app",
+    "packages/@shimmer/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "snowpack dev"
+    "start": "vite"
   },
   "author": "",
   "license": "ISC",
+  "eslintConfig": {
+    "extends": "./.config/.eslintrc.json"
+  },
   "devDependencies": {
     "@simple-dom/interface": "^1.4.0",
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
     "eslint": "^7.18.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
     "sass": "^1.32.4",
     "typescript": "^4.2.0-dev.20210119",
-    "vite": "2.0.0-beta.31"
-  },
-  "dependencies": {
+    "vite": "2.0.0-beta.31",
     "@glimmer/destroyable": "^0.73.1",
     "@glimmer/global-context": "^0.73.1",
     "@glimmer/validator": "^0.73.1",
-    "fast-array-diff": "^1.0.0",
     "@shimmer/core": "workspace:*",
-    "@shimmer/dsl": "workspace:*"
+    "@shimmer/dsl": "workspace:*",
+    "@shimmer/dom": "workspace:*",
+    "fast-array-diff": "^1.0.0"
   }
 }

@@ -1,18 +1,19 @@
 importers:
   .:
-    dependencies:
+    devDependencies:
       '@glimmer/destroyable': 0.73.1
       '@glimmer/global-context': 0.73.1
       '@glimmer/validator': 0.73.1
       '@shimmer/core': link:packages/@shimmer/core
+      '@shimmer/dom': link:packages/@shimmer/dom
       '@shimmer/dsl': link:packages/@shimmer/dsl
-      fast-array-diff: 1.0.0
-    devDependencies:
       '@simple-dom/interface': 1.4.0
       '@typescript-eslint/eslint-plugin': 4.13.0_eb72f0c60b0f5689496e200c49b3c056
       '@typescript-eslint/parser': 4.13.0_934e220718ad55b43a652fde07bee0ba
       eslint: 7.18.0
+      eslint-import-resolver-typescript: 2.3.0_d4477e7d44043beb7952cd76bd313965
       eslint-plugin-import: 2.22.1_eslint@7.18.0
+      fast-array-diff: 1.0.0
       sass: 1.32.4
       typescript: 4.2.0-dev.20210119
       vite: 2.0.0-beta.31
@@ -21,11 +22,13 @@ importers:
       '@glimmer/global-context': ^0.73.1
       '@glimmer/validator': ^0.73.1
       '@shimmer/core': workspace:*
+      '@shimmer/dom': workspace:*
       '@shimmer/dsl': workspace:*
       '@simple-dom/interface': ^1.4.0
       '@typescript-eslint/eslint-plugin': ^4.13.0
       '@typescript-eslint/parser': ^4.13.0
       eslint: ^7.18.0
+      eslint-import-resolver-typescript: ^2.3.0
       eslint-plugin-import: ^2.22.1
       fast-array-diff: ^1.0.0
       sass: ^1.32.4
@@ -33,18 +36,40 @@ importers:
       vite: 2.0.0-beta.31
   app:
     dependencies:
+      '@glimmer/destroyable': 0.73.1
       '@shimmer/core': link:../packages/@shimmer/core
+      '@shimmer/dom': link:../packages/@shimmer/dom
       '@shimmer/dsl': link:../packages/@shimmer/dsl
     specifiers:
+      '@glimmer/destroyable': '*'
       '@shimmer/core': workspace:*
+      '@shimmer/dom': workspace:*
       '@shimmer/dsl': workspace:*
   packages/@shimmer/core:
-    specifiers: {}
-  packages/@shimmer/dsl:
+    dependencies:
+      '@glimmer/destroyable': 0.73.1
+      '@glimmer/global-context': 0.73.1
+      '@glimmer/validator': 0.73.1
+      fast-array-diff: 1.0.0
+    specifiers:
+      '@glimmer/destroyable': '*'
+      '@glimmer/global-context': '*'
+      '@glimmer/validator': '*'
+      fast-array-diff: '*'
+  packages/@shimmer/debug:
     dependencies:
       '@shimmer/core': link:../core
     specifiers:
       '@shimmer/core': workspace:*
+  packages/@shimmer/dom:
+    specifiers: {}
+  packages/@shimmer/dsl:
+    dependencies:
+      '@shimmer/core': link:../core
+      '@shimmer/dom': link:../dom
+    specifiers:
+      '@shimmer/core': workspace:*
+      '@shimmer/dom': workspace:*
 lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.12.11:
@@ -88,23 +113,19 @@ packages:
       '@glimmer/global-context': 0.73.1
       '@glimmer/interfaces': 0.73.1
       '@glimmer/util': 0.73.1
-    dev: false
     resolution:
       integrity: sha512-xm8XH4Yy55N5P/9RWnmeJM7LfrHyTZe/q81KgoQgIuxMxC8ABq+V068Fyx0VKB49y1RPc4OcMS65aFSIOy9c7w==
   /@glimmer/env/0.1.7:
-    dev: false
     resolution:
       integrity: sha1-/S0rVakCnGs3psk16MiHGucN+gc=
   /@glimmer/global-context/0.73.1:
     dependencies:
       '@glimmer/env': 0.1.7
-    dev: false
     resolution:
       integrity: sha512-jilS1HXMf/bzVQETCetlggAFLMYukvOxxGVi5FokL23g3jfWjQncEFf3p3OR17I3HDsEa1FmrZc4iuOp/i2gGQ==
   /@glimmer/interfaces/0.73.1:
     dependencies:
       '@simple-dom/interface': 1.4.0
-    dev: false
     resolution:
       integrity: sha512-MttMIyWGZ+IbiJJpr4q9dwMmn+7eOMdxjMiuaEYeLBN/DXe8T9VePqgapURkSL9CEmKByB/pLvcaVTSYfm0RYg==
   /@glimmer/util/0.73.1:
@@ -112,14 +133,12 @@ packages:
       '@glimmer/env': 0.1.7
       '@glimmer/interfaces': 0.73.1
       '@simple-dom/interface': 1.4.0
-    dev: false
     resolution:
       integrity: sha512-zFXY9OgR6wx7Cy4yYJkmgoUsdx3MQYAmZytuEDTghLXJyUoSh5Jcvner+qhFkqLSzj2pvE4btn3yUNnx3QOBtg==
   /@glimmer/validator/0.73.1:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.73.1
-    dev: false
     resolution:
       integrity: sha512-DGodNSpf1v9Xsu7l7GSitVhNnESVx9qn6RFQ/zVwvptSXaPvLh5RIxsvYqJwkhBsxyPCVqnjz1p+MwqtfJukDA==
   /@nodelib/fs.scandir/2.1.4:
@@ -614,6 +633,23 @@ packages:
     dev: true
     resolution:
       integrity: sha512-ogtf+5AB/O+nM6DIeBUNr2fuT7ot9Qg/1harBfBtaP13ekEWFQEEMP94BCB7zaNW3gyY+8SHYF00rnqYwXKWOA==
+  /eslint-import-resolver-typescript/2.3.0_d4477e7d44043beb7952cd76bd313965:
+    dependencies:
+      debug: 4.3.1
+      eslint: 7.18.0
+      eslint-plugin-import: 2.22.1_eslint@7.18.0
+      glob: 7.1.6
+      is-glob: 4.0.1
+      resolve: 1.19.0
+      tsconfig-paths: 3.9.0
+    dev: true
+    engines:
+      node: '>=4'
+    peerDependencies:
+      eslint: '*'
+      eslint-plugin-import: '*'
+    resolution:
+      integrity: sha512-MHSXvmj5e0SGOOBhBbt7C+fWj1bJbtSYFAD85Xeg8nvUtuooTod2HQb8bfhE9f5QyyNxEfgzqOYFCvmdDIcCuw==
   /eslint-module-utils/2.6.0:
     dependencies:
       debug: 2.6.9
@@ -772,7 +808,6 @@ packages:
     resolution:
       integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
   /fast-array-diff/1.0.0:
-    dev: false
     resolution:
       integrity: sha512-ogkVOYhBglkIsl5pjxZ7dIuItFG+1Ihh1kCChVaNgPZ30gQggRcuSjm4v4lAoS8ruGu8wFnHWYMEMO8dtKNgoA==
   /fast-deep-equal/3.1.3:

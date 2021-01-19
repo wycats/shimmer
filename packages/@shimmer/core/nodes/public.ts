@@ -8,6 +8,5 @@ export * from "./element/modifier-content";
 export * from "./fragment";
 export { Block } from "./structure/block";
 export * from "./structure/choice";
-export type { Choice, VariantInfo } from "./structure/choice";
 export * from "./structure/each";
 export * from "./text";

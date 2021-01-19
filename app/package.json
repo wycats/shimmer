@@ -5,6 +5,8 @@
   "type": "module",
   "dependencies": {
     "@shimmer/core": "workspace:*",
-    "@shimmer/dsl": "workspace:*"
+    "@shimmer/dsl": "workspace:*",
+    "@shimmer/dom": "workspace:*",
+    "@glimmer/destroyable": "*"
   }
 }

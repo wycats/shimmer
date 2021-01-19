@@ -1,7 +1,10 @@
+import { StaticBounds } from "../../dom/bounds";
+import type { Cursor } from "../../dom/cursor";
+import type {
+  SimplestCharacterData,
+  SimplestDocument,
+} from "../../dom/simplest";
 import { isStaticReactive } from "../brands";
-import { StaticBounds } from "../dom/bounds";
-import type { Cursor } from "../dom/cursor";
-import type { SimplestCharacterData, SimplestDocument } from "../dom/simplest";
 import { build, Reactive } from "../reactive/cell";
 import { DynamicContent, StaticContent, TemplateContent } from "./content";
 

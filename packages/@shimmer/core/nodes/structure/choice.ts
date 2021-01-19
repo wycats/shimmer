@@ -1,14 +1,14 @@
+import type { Bounds } from "../../../dom/bounds";
+import type { Cursor } from "../../../dom/cursor";
+import type { SimplestDocument } from "../../../dom/simplest";
 import { isStatic } from "../../brands";
-import type { Bounds } from "../../dom/bounds";
-import type { Cursor } from "../../dom/cursor";
-import type { SimplestDocument } from "../../dom/simplest";
 import { build, Reactive } from "../../reactive/cell";
 import {
   Content,
   DynamicContent,
   StableDynamicContent,
   TemplateContent,
-  UpdatableDynamicContent
+  UpdatableDynamicContent,
 } from "../content";
 import type { Block } from "./block";
 

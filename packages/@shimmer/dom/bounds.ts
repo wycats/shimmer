@@ -1,5 +1,5 @@
-import { unwrap, userError } from "../assertions";
-import type { StableDynamicContent } from "../nodes/content";
+import { unwrap, userError } from "../core/assertions";
+import type { StableDynamicContent } from "../core/nodes/content";
 import { Cursor } from "./cursor";
 import type { SimplestNode, SimplestParentNode } from "./simplest";
 

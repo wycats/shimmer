@@ -1,6 +1,6 @@
-import { Bounds } from "../dom/bounds";
-import type { Cursor } from "../dom/cursor";
-import type { SimplestDocument } from "../dom/simplest";
+import { Bounds } from "../../dom/bounds";
+import type { Cursor } from "../../dom/cursor";
+import type { SimplestDocument } from "../../dom/simplest";
 import { build, Reactive } from "../reactive/cell";
 import { OptionalArray, PresentArray } from "../utils/type";
 import { createComment } from "./comment";

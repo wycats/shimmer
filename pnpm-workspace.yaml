@@ -1,2 +1,3 @@
-- app
-- packages/@shimmer/*
+packages:
+  - app
+  - packages/@shimmer/*
