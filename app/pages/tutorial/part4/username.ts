@@ -1,5 +1,6 @@
-import type { Invoke, Reactive } from "@shimmer/core";
+import type { Invoke } from "@shimmer/core";
 import { def, text } from "@shimmer/dsl";
+import type { Reactive } from "@shimmer/reactive";
 import { Cond, el, ToBool } from "../../utils";
 
 export default def(

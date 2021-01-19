@@ -5,7 +5,6 @@ import {
   DynamicBounds,
   StaticBounds,
 } from "@shimmer/dom";
-import { IS_CONTENT } from "../brands";
 import type { DynamicRenderedContent } from "../glimmer";
 import { isObject } from "../utils";
 import type { CommentInfo } from "./comment";
@@ -13,6 +12,13 @@ import type { ElementInfo } from "./element";
 import type { FragmentInfo } from "./fragment";
 import type { BlockInfo, EachInfo } from "./structure";
 import type { TextInfo } from "./text";
+
+export const IS_CONTENT = Symbol("IS_CONTENT");
+export type IS_CONTENT = typeof IS_CONTENT;
+
+export function isContent(value: unknown): value is Content {
+  return isObject(value) && IS_CONTENT in value;
+}
 
 export type ContentType =
   | "text"

@@ -3,15 +3,13 @@ import {
   Choice,
   Content,
   EFFECTS,
-  IntoReactive,
   PresentComponentDefinition,
-  Pure,
-  Reactive,
   VariantInfo,
   Variants,
 } from "@shimmer/core";
 import type { SimplestElement } from "@shimmer/dom";
 import { comment, def, effect, element, match } from "@shimmer/dsl";
+import { IntoReactive, Pure, Reactive } from "@shimmer/reactive";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
 

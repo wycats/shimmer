@@ -1,10 +1,15 @@
 import { assert, unwrap } from "@shimmer/dev-mode";
 import type { Cursor, SimplestDocument } from "@shimmer/dom";
 import { Bounds } from "@shimmer/dom";
-import { diffArray, KeyedNode, Patches } from "@shimmer/reactive";
-import { isStaticReactive } from "../../brands";
-import { Pure } from "../../glimmer";
-import { Cell, Reactive } from "../../reactive";
+import {
+  Cell,
+  diffArray,
+  isStaticReactive,
+  KeyedNode,
+  Patches,
+  Pure,
+  Reactive,
+} from "@shimmer/reactive";
 import { OptionalArray } from "../../utils";
 import {
   Content,

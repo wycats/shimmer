@@ -1,4 +1,4 @@
-import { getValue, TrackedCache } from "./cache";
+import { getValue, TrackedCache } from "@shimmer/reactive";
 
 export interface Render {
   readonly render: TrackedCache<void> | null;

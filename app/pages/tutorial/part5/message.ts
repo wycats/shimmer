@@ -1,6 +1,6 @@
-import type { Block } from "@shimmer/core";
-import { IntoContent, Invoke, Pure, Reactive } from "@shimmer/core";
+import type { Block, IntoContent, Invoke } from "@shimmer/core";
 import { def, fragment } from "@shimmer/dsl";
+import { Pure, Reactive } from "@shimmer/reactive";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";

@@ -89,10 +89,12 @@ importers:
       '@shimmer/core': link:../core
       '@shimmer/dev-mode': link:../dev-mode
       '@shimmer/dom': link:../dom
+      '@shimmer/reactive': link:../reactive
     specifiers:
       '@shimmer/core': workspace:*
       '@shimmer/dev-mode': workspace:*
       '@shimmer/dom': workspace:*
+      '@shimmer/reactive': workspace:*
   packages/@shimmer/reactive:
     dependencies:
       '@glimmer/destroyable': 0.73.1

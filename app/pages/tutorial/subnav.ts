@@ -1,5 +1,5 @@
-import { Reactive } from "@shimmer/core";
 import { def, element, fragment } from "@shimmer/dsl";
+import { Reactive } from "@shimmer/reactive";
 import { SimpleLink } from "../nav";
 
 export const SubNav = def(({ $ }) => {

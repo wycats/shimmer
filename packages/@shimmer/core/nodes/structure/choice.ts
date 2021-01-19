@@ -1,6 +1,5 @@
 import type { Bounds, Cursor, SimplestDocument } from "@shimmer/dom";
-import { isStatic } from "../../brands";
-import { build, Reactive } from "../../reactive";
+import { build, isStatic, Reactive } from "@shimmer/reactive";
 import {
   Content,
   DynamicContent,

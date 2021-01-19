@@ -1,7 +1,7 @@
 import { registerDestructor } from "@glimmer/destroyable";
 import type { Cursor, SimplestDocument } from "@shimmer/dom";
+import { createCache, TrackedCache } from "@shimmer/reactive";
 import type { Render } from "../glimmer";
-import { createCache, TrackedCache } from "../glimmer";
 import type { DocService } from "../owner";
 import { Content, StableContentResult, StableDynamicContent } from "./content";
 

@@ -2,10 +2,10 @@ import type {
   Block,
   Invoke,
   PresentComponentDefinition,
-  Reactive,
   Services,
 } from "@shimmer/core";
 import { def, fragment } from "@shimmer/dsl";
+import type { Reactive } from "@shimmer/reactive";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";

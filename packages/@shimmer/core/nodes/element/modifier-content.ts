@@ -1,5 +1,5 @@
 import type { SimplestDocument, SimplestElement } from "@shimmer/dom";
-import { Effect } from "../../glimmer";
+import { Effect } from "@shimmer/reactive";
 import { isObject } from "../../utils";
 import type { AttributeModifier } from "./attribute";
 import type { EffectModifier } from "./element-effect";

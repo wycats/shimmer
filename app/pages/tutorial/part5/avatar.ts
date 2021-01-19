@@ -1,5 +1,6 @@
-import type { Modifiers, Reactive } from "@shimmer/core";
+import type { Modifiers } from "@shimmer/core";
 import { def, text } from "@shimmer/dsl";
+import type { Reactive } from "@shimmer/reactive";
 import { Classes, el, If } from "../../utils";
 
 export default def(

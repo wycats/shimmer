@@ -1,5 +1,5 @@
-import { Pure } from "@shimmer/core";
 import { def, each, text } from "@shimmer/dsl";
+import { Pure } from "@shimmer/reactive";
 import MessageData from "./message";
 
 interface MessageData {

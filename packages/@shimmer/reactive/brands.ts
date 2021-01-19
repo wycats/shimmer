@@ -1,6 +1,5 @@
-import type { Pure } from "./glimmer";
-import type { Content } from "./nodes";
-import type { Cell, Reactive, StaticReactive, StaticValue } from "./reactive";
+import type { Pure } from "./cache";
+import type { Cell, Reactive, StaticReactive, StaticValue } from "./cell";
 import { isObject } from "./utils";
 
 export const IS_PURE = Symbol("IS_PURE");
@@ -37,13 +36,6 @@ export type IS_CELL = typeof IS_CELL;
 
 export function isCell(value: unknown): value is Cell<unknown> {
   return isObject(value) && IS_CELL in value;
-}
-
-export const IS_CONTENT = Symbol("IS_CONTENT");
-export type IS_CONTENT = typeof IS_CONTENT;
-
-export function isContent(value: unknown): value is Content {
-  return isObject(value) && IS_CONTENT in value;
 }
 
 export function isReactive(value: unknown): value is Reactive<unknown> {

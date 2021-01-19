@@ -1,6 +1,6 @@
+import type { IntoReactive, Reactive, StaticValue } from "@shimmer/reactive";
 import type { Block, Content, EffectModifier, Modifier } from "./nodes";
 import type { Invoke, Services } from "./owner";
-import type { IntoReactive, Reactive, StaticValue } from "./reactive";
 
 export const EFFECTS = Symbol("EFFECTS");
 export type EFFECTS = typeof EFFECTS;

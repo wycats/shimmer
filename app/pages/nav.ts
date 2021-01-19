@@ -1,6 +1,6 @@
-import type { Block } from "@shimmer/core";
-import { Content, Invoke, Pure, Reactive, RouterService } from "@shimmer/core";
+import type { Block, Content, Invoke, RouterService } from "@shimmer/core";
 import { def, element, fragment, text } from "@shimmer/dsl";
+import { Pure, Reactive } from "@shimmer/reactive";
 import { el } from "./utils";
 
 export function isActive(

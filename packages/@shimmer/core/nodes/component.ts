@@ -1,5 +1,5 @@
+import type { Reactive, StaticValue } from "@shimmer/reactive";
 import type { Owner } from "../owner";
-import type { Reactive, StaticValue } from "../reactive";
 import type { Args } from "../types";
 import type { Content } from "./content";
 import type { Block } from "./structure";

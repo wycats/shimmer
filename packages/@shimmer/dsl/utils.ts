@@ -4,13 +4,8 @@ import type {
   IntoComponentArgs,
   IntoContent,
 } from "@shimmer/core";
-import {
-  Content,
-  createText,
-  isReactive,
-  Reactive,
-  StaticReactive,
-} from "@shimmer/core";
+import { Content, createText } from "@shimmer/core";
+import { isReactive, Reactive, StaticReactive } from "@shimmer/reactive";
 
 export type IntoReactive<T> = Reactive<T> | T;
 

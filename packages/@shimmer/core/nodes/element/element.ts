@@ -1,6 +1,6 @@
 import type { SimplestDocument } from "@shimmer/dom";
 import { Bounds, Cursor, StaticBounds } from "@shimmer/dom";
-import { Effect } from "../../glimmer";
+import { Effect } from "@shimmer/reactive";
 import {
   Content,
   DynamicContent,

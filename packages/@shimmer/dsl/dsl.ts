@@ -31,13 +31,12 @@ import {
   Match,
   Modifier,
   PresentComponentDefinition,
-  Pure,
-  Reactive,
   Services,
   TextContent,
 } from "@shimmer/core";
 import { userError } from "@shimmer/dev-mode";
 import type { SimplestElement } from "@shimmer/dom";
+import { Pure, Reactive } from "@shimmer/reactive";
 import {
   intoArgs,
   IntoArgs,

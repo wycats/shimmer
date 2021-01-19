@@ -1,5 +1,4 @@
-import { isStatic } from "../../brands";
-import type { Reactive } from "../../reactive";
+import { isStatic, Reactive } from "@shimmer/reactive";
 import {
   DynamicModifier,
   StaticModifier,

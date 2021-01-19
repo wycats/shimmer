@@ -1,17 +1,14 @@
 import { registerDestructor } from "@glimmer/destroyable";
 import {
   App,
-  Cell,
   Choice,
   EFFECTS,
-  IntoReactive,
   Invoke,
   PresentComponentDefinition,
-  Pure,
-  Reactive,
 } from "@shimmer/core";
 import { tree } from "@shimmer/debug";
 import { def, each, element, fragment, match, text } from "@shimmer/dsl";
+import { Cell, IntoReactive, Pure, Reactive } from "@shimmer/reactive";
 import { Nav } from "./nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
 import { Bool, on } from "./utils";

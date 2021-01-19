@@ -4,8 +4,7 @@ import type {
   SimplestDocument,
 } from "@shimmer/dom";
 import { StaticBounds } from "@shimmer/dom";
-import { isStaticReactive } from "../brands";
-import { build, Reactive } from "../reactive";
+import { build, isStaticReactive, Reactive } from "@shimmer/reactive";
 import { DynamicContent, StaticContent, TemplateContent } from "./content";
 
 export type TextInfo = Reactive<string>;
