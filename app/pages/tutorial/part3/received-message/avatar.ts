@@ -1,12 +1,12 @@
-import { component, Reactive } from "../../../../../src/index";
+import { def } from "../../../../../src/index";
 import Avatar from "../avatar";
 
-export default component(({ $ }) =>
+export default def(({ $ }) =>
   $(Avatar, {
     args: {
-      title: Reactive.static("Tomster's avatar"),
-      initial: Reactive.static("T"),
-      isActive: Reactive.static(true),
+      title: "Tomster's avatar",
+      initial: "T",
+      isActive: true,
     },
   })
 );

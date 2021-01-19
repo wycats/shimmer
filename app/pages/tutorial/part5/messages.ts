@@ -1,4 +1,4 @@
-import { component, each, Pure, Reactive, text } from "../../../../src/index";
+import { def, each, Pure, text } from "../../../../src/index";
 import MessageData from "./message";
 
 interface MessageData {
@@ -54,7 +54,7 @@ const messages: MessageData[] = [
   },
 ];
 
-export default component(({ $ }) => {
+export default def(({ $ }) => {
   return each(
     messages,
     () => Math.random(),
@@ -64,7 +64,7 @@ export default component(({ $ }) => {
           username: Pure.of(() => message.now.username),
           userIsActive: Pure.of(() => message.now.active),
           userLocalTime: Pure.of(() => message.now.localTime),
-          isCurrentUser: Reactive.static(true),
+          isCurrentUser: true,
         },
         blocks: {
           default: text(Pure.of(() => message.now.content)),

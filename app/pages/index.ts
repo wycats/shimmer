@@ -3,7 +3,7 @@ import {
   App,
   Cell,
   Choice,
-  component,
+  def,
   each,
   EFFECTS,
   element,
@@ -57,11 +57,11 @@ interface ContactData extends PresentComponentDefinition {
   };
 }
 
-export const Contact = component(({ args: { person } }: ContactData) => {
+export const Contact = def(({ args: { person } }: ContactData) => {
   return text(Pure.of(() => person.now.name.first.now));
 });
 
-export const Count = component(
+export const Count = def(
   ({
     $,
     args: { counter },
@@ -112,7 +112,7 @@ function rand() {
 
 type ReactiveCounts = Reactive<Iterable<IntoReactive<CountValue>>>;
 
-const Texts = component(
+const Texts = def(
   ({
     $,
     args: { counts },
@@ -130,7 +130,7 @@ const Texts = component(
   }
 );
 
-const Cond = component(
+const Cond = def(
   ({ args: { bool } }: { args: { bool: Reactive<Choice<Bool>> } }) => {
     return match(bool, {
       true: () => text("true"),
@@ -139,7 +139,7 @@ const Cond = component(
   }
 );
 
-const Hello = component(
+const Hello = def(
   ({
     $,
     args: { counts, bool },

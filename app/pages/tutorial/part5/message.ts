@@ -1,5 +1,5 @@
 import {
-  component,
+  def,
   fragment,
   IntoContent,
   Invoke,
@@ -19,7 +19,7 @@ function substring(
   return Pure.of(() => string.now.substring(start.now, end.now));
 }
 
-export default component(
+export default def(
   ({
     $,
     args: { userIsActive, isCurrentUser, username, userLocalTime },

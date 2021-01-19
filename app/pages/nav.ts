@@ -1,6 +1,6 @@
 import {
-  component,
   Content,
+  def,
   element,
   fragment,
   Invoke,
@@ -35,7 +35,7 @@ export function inFallback(router: RouterService): boolean {
   );
 }
 
-export const SimpleLink = component(
+export const SimpleLink = def(
   ({
     args: { href },
     blocks: { default: body },
@@ -47,7 +47,7 @@ export const SimpleLink = component(
   }
 );
 
-export const Link = component(
+export const Link = def(
   ({
     $,
     args: { href },
@@ -65,7 +65,7 @@ export const Link = component(
   }
 );
 
-export const Nav = component(({ $ }) => {
+export const Nav = def(({ $ }) => {
   return element(
     "nav",
     fragment(

@@ -1,5 +1,5 @@
 import {
-  component,
+  def,
   fragment,
   Invoke,
   PresentComponentDefinition,
@@ -24,7 +24,7 @@ interface MessageArgs extends PresentComponentDefinition {
   blocks: { default: Block<[]> };
 }
 
-export default component(
+export default def(
   ({
     $,
     args: {

@@ -1,7 +1,7 @@
-import { component } from "../../../../../src/index";
+import { def } from "../../../../../src/index";
 import Avatar from "../avatar";
 
-export default component(({ $ }) =>
+export default def(({ $ }) =>
   $(Avatar, {
     args: {
       title: "Tomster's avatar",

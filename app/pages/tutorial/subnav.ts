@@ -1,7 +1,7 @@
-import { component, element, fragment, Reactive } from "../../../src/index";
+import { def, element, fragment, Reactive } from "../../../src/index";
 import { SimpleLink } from "../nav";
 
-export const SubNav = component(({ $ }) => {
+export const SubNav = def(({ $ }) => {
   return element(
     "nav",
     fragment(

@@ -1,8 +1,8 @@
 import type { Modifiers, Reactive } from "../../../../src/index";
-import { component, text } from "../../../../src/index";
+import { def, text } from "../../../../src/index";
 import { Classes, el, If } from "../../utils";
 
-export default component(
+export default def(
   ({
     args: { title, initial, isActive },
     attrs,

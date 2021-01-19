@@ -23,7 +23,7 @@ import {
   IntoComponentArgs,
   intoContent,
   intoReactive,
-  IntoReactive,
+  IntoReactive
 } from "./utils";
 
 export const EFFECTS = Symbol("EFFECTS");
@@ -323,20 +323,20 @@ export type Component<C extends ComponentDefinition, S extends Services> = (
   $: Invoke<S>
 ) => Content;
 
-export function component<S extends Services>(
+export function def<S extends Services>(
   callback: (args: { $: Invoke<S> }) => IntoContent
 ): Component<[], S>;
-export function component<S extends Services>(
+export function def<S extends Services>(
   callback: () => IntoContent
 ): Component<[], Services>;
-export function component<C extends PresentComponentDefinition>(
+export function def<C extends PresentComponentDefinition>(
   callback: (args: C) => IntoContent
 ): Component<C, Services>;
-export function component<
+export function def<
   C extends PresentComponentDefinition,
   S extends Services
 >(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S>;
-export function component<
+export function def<
   C extends PresentComponentDefinition,
   S extends Services
 >(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S> {

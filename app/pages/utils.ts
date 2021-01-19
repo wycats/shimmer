@@ -1,8 +1,8 @@
 import {
   Choice,
   comment,
-  component,
   Content,
+  def,
   dom,
   effect,
   EFFECTS,
@@ -54,7 +54,7 @@ interface CondArgs extends PresentComponentDefinition {
   blocks: { ifTrue: Block<[]>; ifFalse?: Block<[]> };
 }
 
-export const Cond = component<CondArgs>(
+export const Cond = def<CondArgs>(
   ({ args: { bool }, blocks: { ifTrue, ifFalse } }: CondArgs): Content => {
     let res = match(bool, {
       true: () => ifTrue.invoke([]),

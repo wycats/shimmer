@@ -1,4 +1,4 @@
-import { App, component, fragment, Owner, Services } from "../../../src/index";
+import { App, def, fragment, Owner, Services } from "../../../src/index";
 import { Nav } from "../nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "../page";
 import { el } from "../utils";
@@ -23,8 +23,8 @@ export class TutorialPage implements PageHooks<TutorialState> {
 
 export const Main = page(() => new TutorialPage());
 
-const Template = component(({ $ }) => {
+const Template = def(({ $ }) => {
   return fragment($(Nav), el("div", { class: "fallback" }, $(Page)));
 });
 
-const Page = component(({ $ }) => $(Counter));
+const Page = def(({ $ }) => $(Counter));

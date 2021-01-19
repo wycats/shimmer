@@ -1,7 +1,7 @@
-import { component } from "../../../../../src/index";
+import { def } from "../../../../../src/index";
 import Username from "../username";
 
-export default component(({ $ }) =>
+export default def(({ $ }) =>
   $(Username, {
     args: {
       name: "Zoey",

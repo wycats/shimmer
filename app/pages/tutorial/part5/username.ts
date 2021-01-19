@@ -1,7 +1,7 @@
-import { component, Invoke, Reactive, text } from "../../../../src/index";
+import { def, Invoke, Reactive, text } from "../../../../src/index";
 import { Cond, el, ToBool } from "../../utils";
 
-export default component(
+export default def(
   ({
     $,
     args: { name, localTime },
@@ -22,7 +22,7 @@ export default component(
           ifTrue: el(
             "span",
             { class: "local-time" },
-            text("their local time is "),
+            "their local time is ",
             text(localTime as Reactive<string>)
           ),
         },

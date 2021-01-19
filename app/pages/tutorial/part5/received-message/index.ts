@@ -1,8 +1,8 @@
-import { component, text } from "../../../../../src/index";
+import { def } from "../../../../../src/index";
 import { el } from "../../../utils";
 import Message from "../message";
 
-export default component(({ $ }) =>
+export default def(({ $ }) =>
   $(Message, {
     args: {
       username: "Tomster",
@@ -15,8 +15,8 @@ export default component(({ $ }) =>
     blocks: {
       default: el(
         "p",
-        text("Hey Zoey, have you had a chance to look at the EmberConf"),
-        text("brainstorming doc I sent you?")
+        "Hey Zoey, have you had a chance to look at the EmberConf",
+        "brainstorming doc I sent you?"
       ),
     },
   })

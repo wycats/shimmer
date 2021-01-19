@@ -1,11 +1,4 @@
-import {
-  App,
-  component,
-  fragment,
-  Owner,
-  Services,
-  text,
-} from "../../../src/index";
+import { App, def, fragment, Owner, Services, text } from "../../../src/index";
 import { Nav } from "../nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "../page";
 import { el } from "../utils";
@@ -30,11 +23,11 @@ export class TutorialPage implements PageHooks<TutorialState> {
 
 export const Main = page(() => new TutorialPage());
 
-const Template = component(({ $ }) => {
+const Template = def(({ $ }) => {
   return fragment($(Nav), $(SubNav), el("div", { class: "tutorial" }, $(Page)));
 });
 
-const Page = component(() => {
+const Page = def(() => {
   return fragment(
     el(
       "div",
@@ -42,7 +35,7 @@ const Page = component(() => {
       el(
         "a",
         { href: "https://guides.emberjs.com/release/components/" },
-        text("Templates are HTML")
+        "Templates are HTML"
       )
     ),
 
@@ -51,29 +44,19 @@ const Page = component(() => {
       { class: "messages" },
       el(
         "aside",
-        el(
-          "div",
-          { class: "avatar is-active", title: "Tomster's avatar" },
-          text("T")
-        )
+        el("div", { class: "avatar is-active", title: "Tomster's avatar" }, "T")
       ),
       el(
         "section",
         el(
           "h4",
           { class: "username" },
-          text("Tomster"),
-          el(
-            "span",
-            { class: "local-time" },
-            text("their local time is 4:56pm")
-          )
+          "Tomster",
+          el("span", { class: "local-time" }, "their local time is 4:56pm")
         ),
         el(
           "p",
-          text(
-            "Hey Zoey, have you had a chance to look at the EmberConf brainstorming doc I sent you?"
-          )
+          "Hey Zoey, have you had a chance to look at the EmberConf brainstorming doc I sent you?"
         )
       ),
       el(
@@ -87,40 +70,28 @@ const Page = component(() => {
         el("p", text("Hey!")),
         el(
           "p",
-          text(
-            "I love the ideas! I'm really excited about where this year's EmberConf is "
-          ),
-          text(
-            "going, I'm sure it's going to be the best one yet. Some quick notes:"
-          )
+          "I love the ideas! I'm really excited about where this year's EmberConf is ",
+          "going, I'm sure it's going to be the best one yet. Some quick notes:"
         ),
         el(
           "ul",
           el(
             "li",
-            text(
-              "Definitely agree that we should double the coffee budget this year (it "
-            ),
-            text("really is impressive how much we go through!)")
+            "Definitely agree that we should double the coffee budget this year (it ",
+            "really is impressive how much we go through!)"
           ),
           el(
             "li",
-            text(
-              "A blimp would definitely make the venue very easy to find, but I think "
-            ),
-            text(
-              "it might be a bit out of our budget. Maybe we could rent some spotlights "
-            ),
-            text("instead?")
+            "A blimp would definitely make the venue very easy to find, but I think ",
+            "it might be a bit out of our budget. Maybe we could rent some spotlights ",
+            "instead?"
           ),
           el(
             "li",
-            text(
-              "We absolutely will need more hamster wheels, last year's line was "
-            ),
-            el("em", text("way")),
-            text(" too long. Will get on that now before rental season hits "),
-            text("its peak.")
+            "We absolutely will need more hamster wheels, last year's line was ",
+            el("em", "way"),
+            " too long. Will get on that now before rental season hits ",
+            "its peak."
           )
         )
       ),

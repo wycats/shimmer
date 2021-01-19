@@ -1,6 +1,6 @@
 import {
   Cell,
-  component,
+  def,
   EFFECTS,
   fragment,
   Pure,
@@ -9,7 +9,7 @@ import {
 } from "../../../src/index";
 import { el, on } from "../utils";
 
-export default component(({ $ }) => {
+export default def(({ $ }) => {
   const multiple = Cell.of(1);
 
   return fragment(
@@ -23,7 +23,7 @@ export default component(({ $ }) => {
   );
 });
 
-const Counter = component(
+const Counter = def(
   ({
     args: { multiple, updateMultiple },
   }: {

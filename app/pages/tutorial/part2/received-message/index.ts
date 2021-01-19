@@ -1,9 +1,9 @@
-import { component, fragment, text } from "../../../../../src/index";
+import { def, fragment } from "../../../../../src/index";
 import { el } from "../../../utils";
 import ReceivedMessageAvatar from "./avatar";
 import ReceivedMessageUsername from "./username";
 
-export default component(({ $ }) =>
+export default def(({ $ }) =>
   fragment(
     $(ReceivedMessageAvatar),
     el(
@@ -11,9 +11,7 @@ export default component(({ $ }) =>
       $(ReceivedMessageUsername),
       el(
         "p",
-        text(
-          "Hey Zoey, have you had a chance to look at the EmberConf brainstorming doc I sent you?"
-        )
+        "Hey Zoey, have you had a chance to look at the EmberConf brainstorming doc I sent you?"
       )
     )
   )
