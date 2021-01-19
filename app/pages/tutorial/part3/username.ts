@@ -1,4 +1,5 @@
-import { def, Invoke, Reactive, text } from "../../../../src/index";
+import type { Invoke, Reactive } from "@shimmer/core";
+import { def, text } from "@shimmer/dsl";
 import { Cond, el, ToBool } from "../../utils";
 
 export default def(

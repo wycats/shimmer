@@ -1,4 +1,4 @@
-import { def } from "../../../../../src/index";
+import { def } from "@shimmer/dsl";
 import Avatar from "../avatar";
 
 export default def(({ $ }) =>

@@ -1,12 +1,11 @@
-import {
-  def,
-  fragment,
+import type {
+  Block,
   Invoke,
   PresentComponentDefinition,
   Reactive,
   Services,
-} from "../../../../src/index";
-import type { Block } from "../../../../src/nodes/structure/block";
+} from "@shimmer/core";
+import { def, fragment } from "@shimmer/dsl";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";

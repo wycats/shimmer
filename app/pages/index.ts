@@ -3,20 +3,15 @@ import {
   App,
   Cell,
   Choice,
-  def,
-  each,
   EFFECTS,
-  element,
-  fragment,
   IntoReactive,
   Invoke,
-  match,
   PresentComponentDefinition,
   Pure,
   Reactive,
-  text,
   tree,
-} from "../../src/index";
+} from "@shimmer/core";
+import { def, each, element, fragment, match, text } from "@shimmer/dsl";
 import { Nav } from "./nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
 import { Bool, on } from "./utils";

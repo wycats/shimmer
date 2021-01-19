@@ -1,7 +1,13 @@
-import { isReactive } from "../../brands";
-import { Reactive, StaticReactive, StaticValue } from "../../reactive/cell";
-import { Content } from "../content";
-import { createText } from "../text";
+import type {
+  Args,
+  ComponentArgs,
+  IntoComponentArgs,
+  IntoContent,
+} from "@shimmer/core";
+import { isReactive } from "../core/brands";
+import { Content } from "../core/nodes/content";
+import { createText } from "../core/nodes/text";
+import { Reactive, StaticReactive } from "../core/reactive/cell";
 
 export type IntoReactive<T> = Reactive<T> | T;
 
@@ -13,8 +19,6 @@ export function intoReactive<T>(into: IntoReactive<T>): Reactive<T> {
   }
 }
 
-export type IntoContent = Content | string;
-
 export function intoContent(into: IntoContent): Content {
   if (Content.is(into)) {
     return into;
@@ -22,19 +26,6 @@ export function intoContent(into: IntoContent): Content {
     return createText(Reactive.static(into));
   }
 }
-
-export type ComponentArgs = Record<
-  string,
-  Reactive<unknown> | StaticValue<unknown>
->;
-
-export type IntoComponentArgs<
-  A extends ComponentArgs | undefined
-> = A extends ComponentArgs
-  ? {
-      [P in keyof A]: A[P] extends Reactive<infer T> ? IntoReactive<T> : never;
-    }
-  : {};
 
 export function intoComponentArgs<A extends ComponentArgs>(
   args: IntoComponentArgs<A> | undefined
@@ -52,7 +43,6 @@ export function intoComponentArgs<A extends ComponentArgs>(
   return out as A;
 }
 
-export type Args = readonly Reactive<any>[];
 export type IntoArgs<A extends Args> = {
   [P in keyof A]: A[P] extends Reactive<infer T> ? IntoReactive<T> : never;
 };

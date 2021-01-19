@@ -1,4 +1,5 @@
-import { def, each, Pure, text } from "../../../../src/index";
+import { Pure } from "@shimmer/core";
+import { def, each, text } from "@shimmer/dsl";
 import MessageData from "./message";
 
 interface MessageData {

@@ -1,7 +1,7 @@
 import type { Owner } from "../owner";
 import type { Reactive, StaticValue } from "../reactive/cell";
+import type { Args } from "../types";
 import type { Content } from "./content";
-import type { Args } from "./dsl/utils";
 import type { Block } from "./structure/block";
 
 export type ReactiveArg =

@@ -1,12 +1,6 @@
-import {
-  def,
-  fragment,
-  IntoContent,
-  Invoke,
-  Pure,
-  Reactive,
-} from "../../../../src/index";
-import type { Block } from "../../../../src/nodes/structure/block";
+import type { Block } from "@shimmer/core";
+import { IntoContent, Invoke, Pure, Reactive } from "@shimmer/core";
+import { def, fragment } from "@shimmer/dsl";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";

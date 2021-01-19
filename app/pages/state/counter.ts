@@ -1,12 +1,5 @@
-import {
-  Cell,
-  def,
-  EFFECTS,
-  fragment,
-  Pure,
-  Reactive,
-  text,
-} from "../../../src/index";
+import { Cell, EFFECTS, Pure, Reactive } from "@shimmer/core";
+import { def, fragment, text } from "@shimmer/dsl";
 import { el, on } from "../utils";
 
 export default def(({ $ }) => {

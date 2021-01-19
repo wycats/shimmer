@@ -1,4 +1,5 @@
-import { App, def, fragment, Owner, Services, text } from "../../../src/index";
+import type { App, Owner, Services } from "@shimmer/core";
+import { def, fragment, text } from "@shimmer/dsl";
 import { Nav } from "../nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "../page";
 import { el } from "../utils";

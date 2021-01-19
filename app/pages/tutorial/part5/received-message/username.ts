@@ -1,4 +1,4 @@
-import { def } from "../../../../../src/index";
+import { def } from "@shimmer/dsl";
 import Username from "../username";
 
 export default def(({ $ }) =>

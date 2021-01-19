@@ -1,4 +1,4 @@
-import type { App, Cursor, Owner } from "../../src/index";
+import type { App, Cursor, Owner } from "@shimmer/core";
 
 export interface StaticOptions {
   owner: Owner;

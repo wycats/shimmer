@@ -1,8 +1,8 @@
 import type { SimplestDocument, SimplestElement } from "../../dom/simplest";
 import { Effect } from "../../glimmer/cache";
 import { isObject } from "../../utils/predicates";
-import type { AttributeInfo } from "./attribute";
-import type { ElementEffectInfo } from "./element-effect";
+import type { AttributeModifier } from "./attribute";
+import type { EffectModifier } from "./element-effect";
 
 export type ModifierType = "attribute" | "effect";
 
@@ -66,7 +66,7 @@ export const UpdatableModifier = {
   },
 };
 
-export abstract class AbstractTemplateContent<Type extends ModifierType, Info> {
+export abstract class AbstractModifierContent<Type extends ModifierType, Info> {
   readonly type: Type;
   readonly info: Info;
 
@@ -95,7 +95,7 @@ export abstract class AbstractTemplateContent<Type extends ModifierType, Info> {
 export class StaticTemplateModifier<
   Type extends ModifierType = ModifierType,
   Info = unknown
-> extends AbstractTemplateContent<Type, Info> {
+> extends AbstractModifierContent<Type, Info> {
   readonly isStatic = true;
 
   declare readonly content: {
@@ -122,7 +122,7 @@ export function renderElement(
 export class DynamicTemplateModifier<
   Type extends ModifierType = ModifierType,
   Info = unknown
-> extends AbstractTemplateContent<Type, Info> {
+> extends AbstractModifierContent<Type, Info> {
   readonly isStatic = false;
 
   declare readonly content: {
@@ -148,9 +148,6 @@ export class DynamicTemplateModifier<
 export type TemplateModifier<Type extends ModifierType, Info = unknown> =
   | StaticTemplateModifier<Type, Info>
   | DynamicTemplateModifier<Type, Info>;
-
-export type EffectModifier = TemplateModifier<"effect", ElementEffectInfo<any>>;
-export type AttributeModifier = TemplateModifier<"attribute", AttributeInfo>;
 
 export type Modifier = EffectModifier | AttributeModifier;
 

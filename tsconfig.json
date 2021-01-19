@@ -66,10 +66,11 @@
 
     /* Advanced Options */
     "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "skipDefaultLibCheck": true,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "useDefineForClassFields": true,
     "importsNotUsedAsValues": "error"
   },
-  "include": ["app", "src"],
+  "include": ["app", "packages/@shimmer", "vite.config.ts"],
   "exclude": ["**/node_modules", "**/.*/"]
 }

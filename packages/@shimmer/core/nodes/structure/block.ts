@@ -1,6 +1,7 @@
 import type { Bounds } from "../../dom/bounds";
 import type { Cursor } from "../../dom/cursor";
 import type { SimplestDocument } from "../../dom/simplest";
+import type { Args } from "../../types";
 import { isObject } from "../../utils/predicates";
 import {
   Content,
@@ -11,7 +12,6 @@ import {
   StaticTemplateContent,
   UpdatableDynamicContent,
 } from "../content";
-import type { Args } from "../dsl/utils";
 
 export interface BlockInfo<A extends Args = any> {
   args: A;

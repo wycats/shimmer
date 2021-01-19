@@ -1,4 +1,4 @@
-import { assert } from "../../src/index";
+import { assert } from "@shimmer/core";
 
 export interface UrlDetails {
   path: string;

@@ -1,5 +1,5 @@
 import type { SimplestElement } from "../../dom/simplest";
-import type { Args } from "../dsl/utils";
+import type { Args } from "../../types";
 import {
   DynamicModifier,
   TemplateModifier,
@@ -10,7 +10,7 @@ export interface ElementEffectInfo<A extends Args = Args> {
   callback: (element: SimplestElement, args: A) => void;
 }
 
-export type EffectModifier<A extends Args = Args> = TemplateModifier<
+export type EffectModifier<A extends Args = any> = TemplateModifier<
   "effect",
   ElementEffectInfo<A>
 >;

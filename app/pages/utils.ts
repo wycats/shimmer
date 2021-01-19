@@ -1,22 +1,17 @@
+import type { Block, EffectModifier } from "@shimmer/core";
 import {
   Choice,
-  comment,
   Content,
-  def,
   dom,
-  effect,
   EFFECTS,
-  element,
   IntoReactive,
-  match,
   PresentComponentDefinition,
   Pure,
   Reactive,
   VariantInfo,
   Variants,
-} from "../../src/index";
-import type { EffectModifier } from "../../src/nodes/element/modifier-content";
-import type { Block } from "../../src/nodes/structure/block";
+} from "@shimmer/core";
+import { comment, def, effect, element, match } from "@shimmer/dsl";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
 

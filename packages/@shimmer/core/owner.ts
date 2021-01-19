@@ -7,7 +7,7 @@ import type {
   ComponentData,
   IntoComponentDefinition,
   PresentComponentDefinition,
-} from "./nodes/dsl/dsl";
+} from "./types";
 
 export interface Services {
   [key: string]: unknown;

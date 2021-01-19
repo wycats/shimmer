@@ -1,33 +1,51 @@
-import { userError } from "../../assertions";
-import type { SimplestElement } from "../../dom/simplest";
-import { Pure } from "../../glimmer/cache";
-import type { Invoke, Services } from "../../owner";
-import { Reactive } from "../../reactive/cell";
-import { CommentContent, createComment } from "../comment";
-import { Content } from "../content";
-import { createAttr } from "../element/attribute";
-import { createElement, ElementArgs, ElementContent } from "../element/element";
-import { createEffect, EffectModifier } from "../element/element-effect";
-import type { AttributeModifier, Modifier } from "../element/modifier-content";
-import { createFragment } from "../fragment";
-import { Block } from "../structure/block";
-import { Choice, Choices, createMatch, Match } from "../structure/choice";
-import { createEach } from "../structure/each";
-import { createText, TextContent } from "../text";
 import {
   Args,
-  ComponentArgs,
+  AttributeModifier,
+  Block,
+  Blocks,
+  Choice,
+  Choices,
+  CommentContent,
+  Component,
+  ComponentData,
+  Content,
+  createAttr,
+  createComment,
+  createEach,
+  createEffect,
+  createElement,
+  createFragment,
+  createMatch,
+  createText,
+  EffectModifier,
+  EFFECTS,
+  ElementArgs,
+  ElementContent,
+  IntoBlock,
+  IntoBlockFunction,
+  IntoBlocksFor,
+  IntoComponentDefinition,
+  IntoContent,
+  IntoModifiers,
+  Invoke,
+  Match,
+  Modifier,
+  PresentComponentDefinition,
+  Pure,
+  Reactive,
+  Services,
+  SimplestElement,
+  TextContent,
+  userError,
+} from "@shimmer/core";
+import {
   intoArgs,
   IntoArgs,
   intoComponentArgs,
-  IntoComponentArgs,
   intoContent,
   intoReactive,
-  IntoReactive
+  IntoReactive,
 } from "./utils";
-
-export const EFFECTS = Symbol("EFFECTS");
-export type EFFECTS = typeof EFFECTS;
 
 export function text(string: IntoReactive<string>): TextContent {
   return createText(intoReactive(string));
@@ -36,8 +54,6 @@ export function text(string: IntoReactive<string>): TextContent {
 export function comment(string: IntoReactive<string>): CommentContent {
   return createComment(intoReactive(string));
 }
-
-export type IntoContent = Content | string;
 
 export function fragment(...parts: readonly IntoContent[]): Content {
   let content = parts.map(intoContent);
@@ -63,15 +79,6 @@ export function match<C extends Choices>(
 }
 
 export type IntoAnyBlockFunction = (...args: any[]) => IntoContent;
-
-export type IntoBlockFunction<A extends Args> = A extends []
-  ? () => IntoContent
-  : (...args: A) => IntoContent;
-
-export type IntoBlock<A extends Args> =
-  | IntoBlockFunction<A>
-  | Block<A>
-  | IntoContent;
 
 function coerceIntoBlock<A extends Args>(into: IntoBlock<A>): Block<A>;
 function coerceIntoBlock<A extends Args>(into: undefined): undefined;
@@ -157,15 +164,6 @@ export function each<T>(
   return createEach(reactive, key, block);
 }
 
-export type Modifiers = readonly Modifier[];
-
-export type IntoModifiers =
-  | {
-      [key: string]: IntoReactive<string | null>;
-      [EFFECTS]?: EffectModifier<any>[];
-    }
-  | Modifiers;
-
 function isModifiers(into: IntoModifiers): into is readonly Modifier[] {
   return Array.isArray(into);
 }
@@ -245,30 +243,6 @@ export function element(...into: IntoElementArgs): ElementContent {
   return createElement(args);
 }
 
-export type Blocks = Record<string, Block>;
-
-export interface PresentComponentDefinition {
-  args?: ComponentArgs;
-  attrs?: Modifiers;
-  blocks?: Blocks;
-}
-
-export type ComponentDefinition = PresentComponentDefinition | [];
-
-export interface ComponentData extends PresentComponentDefinition {
-  $: Invoke<Services>;
-}
-
-export type IntoComponentDefinition<
-  D extends ComponentDefinition
-> = D extends PresentComponentDefinition
-  ? {
-      args?: IntoComponentArgs<D["args"]>;
-      attrs?: IntoModifiers;
-      blocks?: IntoBlocksFor<D["blocks"]>;
-    }
-  : undefined;
-
 export function intoComponentData<C extends ComponentData>(
   args: IntoComponentDefinition<C>,
   $: Invoke
@@ -291,12 +265,6 @@ export function intoComponentData<C extends ComponentData>(
   } as C;
 }
 
-type IntoBlocksFor<B extends Blocks | undefined> = B extends Blocks
-  ? {
-      [P in keyof B]: B[P] extends Block<infer Args> ? IntoBlock<Args> : never;
-    }
-  : {};
-
 function intoBlocks<B extends Blocks>(blocks: undefined): undefined;
 function intoBlocks<B extends Blocks>(blocks: IntoBlocksFor<B>): B;
 function intoBlocks<B extends Blocks>(
@@ -318,11 +286,6 @@ function intoBlocks<B extends Blocks>(
   return out as B;
 }
 
-export type Component<C extends ComponentDefinition, S extends Services> = (
-  args: IntoComponentDefinition<C>,
-  $: Invoke<S>
-) => Content;
-
 export function def<S extends Services>(
   callback: (args: { $: Invoke<S> }) => IntoContent
 ): Component<[], S>;
@@ -332,14 +295,12 @@ export function def<S extends Services>(
 export function def<C extends PresentComponentDefinition>(
   callback: (args: C) => IntoContent
 ): Component<C, Services>;
-export function def<
-  C extends PresentComponentDefinition,
-  S extends Services
->(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S>;
-export function def<
-  C extends PresentComponentDefinition,
-  S extends Services
->(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S> {
+export function def<C extends PresentComponentDefinition, S extends Services>(
+  callback: (args: C & { $: Invoke<S> }) => IntoContent
+): Component<C, S>;
+export function def<C extends PresentComponentDefinition, S extends Services>(
+  callback: (args: C & { $: Invoke<S> }) => IntoContent
+): Component<C, S> {
   return (intoData: IntoComponentDefinition<any>, $: Invoke): Content => {
     let data = intoComponentData<any>(intoData, $);
 

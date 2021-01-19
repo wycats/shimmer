@@ -1,4 +1,4 @@
-import { def, fragment, text } from "../../../../../src/index";
+import { def, fragment, text } from "@shimmer/dsl";
 import { el } from "../../../utils";
 import SentMessageAvatar from "./avatar";
 import SentMessageUsername from "./username";

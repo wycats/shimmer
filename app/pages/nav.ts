@@ -1,15 +1,6 @@
-import {
-  Content,
-  def,
-  element,
-  fragment,
-  Invoke,
-  Pure,
-  Reactive,
-  RouterService,
-  text,
-} from "../../src/index";
-import type { Block } from "../../src/nodes/structure/block";
+import type { Block } from "@shimmer/core";
+import { Content, Invoke, Pure, Reactive, RouterService } from "@shimmer/core";
+import { def, element, fragment, text } from "@shimmer/dsl";
 import { el } from "./utils";
 
 export function isActive(

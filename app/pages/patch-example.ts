@@ -6,7 +6,7 @@ import {
   KeyedNode,
   unwrap,
   zip,
-} from "../../src/index";
+} from "@shimmer/core";
 
 // function normalize()
 
