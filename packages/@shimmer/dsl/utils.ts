@@ -4,10 +4,13 @@ import type {
   IntoComponentArgs,
   IntoContent,
 } from "@shimmer/core";
-import { isReactive } from "../core/brands";
-import { Content } from "../core/nodes/content";
-import { createText } from "../core/nodes/text";
-import { Reactive, StaticReactive } from "../core/reactive/cell";
+import {
+  Content,
+  createText,
+  isReactive,
+  Reactive,
+  StaticReactive,
+} from "@shimmer/core";
 
 export type IntoReactive<T> = Reactive<T> | T;
 

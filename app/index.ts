@@ -1,7 +1,7 @@
 import type { App, Owner } from "@shimmer/core";
 import type { Cursor } from "@shimmer/dom";
-import { Router, RoutesWithOwner } from "./router/router";
-import type { UrlDetails } from "./router/url-bar";
+import type { UrlDetails } from "./router";
+import { Router, RoutesWithOwner } from "./router";
 
 function route(owner: Owner): RoutesWithOwner {
   return async function route(url: UrlDetails, cursor: Cursor): Promise<App> {

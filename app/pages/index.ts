@@ -9,8 +9,8 @@ import {
   PresentComponentDefinition,
   Pure,
   Reactive,
-  tree,
 } from "@shimmer/core";
+import { tree } from "@shimmer/debug";
 import { def, each, element, fragment, match, text } from "@shimmer/dsl";
 import { Nav } from "./nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "./page";

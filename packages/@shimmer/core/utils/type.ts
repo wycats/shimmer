@@ -1,4 +1,4 @@
-import { assert } from "../assertions";
+import { assert } from "@shimmer/dev-mode";
 
 export abstract class OptionalArray<T, U extends T[] = T[]>
   implements Iterable<T> {

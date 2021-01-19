@@ -1,8 +1,6 @@
-import type { Bounds } from "../../../dom/bounds";
-import type { Cursor } from "../../../dom/cursor";
-import type { SimplestDocument } from "../../../dom/simplest";
+import type { Bounds, Cursor, SimplestDocument } from "@shimmer/dom";
 import type { Args } from "../../types";
-import { isObject } from "../../utils/predicates";
+import { isObject } from "../../utils";
 import {
   Content,
   DynamicContent,

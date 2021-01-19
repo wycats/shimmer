@@ -1,8 +1,7 @@
-import { Bounds } from "../../dom/bounds";
-import type { Cursor } from "../../dom/cursor";
-import type { SimplestDocument } from "../../dom/simplest";
-import { build, Reactive } from "../reactive/cell";
-import { OptionalArray, PresentArray } from "../utils/type";
+import type { Cursor, SimplestDocument } from "@shimmer/dom";
+import { Bounds } from "@shimmer/dom";
+import { build, Reactive } from "../reactive";
+import { OptionalArray, PresentArray } from "../utils";
 import { createComment } from "./comment";
 import {
   Content,

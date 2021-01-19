@@ -1,4 +1,4 @@
-import type { SimplestElement } from "../../../dom/simplest";
+import type { SimplestElement } from "@shimmer/dom";
 import type { Args } from "../../types";
 import {
   DynamicModifier,

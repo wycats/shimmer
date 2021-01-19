@@ -6,6 +6,7 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@shimmer/core": "workspace:*"
+    "@shimmer/core": "workspace:*",
+    "@shimmer/dev-mode": "workspace:*"
   }
 }

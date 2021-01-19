@@ -1,15 +1,16 @@
-import type { CommentContent } from "../core/nodes/comment";
 import type {
+  Block,
+  BlockInfo,
+  ChoiceContent,
+  CommentContent,
   Content,
   ContentType,
+  EachInfo,
+  ElementInfo,
+  FragmentContent,
   TemplateContent,
-} from "../core/nodes/content";
-import type { ElementInfo } from "../core/nodes/element/element";
-import type { FragmentContent } from "../core/nodes/fragment";
-import type { Block, BlockInfo } from "../core/nodes/structure/block";
-import type { ChoiceContent } from "../core/nodes/structure/choice";
-import type { EachInfo } from "../core/nodes/structure/each";
-import type { TextContent } from "../core/nodes/text";
+  TextContent,
+} from "@shimmer/core";
 
 export function tree(content: Content): DebugContentNode {
   return new TreeBuilder().content(content);

@@ -7,6 +7,9 @@
     "@shimmer/core": "workspace:*",
     "@shimmer/dsl": "workspace:*",
     "@shimmer/dom": "workspace:*",
+    "@shimmer/debug": "workspace:*",
+    "@shimmer/dev-mode": "workspace:*",
+    "@shimmer/reactive": "workspace:*",
     "@glimmer/destroyable": "*"
   }
 }

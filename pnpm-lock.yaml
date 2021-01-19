@@ -7,6 +7,7 @@ importers:
       '@shimmer/core': link:packages/@shimmer/core
       '@shimmer/dom': link:packages/@shimmer/dom
       '@shimmer/dsl': link:packages/@shimmer/dsl
+      '@shimmer/reactive': link:packages/@shimmer/reactive
       '@simple-dom/interface': 1.4.0
       '@typescript-eslint/eslint-plugin': 4.13.0_eb72f0c60b0f5689496e200c49b3c056
       '@typescript-eslint/parser': 4.13.0_934e220718ad55b43a652fde07bee0ba
@@ -24,6 +25,7 @@ importers:
       '@shimmer/core': workspace:*
       '@shimmer/dom': workspace:*
       '@shimmer/dsl': workspace:*
+      '@shimmer/reactive': workspace:*
       '@simple-dom/interface': ^1.4.0
       '@typescript-eslint/eslint-plugin': ^4.13.0
       '@typescript-eslint/parser': ^4.13.0
@@ -38,14 +40,60 @@ importers:
     dependencies:
       '@glimmer/destroyable': 0.73.1
       '@shimmer/core': link:../packages/@shimmer/core
+      '@shimmer/debug': link:../packages/@shimmer/debug
+      '@shimmer/dev-mode': link:../packages/@shimmer/dev-mode
       '@shimmer/dom': link:../packages/@shimmer/dom
       '@shimmer/dsl': link:../packages/@shimmer/dsl
+      '@shimmer/reactive': link:../packages/@shimmer/reactive
     specifiers:
       '@glimmer/destroyable': '*'
       '@shimmer/core': workspace:*
+      '@shimmer/debug': workspace:*
+      '@shimmer/dev-mode': workspace:*
       '@shimmer/dom': workspace:*
       '@shimmer/dsl': workspace:*
+      '@shimmer/reactive': workspace:*
   packages/@shimmer/core:
+    dependencies:
+      '@glimmer/destroyable': 0.73.1
+      '@glimmer/global-context': 0.73.1
+      '@glimmer/validator': 0.73.1
+      '@shimmer/dev-mode': link:../dev-mode
+      '@shimmer/dom': link:../dom
+      '@shimmer/reactive': link:../reactive
+      fast-array-diff: 1.0.0
+    specifiers:
+      '@glimmer/destroyable': '*'
+      '@glimmer/global-context': '*'
+      '@glimmer/validator': '*'
+      '@shimmer/dev-mode': '*'
+      '@shimmer/dom': '*'
+      '@shimmer/reactive': '*'
+      fast-array-diff: '*'
+  packages/@shimmer/debug:
+    dependencies:
+      '@shimmer/core': link:../core
+      '@shimmer/dev-mode': link:../dev-mode
+    specifiers:
+      '@shimmer/core': workspace:*
+      '@shimmer/dev-mode': workspace:*
+  packages/@shimmer/dev-mode:
+    specifiers: {}
+  packages/@shimmer/dom:
+    dependencies:
+      '@shimmer/dev-mode': link:../dev-mode
+    specifiers:
+      '@shimmer/dev-mode': workspace:*
+  packages/@shimmer/dsl:
+    dependencies:
+      '@shimmer/core': link:../core
+      '@shimmer/dev-mode': link:../dev-mode
+      '@shimmer/dom': link:../dom
+    specifiers:
+      '@shimmer/core': workspace:*
+      '@shimmer/dev-mode': workspace:*
+      '@shimmer/dom': workspace:*
+  packages/@shimmer/reactive:
     dependencies:
       '@glimmer/destroyable': 0.73.1
       '@glimmer/global-context': 0.73.1
@@ -56,20 +104,6 @@ importers:
       '@glimmer/global-context': '*'
       '@glimmer/validator': '*'
       fast-array-diff: '*'
-  packages/@shimmer/debug:
-    dependencies:
-      '@shimmer/core': link:../core
-    specifiers:
-      '@shimmer/core': workspace:*
-  packages/@shimmer/dom:
-    specifiers: {}
-  packages/@shimmer/dsl:
-    dependencies:
-      '@shimmer/core': link:../core
-      '@shimmer/dom': link:../dom
-    specifiers:
-      '@shimmer/core': workspace:*
-      '@shimmer/dom': workspace:*
 lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.12.11:

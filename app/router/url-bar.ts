@@ -1,4 +1,4 @@
-import { assert } from "@shimmer/core";
+import { assert } from "@shimmer/dev-mode";
 
 export interface UrlDetails {
   path: string;

@@ -1,11 +1,11 @@
-import { StaticBounds } from "../../dom/bounds";
-import type { Cursor } from "../../dom/cursor";
 import type {
+  Cursor,
   SimplestCharacterData,
   SimplestDocument,
-} from "../../dom/simplest";
+} from "@shimmer/dom";
+import { StaticBounds } from "@shimmer/dom";
 import { isStaticReactive } from "../brands";
-import { build, Reactive } from "../reactive/cell";
+import { build, Reactive } from "../reactive";
 import { DynamicContent, StaticContent, TemplateContent } from "./content";
 
 export type TextInfo = Reactive<string>;

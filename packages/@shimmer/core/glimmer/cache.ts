@@ -6,10 +6,9 @@ import {
   isConst as rawIsConst,
 } from "@glimmer/validator";
 import { isPure, IS_PURE } from "../brands";
-import type { RenderedContent } from "../nodes/content";
-import { assertDynamicContext } from "../reactive/cell";
-import { Maybe } from "../utils/option";
-import { isObject } from "../utils/predicates";
+import type { RenderedContent } from "../nodes";
+import { assertDynamicContext } from "../reactive";
+import { isObject, Maybe } from "../utils";
 
 declare const CACHE_KEY: unique symbol;
 export interface TrackedCache<T = unknown> {

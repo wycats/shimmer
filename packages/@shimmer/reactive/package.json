@@ -1,5 +1,5 @@
 {
-  "name": "@shimmer/core",
+  "name": "@shimmer/reactive",
   "version": "1.0.0",
   "type": "module",
   "exports": {
@@ -9,9 +9,6 @@
     "@glimmer/destroyable": "*",
     "@glimmer/validator": "*",
     "@glimmer/global-context": "*",
-    "@shimmer/reactive": "*",
-    "@shimmer/dom": "*",
-    "@shimmer/dev-mode": "*",
     "fast-array-diff": "*"
   }
 }

@@ -1,7 +1,7 @@
 import { consumeTag, createTag, dirtyTag } from "@glimmer/validator";
 import { isReactive, IS_CELL, IS_STATIC, IS_STATIC_REACTIVE } from "../brands";
-import type { Pure } from "../glimmer/cache";
-import { isObject } from "../utils/predicates";
+import type { Pure } from "../glimmer";
+import { isObject } from "../utils";
 
 export type IntoReactive<T> = Reactive<T> | T;
 

@@ -1,19 +1,17 @@
+import type { Cursor, SimplestDocument, SimplestNode } from "@shimmer/dom";
 import {
   AbstractBounds,
   Bounds,
   DynamicBounds,
   StaticBounds,
-} from "../../dom/bounds";
-import type { Cursor } from "../../dom/cursor";
-import type { SimplestDocument, SimplestNode } from "../../dom/simplest";
+} from "@shimmer/dom";
 import { IS_CONTENT } from "../brands";
-import type { DynamicRenderedContent } from "../glimmer/cache";
-import { isObject } from "../utils/predicates";
+import type { DynamicRenderedContent } from "../glimmer";
+import { isObject } from "../utils";
 import type { CommentInfo } from "./comment";
-import type { ElementInfo } from "./element/element";
+import type { ElementInfo } from "./element";
 import type { FragmentInfo } from "./fragment";
-import type { BlockInfo } from "./structure/block";
-import type { EachInfo } from "./structure/each";
+import type { BlockInfo, EachInfo } from "./structure";
 import type { TextInfo } from "./text";
 
 export type ContentType =

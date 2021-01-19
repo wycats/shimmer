@@ -35,8 +35,8 @@ import {
   Reactive,
   Services,
   TextContent,
-  userError,
 } from "@shimmer/core";
+import { userError } from "@shimmer/dev-mode";
 import type { SimplestElement } from "@shimmer/dom";
 import {
   intoArgs,

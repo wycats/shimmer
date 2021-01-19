@@ -4,6 +4,7 @@
   "type": "module",
   "dependencies": {
     "@shimmer/core": "workspace:*",
-    "@shimmer/dom": "workspace:*"
+    "@shimmer/dom": "workspace:*",
+    "@shimmer/dev-mode": "workspace:*"
   }
 }

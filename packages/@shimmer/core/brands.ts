@@ -1,12 +1,7 @@
-import type { Pure } from "./glimmer/cache";
-import type { Content } from "./nodes/content";
-import type {
-  Cell,
-  Reactive,
-  StaticReactive,
-  StaticValue,
-} from "./reactive/cell";
-import { isObject } from "./utils/predicates";
+import type { Pure } from "./glimmer";
+import type { Content } from "./nodes";
+import type { Cell, Reactive, StaticReactive, StaticValue } from "./reactive";
+import { isObject } from "./utils";
 
 export const IS_PURE = Symbol("IS_PURE");
 export type IS_PURE = typeof IS_PURE;

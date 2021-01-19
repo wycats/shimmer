@@ -72,5 +72,5 @@
     "importsNotUsedAsValues": "error"
   },
   "include": ["app", "packages/@shimmer", "vite.config.ts"],
-  "exclude": ["**/node_modules", "**/.*/"]
+  "exclude": ["node_modules", ".*/"]
 }

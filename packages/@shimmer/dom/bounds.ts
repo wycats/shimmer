@@ -1,5 +1,5 @@
-import { unwrap, userError } from "../core/assertions";
-import type { StableDynamicContent } from "../core/nodes/content";
+import type { StableDynamicContent } from "@shimmer/core";
+import { unwrap, userError } from "@shimmer/dev-mode";
 import { Cursor } from "./cursor";
 import type { SimplestNode, SimplestParentNode } from "./simplest";
 

@@ -1,5 +1,5 @@
 import { getPatch, Patch } from "fast-array-diff";
-import { enumerate } from "../utils/collection";
+import { enumerate } from "./utils";
 
 export class KeyedNode<T> {
   constructor(readonly key: unknown, readonly inner: T) {}

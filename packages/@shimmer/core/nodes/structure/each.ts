@@ -1,12 +1,11 @@
-import { Bounds } from "../../../dom/bounds";
-import type { Cursor } from "../../../dom/cursor";
-import type { SimplestDocument } from "../../../dom/simplest";
-import { diffArray, KeyedNode, Patches } from "../../array/normalize";
-import { assert, unwrap } from "../../assertions";
+import { assert, unwrap } from "@shimmer/dev-mode";
+import type { Cursor, SimplestDocument } from "@shimmer/dom";
+import { Bounds } from "@shimmer/dom";
+import { diffArray, KeyedNode, Patches } from "@shimmer/reactive";
 import { isStaticReactive } from "../../brands";
-import { Pure } from "../../glimmer/cache";
-import { Cell, Reactive } from "../../reactive/cell";
-import { OptionalArray } from "../../utils/type";
+import { Pure } from "../../glimmer";
+import { Cell, Reactive } from "../../reactive";
+import { OptionalArray } from "../../utils";
 import {
   Content,
   DynamicContent,

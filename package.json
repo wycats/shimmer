@@ -16,7 +16,8 @@
   "author": "",
   "license": "ISC",
   "eslintConfig": {
-    "extends": "./.config/.eslintrc.json"
+    "extends": "./.config/.eslintrc.json",
+    "root": true
   },
   "devDependencies": {
     "@simple-dom/interface": "^1.4.0",
@@ -34,6 +35,7 @@
     "@shimmer/core": "workspace:*",
     "@shimmer/dsl": "workspace:*",
     "@shimmer/dom": "workspace:*",
+    "@shimmer/reactive": "workspace:*",
     "fast-array-diff": "^1.0.0"
   }
 }

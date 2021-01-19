@@ -1,5 +1,5 @@
 import { isStatic } from "../../brands";
-import type { Reactive } from "../../reactive/cell";
+import type { Reactive } from "../../reactive";
 import {
   DynamicModifier,
   StaticModifier,

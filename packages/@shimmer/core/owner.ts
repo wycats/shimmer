@@ -1,7 +1,5 @@
-import type { Cursor } from "../dom/cursor";
-import type { SimplestDocument } from "../dom/simplest";
-import type { App } from "./nodes/app";
-import type { Content } from "./nodes/content";
+import type { Cursor, SimplestDocument } from "@shimmer/dom";
+import type { App, Content } from "./nodes";
 import type {
   Component,
   ComponentData,

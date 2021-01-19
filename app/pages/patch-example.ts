@@ -1,12 +1,6 @@
-import {
-  assert,
-  diffArray,
-  enumerate,
-  keyedArray,
-  KeyedNode,
-  unwrap,
-  zip,
-} from "@shimmer/core";
+import { enumerate, zip } from "@shimmer/core";
+import { assert, unwrap } from "@shimmer/dev-mode";
+import { diffArray, keyedArray, KeyedNode } from "@shimmer/reactive";
 
 // function normalize()
 
