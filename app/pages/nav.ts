@@ -21,6 +21,7 @@ export function isActive(
 export function inFallback(router: RouterService): boolean {
   return !(
     router.isActive("/tutorial") ||
+    router.isActive("/material") ||
     router.isActive("/index") ||
     router.isActive("/state")
   );
@@ -63,6 +64,10 @@ export const Nav = def(({ $ }) => {
       $(Link, {
         args: { href: Reactive.static("#tutorial") },
         blocks: { default: () => text("Tutorial") },
+      }),
+      $(Link, {
+        args: { href: Reactive.static("#material") },
+        blocks: { default: () => text("Material") },
       }),
       $(Link, {
         args: { href: Reactive.static("#index") },

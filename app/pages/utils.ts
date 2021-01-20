@@ -1,21 +1,16 @@
-import type { Block, EffectModifier } from "@shimmer/core";
+import type { Block } from "@shimmer/core";
 import {
-  Choice,
-  Content,
-  EFFECTS,
-  PresentComponentDefinition,
-  VariantInfo,
-  Variants,
+    Choice,
+    Content,
+    PresentComponentDefinition,
+    VariantInfo,
+    Variants
 } from "@shimmer/core";
-import type { SimplestElement } from "@shimmer/dom";
-import { comment, def, effect, element, match } from "@shimmer/dsl";
+import type { ElementCursor } from "@shimmer/dom/element-cursor";
+import { comment, def, effectFunction, element, match } from "@shimmer/dsl";
 import { IntoReactive, Pure, Reactive } from "@shimmer/reactive";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
-
-export type ModifiersSpec = Attributes & {
-  readonly [EFFECTS]?: readonly EffectModifier[];
-};
 
 export const el = element;
 
@@ -82,13 +77,13 @@ export const Classes = (
   });
 };
 
-export const on = effect(
+export const on = effectFunction(
   (
-    element: SimplestElement,
+    element: ElementCursor,
     eventName: Reactive<string>,
     callback: Reactive<EventListener>
   ) => {
-    (element as Element).addEventListener(eventName.now, callback.now);
+    element.asElement<Element>().addEventListener(eventName.now, callback.now);
   }
 );
 

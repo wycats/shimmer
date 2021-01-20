@@ -1,7 +1,7 @@
 import { EFFECTS } from "@shimmer/core";
-import { def, fragment, text } from "@shimmer/dsl";
+import { def, fragment, html } from "@shimmer/dsl";
 import { Cell, Pure, Reactive } from "@shimmer/reactive";
-import { el, on } from "../utils";
+import { on } from "../utils";
 
 export default def(({ $ }) => {
   const multiple = Cell.of(1);
@@ -34,29 +34,29 @@ const Counter = def(
     const total = Pure.of(() => String(count.now * multiple.now));
 
     return fragment(
-      el("p", text(Pure.of(() => String(count.now)))),
-      el("p", text("× "), text(Pure.of(() => String(multiple.now)))),
-      el("p", text("= "), text(total)),
+      html.p(Pure.of(() => String(count.now))),
+      html.p(
+        "× ",
+        Pure.of(() => String(multiple.now))
+      ),
+      html.p("= ", total),
 
-      el(
-        "button",
+      html.button(
         { type: "button", [EFFECTS]: [on("click", change(1))] },
-        text("+1")
+        "+1"
       ),
-      el(
-        "button",
+      html.button(
         { type: "button", [EFFECTS]: [on("click", change(-1))] },
-        text("-1")
+        "-1"
       ),
-      el(
-        "button",
+      html.button(
         {
           type: "button",
           [EFFECTS]: [
             on("click", () => updateMultiple.now((prev) => prev * 2)),
           ],
         },
-        text("Double It")
+        "Double It"
       )
     );
   }

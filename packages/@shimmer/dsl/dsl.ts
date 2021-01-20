@@ -35,8 +35,8 @@ import {
   TextContent,
 } from "@shimmer/core";
 import { userError } from "@shimmer/dev-mode";
-import type { SimplestElement } from "@shimmer/dom";
-import { Pure, Reactive } from "@shimmer/reactive";
+import type { ElementCursor } from "@shimmer/dom";
+import { isReactive, Pure, Reactive } from "@shimmer/reactive";
 import {
   intoArgs,
   IntoArgs,
@@ -119,8 +119,12 @@ export function attr(
   }
 }
 
-export function effect<A extends Args>(
-  callback: (element: SimplestElement, ...args: A) => void
+export function effect(callback: (element: Element) => void) {
+  return effectFunction((element) => callback(element.asElement()))();
+}
+
+export function effectFunction<A extends Args>(
+  callback: (element: ElementCursor, ...args: A) => void
 ): (...args: IntoArgs<A>) => EffectModifier<A> {
   let e = createEffect<A>((element, args) => callback(element, ...args));
 
@@ -167,12 +171,12 @@ function isModifiers(into: IntoModifiers): into is readonly Modifier[] {
   return Array.isArray(into);
 }
 
-function intoModifiers(into: undefined): undefined;
-function intoModifiers(into: IntoModifiers): readonly Modifier[];
-function intoModifiers(
+export function intoModifiers(into: undefined): undefined;
+export function intoModifiers(into: IntoModifiers): readonly Modifier[];
+export function intoModifiers(
   into: IntoModifiers | undefined
 ): readonly Modifier[] | undefined;
-function intoModifiers(
+export function intoModifiers(
   into: IntoModifiers | undefined
 ): readonly Modifier[] | undefined {
   if (into === undefined) {
@@ -200,14 +204,14 @@ function intoModifiers(
 }
 
 export type IntoElementArgs =
-  | [tag: string, ...content: IntoContent[]]
+  | [tag: string]
   | [
       tag: string,
-      modifiers: IntoModifiers | undefined,
-      ...content: IntoContent[]
+      overload: IntoContent | IntoModifiers | undefined,
+      ...rest: IntoContent[]
     ];
 
-function intoElementArgs(into: IntoElementArgs): ElementArgs {
+export function intoElementArgs(into: IntoElementArgs): ElementArgs {
   let [tag, overload, ...rest] = into;
 
   if (overload === undefined) {
@@ -218,7 +222,11 @@ function intoElementArgs(into: IntoElementArgs): ElementArgs {
     };
   }
 
-  if (typeof overload === "string" || Content.is(overload)) {
+  if (
+    typeof overload === "string" ||
+    Content.is(overload) ||
+    isReactive(overload)
+  ) {
     let body = [intoContent(overload), ...rest.map(intoContent)];
 
     return {

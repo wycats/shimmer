@@ -1,16 +1,13 @@
-import { def, fragment } from "@shimmer/dsl";
-import { el } from "../../../utils";
+import { def, fragment, html } from "@shimmer/dsl";
 import ReceivedMessageAvatar from "./avatar";
 import ReceivedMessageUsername from "./username";
 
 export default def(({ $ }) =>
   fragment(
     $(ReceivedMessageAvatar),
-    el(
-      "section",
+    html.section(
       $(ReceivedMessageUsername),
-      el(
-        "p",
+      html.p(
         "Hey Zoey, have you had a chance to look at the EmberConf brainstorming doc I sent you?"
       )
     )

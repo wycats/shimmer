@@ -1,11 +1,8 @@
-import { def } from "@shimmer/dsl";
-import { el } from "../../../utils";
+import { def, html } from "@shimmer/dsl";
 
 export default def(() =>
-  el(
-    "h4",
-    { class: "username" },
+  html.h4[".username"](
     "Tomster",
-    el("span", { class: "local-time" }, "their local time is 4:56pm")
+    html.span[".local-time"]("their local time is 4:56pm")
   )
 );

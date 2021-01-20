@@ -1,10 +1,12 @@
-import type {
+import {
   Args,
   ComponentArgs,
+  Content,
+  createText,
   IntoComponentArgs,
   IntoContent,
+  isContent,
 } from "@shimmer/core";
-import { Content, createText } from "@shimmer/core";
 import { isReactive, Reactive, StaticReactive } from "@shimmer/reactive";
 
 export type IntoReactive<T> = Reactive<T> | T;
@@ -18,8 +20,10 @@ export function intoReactive<T>(into: IntoReactive<T>): Reactive<T> {
 }
 
 export function intoContent(into: IntoContent): Content {
-  if (Content.is(into)) {
+  if (isContent(into)) {
     return into;
+  } else if (isReactive(into)) {
+    return createText(into);
   } else {
     return createText(Reactive.static(into));
   }

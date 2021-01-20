@@ -1,7 +1,7 @@
 import type { Modifiers } from "@shimmer/core";
-import { def, text } from "@shimmer/dsl";
+import { def, html } from "@shimmer/dsl";
 import type { Reactive } from "@shimmer/reactive";
-import { Classes, el, If } from "../../utils";
+import { Classes, If } from "../../utils";
 
 export default def(
   ({
@@ -15,13 +15,11 @@ export default def(
     };
     attrs: Modifiers;
   }) => {
-    return el(
-      "aside",
+    return html.aside(
       attrs,
-      el(
-        "div",
+      html.div(
         { class: Classes("avatar", If(isActive, "is-active", null)), title },
-        text(initial)
+        initial
       )
     );
   }

@@ -1,5 +1,10 @@
-import type { IntoReactive, Reactive, StaticValue } from "@shimmer/reactive";
-import type { Block, Content, EffectModifier, Modifier } from "./nodes";
+import {
+  IntoReactive,
+  isReactive,
+  Reactive,
+  StaticValue,
+} from "@shimmer/reactive";
+import { Block, Content, EffectModifier, isContent, Modifier } from "./nodes";
 import type { Invoke, Services } from "./owner";
 
 export const EFFECTS = Symbol("EFFECTS");
@@ -62,7 +67,11 @@ export type IntoBlock<A extends Args> =
   | Block<A>
   | IntoContent;
 
-export type IntoContent = Content | string;
+export type IntoContent = Content | Reactive<string> | string;
+
+export function isIntoContent(into: unknown): into is IntoContent {
+  return typeof into === "string" || isContent(into) || isReactive(into);
+}
 
 export type IntoBlockFunction<A extends Args> = A extends []
   ? () => IntoContent

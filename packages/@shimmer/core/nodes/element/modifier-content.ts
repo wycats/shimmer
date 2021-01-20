@@ -1,4 +1,4 @@
-import type { SimplestDocument, SimplestElement } from "@shimmer/dom";
+import type { ElementCursor, SimplestDocument } from "@shimmer/dom";
 import { Effect } from "@shimmer/reactive";
 import { isObject } from "../../utils";
 import type { AttributeModifier } from "./attribute";
@@ -13,14 +13,14 @@ export interface StaticModifier<
   readonly type: Type;
   readonly info: Info;
 
-  render(cursor: SimplestElement, dom: SimplestDocument): SimplestElement;
+  render(cursor: ElementCursor, dom: SimplestDocument): ElementCursor;
 }
 
 export const StaticModifier = {
   of: <Type extends ModifierType, Info>(
     type: Type,
     info: Info,
-    render: (cursor: SimplestElement, dom: SimplestDocument) => SimplestElement
+    render: (cursor: ElementCursor, dom: SimplestDocument) => ElementCursor
   ): StaticTemplateModifier<Type, Info> => {
     return new StaticTemplateModifier({
       type,
@@ -34,17 +34,14 @@ export interface DynamicModifier<
   Type extends ModifierType = ModifierType,
   Info = unknown
 > {
-  render(cursor: SimplestElement, dom: SimplestDocument): UpdatableModifier;
+  render(cursor: ElementCursor, dom: SimplestDocument): UpdatableModifier;
 }
 
 export const DynamicModifier = {
   of: <Type extends ModifierType, Info>(
     type: Type,
     info: Info,
-    render: (
-      cursor: SimplestElement,
-      dom: SimplestDocument
-    ) => UpdatableModifier
+    render: (cursor: ElementCursor, dom: SimplestDocument) => UpdatableModifier
   ): DynamicTemplateModifier<Type, Info> => {
     return new DynamicTemplateModifier({
       type,
@@ -55,13 +52,13 @@ export const DynamicModifier = {
 };
 
 export interface UpdatableModifier {
-  readonly element: SimplestElement;
+  readonly element: ElementCursor;
 
   update(): void;
 }
 
 export const UpdatableModifier = {
-  of: (element: SimplestElement, update: () => void): UpdatableModifier => {
+  of: (element: ElementCursor, update: () => void): UpdatableModifier => {
     return { element, update };
   },
 };
@@ -77,9 +74,9 @@ export abstract class AbstractModifierContent<Type extends ModifierType, Info> {
       type: Type;
       info: Info;
       render: (
-        cursor: SimplestElement,
+        cursor: ElementCursor,
         dom: SimplestDocument
-      ) => SimplestElement | UpdatableModifier;
+      ) => ElementCursor | UpdatableModifier;
     }
   ) {
     this.type = content.type;
@@ -87,9 +84,9 @@ export abstract class AbstractModifierContent<Type extends ModifierType, Info> {
   }
 
   abstract render(
-    cursor: SimplestElement,
+    cursor: ElementCursor,
     dom: SimplestDocument
-  ): SimplestElement | Effect<RenderedModifier>;
+  ): ElementCursor | Effect<RenderedModifier>;
 }
 
 export class StaticTemplateModifier<
@@ -101,17 +98,17 @@ export class StaticTemplateModifier<
   declare readonly content: {
     type: Type;
     info: Info;
-    render: (cursor: SimplestElement, dom: SimplestDocument) => SimplestElement;
+    render: (cursor: ElementCursor, dom: SimplestDocument) => ElementCursor;
   };
 
-  render(cursor: SimplestElement, dom: SimplestDocument): SimplestElement {
+  render(cursor: ElementCursor, dom: SimplestDocument): ElementCursor {
     return this.content.render(cursor, dom);
   }
 }
 
 export function renderElement(
-  result: SimplestElement | Effect<RenderedModifier>
-): SimplestElement {
+  result: ElementCursor | Effect<RenderedModifier>
+): ElementCursor {
   if (Effect.is(result)) {
     return result.poll().element;
   } else {
@@ -128,14 +125,11 @@ export class DynamicTemplateModifier<
   declare readonly content: {
     type: Type;
     info: Info;
-    render: (
-      cursor: SimplestElement,
-      dom: SimplestDocument
-    ) => UpdatableModifier;
+    render: (cursor: ElementCursor, dom: SimplestDocument) => UpdatableModifier;
   };
 
   render(
-    cursor: SimplestElement,
+    cursor: ElementCursor,
     dom: SimplestDocument
   ): Effect<RenderedModifier> {
     return Effect.of({
@@ -167,7 +161,7 @@ export const Modifier = {
 export class RenderedModifier<C extends UpdatableModifier = UpdatableModifier> {
   constructor(readonly content: C) {}
 
-  get element(): SimplestElement {
+  get element(): ElementCursor {
     return this.content.element;
   }
 

@@ -143,6 +143,9 @@ export interface SimplestTokenList {
    *
    * This is not identical to `remove` + `add`, which would add the new token at the end of the
    * ordered set. The `replace` method inserts the new token in the same location as the old one.
+   *
+   * From the spec: If the first token doesn't exist, replace() returns false immediately, without
+   * adding the new token to the token list.
    */
   replace(oldToken: string, newToken: string): void;
 

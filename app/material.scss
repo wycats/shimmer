@@ -1,0 +1,22 @@
+$mdc-theme-primary: #d81b60;
+$mdc-theme-on-primary: white;
+$mdc-theme-surface: #fce4ec;
+$mdc-theme-on-surface: black;
+
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+$mdc-typography-font-family: unquote("Raleway, sans-serif");
+
+$mdc-shape-small-component-radius: 20px;
+
+.material {
+  padding: 5vh;
+}
+
+.food-field {
+  width: 300px;
+  margin: 20px;
+}
+
+.eat-button {
+  display: block;
+}

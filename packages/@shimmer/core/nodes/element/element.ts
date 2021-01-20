@@ -1,5 +1,10 @@
-import type { SimplestDocument } from "@shimmer/dom";
-import { Bounds, Cursor, StaticBounds } from "@shimmer/dom";
+import {
+  Bounds,
+  Cursor,
+  ElementCursor,
+  SimplestDocument,
+  StaticBounds,
+} from "@shimmer/dom";
 import { Effect } from "@shimmer/reactive";
 import {
   Content,
@@ -12,6 +17,12 @@ import {
 import type { Modifier, RenderedModifier } from "./modifier-content";
 
 export interface ElementInfo {
+  tag: string;
+  modifiers: readonly Modifier[] | null;
+  body: Content | null;
+}
+
+export interface NormalizedElementArgs {
   tag: string;
   modifiers: readonly Modifier[] | null;
   body: Content | null;
@@ -112,7 +123,7 @@ function render(
 
   if (modifiers) {
     for (let modifier of modifiers) {
-      let rendered = modifier.render(element, dom);
+      let rendered = modifier.render(ElementCursor.of(element), dom);
 
       if (Effect.is(rendered)) {
         dynamicModifiers.push(rendered);

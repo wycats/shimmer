@@ -1,4 +1,3 @@
-import { def } from "@shimmer/dsl";
-import { el } from "../../../utils";
+import { def, html } from "@shimmer/dsl";
 
-export default def(() => el("h4", { class: "username" }, "Zoey"));
+export default def(() => html.h4[".username"]("Zoey"));

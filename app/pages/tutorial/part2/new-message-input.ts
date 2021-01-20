@@ -1,6 +1,5 @@
-import { def } from "@shimmer/dsl";
-import { el } from "../../utils";
+import { def, html } from "@shimmer/dsl";
 
 export default def(() =>
-  el("form", el("input"), el("button", { type: "submit" }, "Send"))
+  html.form(html.input(), html.button.attr("type", "submit")("Send"))
 );

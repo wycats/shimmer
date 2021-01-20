@@ -10,6 +10,10 @@ function route(owner: Owner): RoutesWithOwner {
         let page = await import("./pages/index");
         return page.Main(owner)(cursor);
       }
+      case "/material": {
+        let page = await import("./pages/material");
+        return page.Main(owner)(cursor);
+      }
       case "/tutorial": {
         switch (url.params["part"]) {
           case "1":

@@ -1,9 +1,7 @@
-import { def } from "@shimmer/dsl";
-import { el } from "../../../utils";
+import { def, html } from "@shimmer/dsl";
 
 export default def(() =>
-  el(
-    "aside",
-    el("div", { class: "avatar is-active", title: "Tomster's avatar" }, "T")
+  html.aside(
+    html.div[".avatar.is-active"].attr("title", "Tomster's avatar")("T")
   )
 );
