@@ -41,5 +41,18 @@
     "typescript": "^4.2.0-dev.20210122",
     "unexpected": "^12.0.0",
     "vite": "2.0.0-beta.33"
+    "typescript": "^4.2.0-dev.20210119",
+    "vite": "2.0.0-beta.33",
+    "@glimmer/destroyable": "^0.73.1",
+    "@glimmer/global-context": "^0.73.1",
+    "@glimmer/validator": "^0.73.1",
+    "@shimmer/core": "workspace:*",
+    "@shimmer/dsl": "workspace:*",
+    "@shimmer/dom": "workspace:*",
+    "@shimmer/reactive": "workspace:*",
+    "fast-array-diff": "^1.0.0"
+  },
+  "volta": {
+    "node": "14.15.4"
   }
 }
