@@ -59,8 +59,6 @@ class InnerURL implements UrlDetails {
 
     let out: QueryParams = {};
 
-    console.log("qps", [...params]);
-
     for (let [key, value] of params) {
       let current = out[key];
 

@@ -201,7 +201,10 @@ iframe:focus,
 object:focus {
   outline: none;
 }
-
+input:focus {
+  outline: -webkit-focus-ring-color auto 1px;
+  outline-offset: 0px;
+}
 input:focus,
 textarea:focus,
 keygen:focus,

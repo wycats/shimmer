@@ -1,21 +1,13 @@
-import type { Block } from "@shimmer/core";
-import {
-    Choice,
-    Content,
-    PresentComponentDefinition,
-    VariantInfo,
-    Variants
-} from "@shimmer/core";
-import type { ElementCursor } from "@shimmer/dom/element-cursor";
-import { comment, def, effectFunction, element, match } from "@shimmer/dsl";
-import { IntoReactive, Pure, Reactive } from "@shimmer/reactive";
+import { Choice, Content, VariantInfo, Variants } from "@shimmer/core";
+import { comment, defDSL, effectFunction, element, match } from "@shimmer/dsl";
+import { Block, computed, IntoReactive, Reactive } from "@shimmer/reactive";
 
 export type Attributes = Readonly<Record<string, IntoReactive<string | null>>>;
 
 export const el = element;
 
 export const ToBool = (value: Reactive<unknown>): Reactive<Choice<Bool>> =>
-  Pure.of(() => {
+  computed(() => {
     if (value.now) {
       return Bool.of("true", Reactive.static(true));
     } else {
@@ -32,20 +24,19 @@ export const If = <T, U>(
   let trueBranch = Reactive.from(ifTrue);
   let falseBranch = Reactive.from(ifFalse);
 
-  return Pure.of(() => (condition.now ? trueBranch.now : falseBranch.now));
+  return computed(() => (condition.now ? trueBranch.now : falseBranch.now));
 };
 
-interface CondArgs extends PresentComponentDefinition {
-  args: {
-    bool: Reactive<Choice<Bool>>;
-  };
-  blocks: { ifTrue: Block<[]>; ifFalse?: Block<[]> };
-}
-
-export const Cond = def<CondArgs>(
-  ({ args: { bool }, blocks: { ifTrue, ifFalse } }: CondArgs): Content => {
+export const Cond = defDSL(
+  ({
+    args: { bool },
+    blocks: { ifTrue, ifFalse },
+  }: {
+    ifTrue: Block<[]>;
+    ifFalse: Block<[]>;
+  }): Content => {
     let res = match(bool, {
-      true: () => ifTrue.invoke([]),
+      true: () => ifTrue([]),
       false: ifFalse ? () => ifFalse.invoke([]) : () => comment(""),
     });
 
@@ -58,7 +49,7 @@ export const Classes = (
 ): Reactive<string | null> => {
   let reactive = classes.map((c) => Reactive.from(c));
 
-  return Pure.of(() => {
+  return computed(() => {
     let className = [];
 
     for (let item of reactive) {
@@ -79,11 +70,11 @@ export const Classes = (
 
 export const on = effectFunction(
   (
-    element: ElementCursor,
+    element: Element,
     eventName: Reactive<string>,
     callback: Reactive<EventListener>
   ) => {
-    element.asElement<Element>().addEventListener(eventName.now, callback.now);
+    element.addEventListener(eventName.now, callback.now);
   }
 );
 
@@ -91,7 +82,5 @@ export type Bool = {
   true: VariantInfo<"true", Reactive<true>>;
   false: VariantInfo<"false", Reactive<false>>;
 };
-
-console.log("BOOL");
 
 export const Bool = Variants.define<Bool>();

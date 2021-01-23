@@ -8,6 +8,7 @@ class Glimmer {
   #revalidate = new Set<Render>();
   #assertions = new Set<() => void>();
   #promise: Promise<void> | null = null;
+  #done: Promise<void> | null = null;
 
   addRenderable(renderable: Render): void {
     this.#revalidate.add(renderable);
@@ -25,14 +26,27 @@ class Glimmer {
     this.#assertions.delete(assertion);
   }
 
+  async wait(): Promise<void> {
+    if (this.#done) {
+      // console.log("DONE");
+      return this.#done;
+    } else {
+      // console.log("RESOLVE");
+      return Promise.resolve();
+    }
+  }
+
   async revalidate() {
     if (this.#promise) {
       return;
     }
 
     this.#promise = Promise.resolve();
+    let fulfill: () => void;
+    this.#done = new Promise((f) => (fulfill = f));
     await this.#promise;
     this.#promise = null;
+    this.#done = null;
 
     for (let renderable of this.#revalidate) {
       if (renderable.render) {
@@ -43,6 +57,8 @@ class Glimmer {
     for (let assertion of this.#assertions) {
       assertion();
     }
+
+    fulfill!();
   }
 }
 

@@ -2,13 +2,13 @@ import { assert, unwrap } from "@shimmer/dev-mode";
 import type { Cursor, SimplestDocument } from "@shimmer/dom";
 import { Bounds } from "@shimmer/dom";
 import {
-  Cell,
+  Block,
   diffArray,
   isStaticReactive,
   KeyedNode,
   Patches,
-  Pure,
   Reactive,
+  StableCell,
 } from "@shimmer/reactive";
 import { OptionalArray } from "../../utils";
 import {
@@ -19,7 +19,6 @@ import {
   UpdatableDynamicContent,
 } from "../content";
 import { createFragment } from "../fragment";
-import type { Block } from "./block";
 
 export type ReactiveIterable<T> = Reactive<Iterable<Reactive<T>>>;
 
@@ -37,21 +36,7 @@ export function createEach<T>(
   return initialize({ reactive, key, block });
 }
 
-type StableMap<T> = Map<unknown, StableEntry<T>>;
-
-class StableEntry<T> {
-  static of<T>(inner: Reactive<T>): StableEntry<T> {
-    let cell = Cell.of(inner);
-    let reactive = Pure.of(() => cell.now.now);
-    return new StableEntry(cell, reactive);
-  }
-
-  constructor(readonly cell: Cell<Reactive<T>>, readonly stable: Reactive<T>) {}
-
-  update(reactive: Reactive<T>) {
-    this.cell.update(() => reactive);
-  }
-}
+type StableMap<T> = Map<unknown, StableCell<T>>;
 
 function initialize<T>({
   reactive,
@@ -73,7 +58,7 @@ function initialize<T>({
     let content: Content[] = [];
 
     for (let item of iterable) {
-      content.push(block.invoke([item]));
+      content.push(block([item]));
     }
 
     return createFragment(content);
@@ -170,7 +155,7 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
 
     let stableCell = state.upsertEntry(key, item);
 
-    render.add(key, () => state.render(stableCell.stable));
+    render.add(key, () => state.render(stableCell));
   };
 }
 
@@ -191,17 +176,17 @@ class StableEach<T> {
     return this.#options.reactive.now;
   }
 
-  getEntry(key: unknown): StableEntry<T> | null {
+  getEntry(key: unknown): StableCell<T> | null {
     return this.#options.stableMap.get(key) || null;
   }
 
-  upsertEntry(key: unknown, reactive: Reactive<T>): StableEntry<T> {
+  upsertEntry(key: unknown, reactive: Reactive<T>): StableCell<T> {
     let entry = this.#options.stableMap.get(key);
 
     if (entry) {
-      entry.update(reactive);
+      entry.set(reactive);
     } else {
-      entry = StableEntry.of(reactive);
+      entry = StableCell.of(reactive);
       this.#options.stableMap.set(key, entry);
     }
 
@@ -213,10 +198,10 @@ class StableEach<T> {
   }
 
   render(reactive: Reactive<T>): Content {
-    return this.#options.block.invoke([reactive]);
+    return this.#options.block([reactive]);
   }
 
-  upsert(reactive: Reactive<T>): StableEntry<T> {
+  upsert(reactive: Reactive<T>): StableCell<T> {
     let key = this.keyOf(reactive.now);
 
     return this.upsertEntry(key, reactive);

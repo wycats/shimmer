@@ -1,31 +1,41 @@
-import {
-  Content,
-  ElementContent,
-  IntoContent,
-  IntoModifiers,
-  isIntoContent,
-  Modifier,
-} from "@shimmer/core";
+import { ElementContent, Modifier } from "@shimmer/core";
 import { IntoReactive, Reactive } from "@shimmer/reactive";
 import { attr, element, intoModifiers } from "./dsl";
+
+type InvokeElement = [
+  overload?: IntoModifiers | IntoContent,
+  ...content: IntoContent[]
+];
 
 class ElementFunctionImpl {
   static proxy(tag: string, modifiers: readonly Modifier[]): ElementFunction {
     let el = new ElementFunctionImpl(tag, modifiers);
 
-    function f(
-      overload?: IntoModifiers | IntoContent,
-      ...content: Content[]
-    ): ElementContent {
-      return el.invoke(overload, ...content);
+    function f(...overloads: InvokeElement): ElementContent {
+      return el.invoke(...overloads);
     }
 
     return new Proxy(f, {
+      has: (_, prop) => {
+        return prop === COERCE_INTO_CONTENT || typeof prop === "string";
+      },
+
       get: (_, prop) => {
+        if (prop === COERCE_INTO_CONTENT) {
+          return f;
+        }
+
         if (typeof prop === "string") {
           if (prop === "attr") {
             return (name: string, value?: IntoReactive<string | null>) => {
-              return el.addModifier(attr(name, value));
+              return el.addModifiers(attr(name, value));
+            };
+          } else if (prop === "attrs") {
+            return (attrs: Record<string, IntoReactive<string | null>>) => {
+              let modifiers = Object.entries(attrs).map(([key, value]) =>
+                attr(key, value)
+              );
+              return el.addModifiers(...modifiers);
             };
           } else if (prop[0] === ".") {
             let classes = prop.split(".").slice(1);
@@ -35,7 +45,9 @@ class ElementFunctionImpl {
             return el.addClasses(Reactive.static(prop));
           }
         } else {
-          throw new Error(`unexpected symbol used in Element API`);
+          throw new Error(
+            `unexpected symbol ${String(prop)} used in Element API (proxy)`
+          );
         }
       },
     }) as ElementFunction;
@@ -58,8 +70,11 @@ class ElementFunctionImpl {
     ]);
   }
 
-  addModifier(modifier: Modifier): ElementFunction {
-    return ElementFunctionImpl.proxy(this.#tag, [...this.#modifiers, modifier]);
+  addModifiers(...modifiers: readonly Modifier[]): ElementFunction {
+    return ElementFunctionImpl.proxy(this.#tag, [
+      ...this.#modifiers,
+      ...modifiers,
+    ]);
   }
 
   invoke(
@@ -85,16 +100,20 @@ class ElementFunctionImpl {
   }
 }
 
-type ElementFunction = {
-  (
-    overload?: IntoModifiers | IntoContent,
-    ...content: IntoContent[]
-  ): ElementContent;
+type AttrProp<K extends keyof any> = K extends `[${string}]` ? K : never;
 
+type BareProp<K extends keyof any> = Exclude<string, AttrProp<K> | "attr">;
+
+type ElementFunction = CoerceIntoContent & {
+  (...overloads: InvokeElement): ElementContent;
+
+  attrs: (
+    attrs: Record<string, IntoReactive<string | null>>
+  ) => ElementFunction;
   attr: (key: string, value?: IntoReactive<string | null>) => ElementFunction;
 } & {
-  [P in keyof any as Exclude<P, "attr">]: ElementFunction;
-};
+    [P in keyof any as BareProp<P>]: ElementFunction;
+  };
 
 export type ElementDSL = {
   [P in keyof any]: ElementFunction;
@@ -105,7 +124,9 @@ export const html: ElementDSL = new Proxy({} as any, {
     if (typeof prop === "string") {
       return ElementFunctionImpl.proxy(prop, []);
     } else {
-      throw new Error(`unexpected symbol used in Element API`);
+      throw new Error(
+        `unexpected symbol ${String(prop)} used in Element API (html)`
+      );
     }
   },
 });

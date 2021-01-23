@@ -1,12 +1,24 @@
-$mdc-theme-primary: #d81b60;
-$mdc-theme-on-primary: white;
-$mdc-theme-surface: #fce4ec;
-$mdc-theme-on-surface: black;
+@use "@material/theme" with (
+  $primary: #d81b60,
+  $on-primary: white,
+  $surface: #fce4ec,
+  $on-surface: black,
+);
+
+@use "@material/typography" with (
+  $font-family: unquote("Raleway, sans-serif"),
+);
+
+@use "@material/shape" with (
+  $small-component-radius: 5px,
+);
+
+@use "@material/textfield/mdc-text-field";
+@use "@material/button/mdc-button";
+
+// @use "material-components-web";
 
 @import url("https://fonts.googleapis.com/css?family=Raleway");
-$mdc-typography-font-family: unquote("Raleway, sans-serif");
-
-$mdc-shape-small-component-radius: 20px;
 
 .material {
   padding: 5vh;
@@ -14,7 +26,7 @@ $mdc-shape-small-component-radius: 20px;
 
 .food-field {
   width: 300px;
-  margin: 20px;
+  margin: 20px 0;
 }
 
 .eat-button {

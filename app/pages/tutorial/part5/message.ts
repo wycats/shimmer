@@ -1,6 +1,7 @@
-import type { Block, IntoContent, Invoke } from "@shimmer/core";
-import { def, fragment } from "@shimmer/dsl";
-import { Pure, Reactive } from "@shimmer/reactive";
+import type { IntoContent, Invoke } from "@shimmer/core";
+import { defDSL, fragment } from "@shimmer/dsl";
+import type { Block } from "@shimmer/reactive";
+import { computed, Reactive } from "@shimmer/reactive";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";
@@ -10,10 +11,10 @@ function substring(
   start: Reactive<number>,
   end: Reactive<number>
 ): Reactive<string> {
-  return Pure.of(() => string.now.substring(start.now, end.now));
+  return computed(() => string.now.substring(start.now, end.now));
 }
 
-export default def(
+export default defDSL(
   ({
     $,
     args: { userIsActive, isCurrentUser, username, userLocalTime },
@@ -31,7 +32,7 @@ export default def(
     return fragment(
       $(Avatar, {
         args: {
-          title: Pure.of(() => `${username.now}'s avatar`),
+          title: computed(() => `${username.now}'s avatar`),
           initial: substring(username, Reactive.static(0), Reactive.static(1)),
           isActive: userIsActive,
         },

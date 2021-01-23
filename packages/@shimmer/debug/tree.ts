@@ -1,5 +1,4 @@
 import type {
-  Block,
   BlockInfo,
   ChoiceContent,
   CommentContent,
@@ -11,6 +10,7 @@ import type {
   TemplateContent,
   TextContent,
 } from "@shimmer/core";
+import type { Block } from "@shimmer/reactive";
 
 export function tree(content: Content): DebugContentNode {
   return new TreeBuilder().content(content);
@@ -43,7 +43,7 @@ interface EachNode extends DebugNode {
 interface ChoiceNode extends DebugNode {
   type: "choice";
   data: unknown;
-  matches: Record<string, Block>;
+  matches: Record<string, Block<[]>>;
 }
 
 interface ElementNode extends DebugNode {
@@ -115,7 +115,7 @@ class TreeBuilder {
   }
 
   choice(content: ChoiceContent): ChoiceNode {
-    let matches: Record<string, Block> = {};
+    let matches: Record<string, Block<[]>> = {};
 
     for (let [key, value] of Object.entries(content.info.match)) {
       matches[key] = value;

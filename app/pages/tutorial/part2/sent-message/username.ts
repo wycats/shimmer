@@ -1,3 +1,3 @@
-import { def, html } from "@shimmer/dsl";
+import { defDSL, html } from "@shimmer/dsl";
 
-export default def(() => html.h4[".username"]("Zoey"));
+export default defDSL(() => html.h4[".username"]("Zoey"));

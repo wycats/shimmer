@@ -1,13 +1,13 @@
-import type { Block, Content, Invoke, RouterService } from "@shimmer/core";
-import { def, element, fragment, text } from "@shimmer/dsl";
-import { Pure, Reactive } from "@shimmer/reactive";
+import { Content, getCurrentRealm, Invoke, RouterService } from "@shimmer/core";
+import { def, defDSL, element, fragment, text } from "@shimmer/dsl";
+import { Block, computed, Reactive } from "@shimmer/reactive";
 import { el } from "./utils";
 
 export function isActive(
   href: Reactive<string>,
   router: RouterService
 ): Reactive<boolean> {
-  return Pure.of(() => {
+  return computed(() => {
     let current = router.normalizeHref(href.now);
 
     if (current === "/fallback") {
@@ -27,7 +27,17 @@ export function inFallback(router: RouterService): boolean {
   );
 }
 
-export const SimpleLink = def(
+export const SimpleLinkTo = def<
+  { href: Reactive<string> },
+  { default: Block<[]> }
+>(
+  (
+    { href }: { href: Reactive<string> },
+    { default: body }: { default: Block<[]> }
+  ) => <a href={href}>{body([])}</a>
+);
+
+export const SimpleLink = defDSL(
   ({
     args: { href },
     blocks: { default: body },
@@ -39,7 +49,25 @@ export const SimpleLink = def(
   }
 );
 
-export const Link = def(
+export const LinkTo = def(
+  (
+    { href }: { href: Reactive<string> },
+    { default: body }: { default: Block<[]> }
+  ) => {
+    let router = getCurrentRealm().service("router");
+    let active = isActive(href, router);
+
+    let activeClass = computed(() => (active.now ? "active-url" : null));
+
+    return (
+      <a href={href} class={activeClass}>
+        {body.invoke([])}
+      </a>
+    );
+  }
+);
+
+export const Link = defDSL(
   ({
     $,
     args: { href },
@@ -51,13 +79,23 @@ export const Link = def(
   }) => {
     let active = isActive(href, $.service("router"));
 
-    let activeClass = Pure.of(() => (active.now ? "active-url" : null));
+    let activeClass = computed(() => (active.now ? "active-url" : null));
 
     return el("a", { href, class: activeClass }, body.invoke([]));
   }
 );
 
-export const Nav = def(({ $ }) => {
+export const NavBar = def(() => (
+  <nav>
+    <LinkTo href="#tutorial">Tutorial</LinkTo>
+    <LinkTo href="#material">Material</LinkTo>
+    <LinkTo href="#index">Index</LinkTo>
+    <LinkTo href="#state">State</LinkTo>
+    <LinkTo href="#fallback">Fallback</LinkTo>
+  </nav>
+));
+
+export const Nav = defDSL(({ $ }) => {
   return element(
     "nav",
     fragment(

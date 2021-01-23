@@ -1,5 +1,5 @@
-import { def, html } from "@shimmer/dsl";
+import { defDSL, html } from "@shimmer/dsl";
 
-export default def(() =>
+export default defDSL(() =>
   html.form(html.input(), html.button.attr("type", "submit")("Send"))
 );

@@ -8,14 +8,25 @@ export default defineConfig({
     "@shimmer/dom": "/packages/@shimmer/dom/index.ts",
     "@shimmer/reactive": "/packages/@shimmer/reactive/index.ts",
     "@shimmer/dev-mode": "/packages/@shimmer/dev-mode/index.ts",
+    tslib: "tslib/tslib.es6.js",
   },
   optimizeDeps: {
-    include: ["tslib"],
+    include: [
+      "@babel/runtime/regenerator",
+      "lz-string",
+      "aria-query",
+      "pretty-format",
+    ],
+  },
+  esbuild: {
+    jsxInject: "import { h, f } from '@shimmer/dsl'",
+    jsxFactory: "h",
+    jsxFragment: "f",
   },
   css: {
     preprocessorOptions: {
       scss: {
-        includePaths: ["./app/node_modules"],
+        includePaths: ["./node_modules", "./app/node_modules"],
       },
     },
   },

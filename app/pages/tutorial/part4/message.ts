@@ -1,11 +1,10 @@
 import type {
-  Block,
   Invoke,
   PresentComponentDefinition,
   Services,
 } from "@shimmer/core";
-import { def, fragment } from "@shimmer/dsl";
-import type { Reactive } from "@shimmer/reactive";
+import { defDSL, fragment } from "@shimmer/dsl";
+import type { Block, Reactive } from "@shimmer/reactive";
 import { el, If } from "../../utils";
 import Avatar from "./avatar";
 import Username from "./username";
@@ -23,7 +22,7 @@ interface MessageArgs extends PresentComponentDefinition {
   blocks: { default: Block<[]> };
 }
 
-export default def(
+export default defDSL(
   ({
     $,
     args: {

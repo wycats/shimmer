@@ -1,5 +1,5 @@
 import type { App, Owner, Services } from "@shimmer/core";
-import { def, fragment, text } from "@shimmer/dsl";
+import { defDSL, fragment, text } from "@shimmer/dsl";
 import { Nav } from "./nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
 import { el } from "./utils";
@@ -23,8 +23,8 @@ export class TutorialPage implements PageHooks<TutorialState> {
 
 export const Main = page(() => new TutorialPage());
 
-const Template = def(({ $ }) => {
+const Template = defDSL(({ $ }) => {
   return fragment($(Nav), el("div", { class: "fallback" }, $(Page)));
 });
 
-const Page = def(() => fragment(text("hello")));
+const Page = defDSL(() => fragment(text("hello")));

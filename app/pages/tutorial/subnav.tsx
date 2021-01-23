@@ -1,8 +1,8 @@
-import { def, element, fragment } from "@shimmer/dsl";
+import { def, defDSL, element, fragment } from "@shimmer/dsl";
 import { Reactive } from "@shimmer/reactive";
-import { SimpleLink } from "../nav";
+import { SimpleLink, SimpleLinkTo } from "../nav";
 
-export const SubNav = def(({ $ }) => {
+export const SubNav = defDSL(({ $ }) => {
   return element(
     "nav",
     fragment(
@@ -29,3 +29,13 @@ export const SubNav = def(({ $ }) => {
     )
   );
 });
+
+export const SubNavBar = def(() => (
+  <nav>
+    <SimpleLinkTo href="#tutorial?part=1">Part 1</SimpleLinkTo>
+    <SimpleLinkTo href="#tutorial?part=2">Part 2</SimpleLinkTo>
+    <SimpleLinkTo href="#tutorial?part=3">Part 3</SimpleLinkTo>
+    <SimpleLinkTo href="#tutorial?part=4">Part 4</SimpleLinkTo>
+    <SimpleLinkTo href="#tutorial?part=5">Part 5</SimpleLinkTo>
+  </nav>
+));

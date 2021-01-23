@@ -1,5 +1,5 @@
-import { def, each, text } from "@shimmer/dsl";
-import { Pure } from "@shimmer/reactive";
+import { defDSL, each, text } from "@shimmer/dsl";
+import { computed } from "@shimmer/reactive";
 import MessageData from "./message";
 
 interface MessageData {
@@ -55,20 +55,20 @@ const messages: MessageData[] = [
   },
 ];
 
-export default def(({ $ }) => {
+export default defDSL(({ $ }) => {
   return each(
     messages,
     () => Math.random(),
     (message) =>
       $(MessageData, {
         args: {
-          username: Pure.of(() => message.now.username),
-          userIsActive: Pure.of(() => message.now.active),
-          userLocalTime: Pure.of(() => message.now.localTime),
+          username: computed(() => message.now.username),
+          userIsActive: computed(() => message.now.active),
+          userLocalTime: computed(() => message.now.localTime),
           isCurrentUser: true,
         },
         blocks: {
-          default: text(Pure.of(() => message.now.content)),
+          default: text(computed(() => message.now.content)),
         },
       })
   );

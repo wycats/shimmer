@@ -1,7 +1,7 @@
-import { def } from "@shimmer/dsl";
+import { defDSL } from "@shimmer/dsl";
 import Avatar from "../avatar";
 
-export default def(({ $ }) =>
+export default defDSL(({ $ }) =>
   $(Avatar, {
     args: {
       title: "Tomster's avatar",

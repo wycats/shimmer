@@ -1,6 +1,6 @@
 import type { Bounds, Cursor, SimplestDocument } from "@shimmer/dom";
+import { Block, InvokableBlock, INVOKABLE_BLOCK } from "@shimmer/reactive";
 import type { Args } from "../../types";
-import { isObject } from "../../utils";
 import {
   Content,
   DynamicContent,
@@ -27,35 +27,17 @@ export function createBlock<A extends Args>(
   return callback;
 }
 
-export class InvokedBlock {
-  #callback: () => Content;
-
-  constructor(callback: () => Content) {
-    this.#callback = callback;
-  }
-}
-
-export class Block<A extends Args = any> {
-  static is(value: unknown): value is Block<Args> {
-    return isObject(value) && value instanceof Block;
-  }
-
-  static of<A extends Args>(callback: (args: A) => Content): Block<A> {
-    return new Block(callback);
-  }
-
-  #callback: (args: A) => Content;
-
-  constructor(callback: (args: A) => Content) {
-    this.#callback = callback;
-  }
-
-  invoke(args: A): Content {
-    let content = this.#callback(args);
+export function BlockWithArgs<A extends Args>(
+  callback: (args: A) => Content
+): InvokableBlock<A> {
+  const invoke: ((args: A) => Content) & Partial<InvokableBlock<A>> = (
+    args: A
+  ): Content => {
+    let content = callback(args);
 
     let info = {
       args,
-      callback: this.#callback,
+      callback: callback,
       content,
     };
 
@@ -64,7 +46,7 @@ export class Block<A extends Args = any> {
         "block",
         {
           args,
-          callback: this.#callback,
+          callback,
           content,
         },
         (cursor, dom) => (content as StaticTemplateContent).render(cursor, dom)
@@ -72,7 +54,18 @@ export class Block<A extends Args = any> {
     } else {
       return DynamicContent.of("block", info, new UpdatableBlock(info));
     }
-  }
+  };
+
+  invoke[INVOKABLE_BLOCK] = invoke;
+  invoke.invoke = invoke;
+
+  return invoke as InvokableBlock<A>;
+}
+
+export function block<A extends Args>(callback: (args: A) => Content): Block<A>;
+export function block<A extends Args>(callback: () => Content): Block<[]>;
+export function block(callback: (args?: Args) => Content): Block<Args> {
+  return BlockWithArgs<Args>(callback as (args: Args) => Content);
 }
 
 class UpdatableBlock extends UpdatableDynamicContent<BlockState> {

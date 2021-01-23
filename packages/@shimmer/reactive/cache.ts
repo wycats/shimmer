@@ -125,12 +125,12 @@ export class Effect<T> {
   }
 }
 
-export class Pure<T> {
+export class Pure<T = unknown> {
   static is(value: unknown): value is Pure<unknown> {
     return isPure(value);
   }
 
-  static of<T>(
+  static from<T>(
     options:
       | {
           initialize: () => T;
@@ -176,3 +176,5 @@ export class Pure<T> {
     return getValue(this.#cache);
   }
 }
+
+export const computed = Pure.from;

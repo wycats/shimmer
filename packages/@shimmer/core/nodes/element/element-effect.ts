@@ -20,7 +20,9 @@ export function createEffect<A extends Args>(
 ): (args: A) => TemplateModifier<"effect", ElementEffectInfo<A>> {
   return (args: A): TemplateModifier<"effect", ElementEffectInfo<A>> => {
     return DynamicModifier.of("effect", { callback }, (cursor) => {
-      callback(cursor, args);
+      // TODO: no
+      Promise.resolve().then(() => callback(cursor, args));
+      // callback(cursor, args);
 
       return UpdatableModifier.of(cursor, () => {
         // todo: do something

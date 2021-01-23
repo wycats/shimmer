@@ -3,11 +3,16 @@ import {
   ComponentArgs,
   Content,
   createText,
-  IntoComponentArgs,
-  IntoContent,
   isContent,
 } from "@shimmer/core";
-import { isReactive, Reactive, StaticReactive } from "@shimmer/reactive";
+import {
+  computed,
+  INVOKABLE_BLOCK,
+  isInvokableBlock,
+  isReactive,
+  Reactive,
+  StaticReactive,
+} from "@shimmer/reactive";
 
 export type IntoReactive<T> = Reactive<T> | T;
 
@@ -22,16 +27,22 @@ export function intoReactive<T>(into: IntoReactive<T>): Reactive<T> {
 export function intoContent(into: IntoContent): Content {
   if (isContent(into)) {
     return into;
+  } else if (isInvokableBlock(into)) {
+    return into[INVOKABLE_BLOCK]([]);
+  } else if (typeof into === "function") {
+    return createText(computed(() => String(into())));
   } else if (isReactive(into)) {
-    return createText(into);
+    return createText(computed(() => String(into.now)));
+  } else if (isCoercibleIntoContent(into)) {
+    return into[COERCE_INTO_CONTENT]();
   } else {
     return createText(Reactive.static(into));
   }
 }
 
 export function intoComponentArgs<A extends ComponentArgs>(
-  args: IntoComponentArgs<A> | undefined
-): A | undefined {
+  args: IntoComponentArgs<A>
+): A {
   if (args === undefined) {
     return args;
   }

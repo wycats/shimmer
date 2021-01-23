@@ -1,4 +1,4 @@
-import type { App, Owner } from "@shimmer/core";
+import type { App, Content, Owner } from "@shimmer/core";
 import type { Cursor } from "@shimmer/dom";
 
 export interface StaticOptions {
@@ -22,6 +22,26 @@ export interface PageHooks<State> {
     renderOptions: RenderOptions
   ): App;
 }
+
+export const Page = {
+  of: (
+    template: () => Content
+  ): ((owner: Owner) => (cursor: Cursor) => App) => {
+    return (owner: Owner) => {
+      let rendered = new RenderedPage(
+        owner,
+        {},
+        {
+          construct: () => null,
+          render: (_state, { owner }, { cursor }) =>
+            owner.render(cursor, template),
+        }
+      );
+
+      return (cursor: Cursor) => rendered.render(cursor);
+    };
+  },
+};
 
 export function page<State>(
   callback: () => PageHooks<State>

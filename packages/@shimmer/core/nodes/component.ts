@@ -1,8 +1,7 @@
-import type { Reactive, StaticValue } from "@shimmer/reactive";
-import type { Owner } from "../owner";
-import type { Args } from "../types";
+import type { Block, Reactive, StaticValue } from "@shimmer/reactive";
+import type { Owner, Services } from "../owner";
+import type { Args, Component, ComponentArgs } from "../types";
 import type { Content } from "./content";
-import type { Block } from "./structure";
 
 export type ReactiveArg =
   | Reactive<any>
@@ -17,8 +16,8 @@ export type ComponentCallback<A extends Args, O extends Owner> = (
   owner: O
 ) => (args: A) => Content;
 
-export function createComponent<A extends Args, O extends Owner>(
-  definition: ComponentCallback<A, O>
-): (owner: O) => (args: A) => Content {
+export function createComponent<A extends ComponentArgs<Services>>(
+  definition: Component<A>
+): Component<A> {
   return definition;
 }

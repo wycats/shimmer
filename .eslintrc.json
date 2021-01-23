@@ -35,11 +35,12 @@
     "import/no-cycle": "error"
   },
   "overrides": [
+    // {
+    //   "files": ["app/**/*.{ts,tsx}"]
+    // },
     {
-      "files": ["app/**/*.ts"]
-    },
-    {
-      "files": ["packages/@shimmer/**/*.ts"],
+      "files": ["packages/@shimmer/**/*.{ts,tsx}"],
+      "excludedFiles": ["packages/@shimmer/**/node_modules/**"],
       "rules": {
         "import/no-internal-modules": "error"
       }

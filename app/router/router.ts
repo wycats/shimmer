@@ -64,8 +64,6 @@ export class Router implements RouterService {
   }
 
   async route(url: UrlDetails): Promise<void> {
-    console.log("routing to", url);
-
     this.#set(new Loading(url));
     this.#set(await this.#router(url, this.#cursor));
     this.#url.update(() => url);

@@ -121,17 +121,18 @@ function render(
 
   let dynamicModifiers: Effect<RenderedModifier>[] = [];
 
+  // insert attributes
   if (modifiers) {
     for (let modifier of modifiers) {
-      let rendered = modifier.render(ElementCursor.of(element), dom);
+      if (modifier.type === "attribute") {
+        let rendered = modifier.render(ElementCursor.of(element), dom);
 
-      if (Effect.is(rendered)) {
-        dynamicModifiers.push(rendered);
+        if (Effect.is(rendered)) {
+          dynamicModifiers.push(rendered);
+        }
       }
     }
   }
-
-  // insert attributes
 
   cursor.insert(element);
 
@@ -148,6 +149,19 @@ function render(
   }
 
   let renderedBody = body.render(appending, dom);
+
+  // run effects
+  if (modifiers) {
+    for (let modifier of modifiers) {
+      if (modifier.type === "effect") {
+        let rendered = modifier.render(ElementCursor.of(element), dom);
+
+        if (Effect.is(rendered)) {
+          dynamicModifiers.push(rendered);
+        }
+      }
+    }
+  }
 
   if (renderedBody instanceof StableDynamicContent) {
     return {

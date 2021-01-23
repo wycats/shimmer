@@ -1,8 +1,8 @@
-import { def } from "@shimmer/dsl";
+import { defDSL } from "@shimmer/dsl";
 import { el } from "../../../utils";
 import Message from "../message";
 
-export default def(({ $ }) =>
+export default defDSL(({ $ }) =>
   $(Message, {
     args: {
       username: "Tomster",

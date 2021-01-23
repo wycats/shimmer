@@ -7,7 +7,8 @@
   "private": true,
   "workspaces": [
     "app",
-    "packages/@shimmer/*"
+    "packages/@shimmer/*",
+    "packages/tests"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,22 +21,25 @@
     "root": true
   },
   "devDependencies": {
-    "@simple-dom/interface": "^1.4.0",
-    "@typescript-eslint/eslint-plugin": "^4.13.0",
-    "@typescript-eslint/parser": "^4.13.0",
-    "eslint": "^7.18.0",
-    "eslint-import-resolver-typescript": "^2.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "sass": "^1.32.4",
-    "typescript": "^4.2.0-dev.20210119",
-    "vite": "2.0.0-beta.33",
     "@glimmer/destroyable": "^0.73.1",
     "@glimmer/global-context": "^0.73.1",
     "@glimmer/validator": "^0.73.1",
     "@shimmer/core": "workspace:*",
-    "@shimmer/dsl": "workspace:*",
     "@shimmer/dom": "workspace:*",
+    "@shimmer/dsl": "workspace:*",
     "@shimmer/reactive": "workspace:*",
-    "fast-array-diff": "^1.0.0"
+    "@simple-dom/interface": "^1.4.0",
+    "@testing-library/dom": "^7.29.4",
+    "@typescript-eslint/eslint-plugin": "^4.13.0",
+    "@typescript-eslint/parser": "^4.13.0",
+    "@vitejs/plugin-legacy": "^1.2.1",
+    "eslint": "^7.18.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "fast-array-diff": "^1.0.0",
+    "sass": "^1.32.4",
+    "typescript": "^4.2.0-dev.20210122",
+    "unexpected": "^12.0.0",
+    "vite": "2.0.0-beta.33"
   }
 }

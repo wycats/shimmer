@@ -1,18 +1,5 @@
-$mdc-theme-primary: #d81b60;
-$mdc-theme-on-primary: white;
-$mdc-theme-surface: #fce4ec;
-$mdc-theme-on-surface: black;
-
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-$mdc-typography-font-family: unquote("Raleway, sans-serif");
-
-$mdc-shape-small-component-radius: 20px;
-
-@import "@material/textfield/mdc-text-field";
-@import "@material/button/mdc-button";
-
-@import "./tutorial.scss";
 @import "./material.scss";
+@import "./tutorial.scss";
 
 * {
   box-sizing: border-box;

@@ -2,6 +2,9 @@
   "name": "@shimmer/dsl",
   "version": "1.0.0",
   "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
   "dependencies": {
     "@shimmer/core": "workspace:*",
     "@shimmer/dom": "workspace:*",

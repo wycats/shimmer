@@ -1,0 +1,21 @@
+{
+  "name": "@shimmer/tests",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./test.ts"
+  },
+  "dependencies": {
+    "@glimmer/destroyable": "*",
+    "@glimmer/validator": "*",
+    "@glimmer/global-context": "*",
+    "@shimmer/core": "*",
+    "@shimmer/dom": "*",
+    "@shimmer/reactive": "*",
+    "fast-array-diff": "*",
+    "@testing-library/dom": "*",
+    "mocha": "*",
+    "chai": "*"
+  }
+}

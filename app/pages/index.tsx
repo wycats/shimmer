@@ -1,15 +1,9 @@
 import { registerDestructor } from "@glimmer/destroyable";
-import {
-  App,
-  Choice,
-  EFFECTS,
-  Invoke,
-  PresentComponentDefinition,
-} from "@shimmer/core";
+import { App, Choice, withRealm } from "@shimmer/core";
 import { tree } from "@shimmer/debug";
-import { def, each, element, fragment, match, text } from "@shimmer/dsl";
-import { Cell, IntoReactive, Pure, Reactive } from "@shimmer/reactive";
-import { Nav } from "./nav";
+import { def, each, match } from "@shimmer/dsl";
+import { Cell, IntoReactive, Reactive } from "@shimmer/reactive";
+import { NavBar } from "./nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "./page";
 import { Bool, on } from "./utils";
 
@@ -43,60 +37,30 @@ interface Person {
   };
 }
 
-interface ContactData extends PresentComponentDefinition {
-  args: {
-    person: Reactive<Person>;
-  };
-}
-
-export const Contact = def(({ args: { person } }: ContactData) => {
-  return text(Pure.of(() => person.now.name.first.now));
+export const Contact = def(({ person }: { person: Reactive<Person> }) => {
+  return <>{() => person.now.name.first.now}</>;
 });
 
-export const Count = def(
-  ({
-    $,
-    args: { counter },
-  }: {
-    $: Invoke;
-    args: { counter: Reactive<CountValue> };
-  }) => {
-    let secondary = Cell.of(rand());
+export const Count = def(({ counter }: { counter: Reactive<CountValue> }) => {
+  let secondary = Cell.of(`Person #${rand()}`);
 
-    return fragment(
-      $(Contact, {
-        args: {
-          person: {
-            name: {
-              first: Pure.of(() => String(secondary.now)),
-            },
-          },
-        },
-      }),
-      text(" "),
-      element(
-        "p",
-        { class: Pure.of(() => `count-${counter.now.value}`) },
-        fragment(
-          element(
-            "button",
-            {
-              [EFFECTS]: [on("click", () => secondary.update(rand))],
-            },
-            text("randomize")
-          ),
-          text(Pure.of(() => String(counter.now.value))),
-          text("::"),
-          element(
-            "span",
-            { class: "count" },
-            text(Pure.of(() => String(secondary.now)))
-          )
-        )
-      )
-    );
-  }
-);
+  return (
+    <>
+      <Contact person={{ name: { first: secondary } }} />
+      <p class={() => `count-${counter.now.value}`}>
+        <button
+          use-effect={on("click", () =>
+            secondary.update(() => `Person #${rand()}`)
+          )}
+        >
+          randomize
+        </button>
+        {() => counter.now.value}::
+        <span class="count">{secondary}</span>
+      </p>
+    </>
+  );
+});
 
 function rand() {
   return Math.floor(Math.random() * 100);
@@ -104,50 +68,34 @@ function rand() {
 
 type ReactiveCounts = Reactive<Iterable<IntoReactive<CountValue>>>;
 
-const Texts = def(
-  ({
-    $,
-    args: { counts },
-  }: {
-    $: Invoke;
-    args: { counts: ReactiveCounts };
-  }) => {
-    return each<CountValue>(
-      counts,
-      (i) => String(i.id),
-      (counter) => {
-        return $(Count, { args: { counter } });
-      }
-    );
-  }
-);
+const Texts = def(({ counts }: { counts: ReactiveCounts }) => {
+  let c = <Count counter={(null as any) as CountValue} />;
 
-const Cond = def(
-  ({ args: { bool } }: { args: { bool: Reactive<Choice<Bool>> } }) => {
-    return match(bool, {
-      true: () => text("true"),
-      false: () => text("false"),
-    });
-  }
+  return each(
+    counts,
+    (i) => String(i.id),
+    (counter: CountValue) => <Count counter={counter} />
+  );
+});
+
+const Cond = def(({ bool }: { bool: Reactive<Choice<Bool>> }) =>
+  match(bool, { true: () => <>true</>, false: () => <>false</> })
 );
 
 const Hello = def(
   ({
-    $,
-    args: { counts, bool },
+    counts,
+    bool,
   }: {
-    $: Invoke;
-    args: {
-      counts: ReactiveCounts;
-      bool: Reactive<Choice<Bool>>;
-    };
-  }) => {
-    return fragment(
-      $(Nav),
-      $(Texts, { args: { counts } }),
-      $(Cond, { args: { bool } })
-    );
-  }
+    counts: ReactiveCounts;
+    bool: Reactive<Choice<Bool>>;
+  }) => (
+    <>
+      <NavBar />
+      <Texts counts={counts} />
+      <Cond bool={bool} />
+    </>
+  )
 );
 
 interface IndexState {
@@ -179,13 +127,13 @@ export class IndexPage implements PageHooks<IndexState> {
     { owner }: StaticOptions,
     { cursor }: RenderOptions
   ): App {
-    let doc = owner.service("doc");
     let { counts, bool } = state;
 
-    let hello = owner.$(Hello, { args: { counts, bool } });
-    console.log(tree(hello));
-
-    let app = doc.render(hello, cursor);
+    let app = withRealm(owner, () => {
+      let hello = <Hello counts={counts} bool={bool} />;
+      console.log(tree(hello));
+      return owner.service("doc").render(hello, cursor);
+    });
 
     let token = setInterval(() => this.#increment(state), 1000);
     registerDestructor(app, () => clearInterval(token));

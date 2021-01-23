@@ -1,4 +1,4 @@
-import { def, fragment, text } from "@shimmer/dsl";
+import { defDSL, fragment, text } from "@shimmer/dsl";
 import { el } from "../../../utils";
 import Message from "../message";
 
@@ -16,7 +16,7 @@ import Message from "../message";
 //   };
 // }
 
-export default def(({ $ }) =>
+export default defDSL(({ $ }) =>
   $(Message, {
     args: {
       username: "Tomster",

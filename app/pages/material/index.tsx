@@ -1,6 +1,6 @@
-import type { App, Owner, Services } from "@shimmer/core";
-import { def, fragment, html } from "@shimmer/dsl";
-import { Nav } from "../nav";
+import { App, Owner, Services, withRealm } from "@shimmer/core";
+import { def } from "@shimmer/dsl";
+import { NavBar } from "../nav";
 import { page, PageHooks, RenderOptions, StaticOptions } from "../page";
 import Button from "./button";
 import Text from "./text";
@@ -18,16 +18,26 @@ export class MaterialPage implements PageHooks<MaterialState> {
   ): App {
     let doc = owner.service("doc");
 
-    return doc.render(Template(undefined, owner.$), cursor);
+    return withRealm(owner, () => doc.render(<Template />, cursor));
   }
 }
 
 export const Main = page(() => new MaterialPage());
 
-const Template = def(({ $ }) => {
-  return fragment($(Nav), html.div.material($(Material)));
+const Template = def(() => {
+  return (
+    <>
+      <NavBar />
+      <div class="material">
+        <Material />
+      </div>
+    </>
+  );
 });
 
-const Material = def(({ $ }) => {
-  return fragment($(Text), $(Button));
-});
+const Material = def(() => (
+  <>
+    <Text label="Favorite food" />
+    <Button text="Eat" />
+  </>
+));

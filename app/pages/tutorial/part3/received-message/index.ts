@@ -1,8 +1,8 @@
-import { def, fragment, html } from "@shimmer/dsl";
+import { defDSL, fragment, html } from "@shimmer/dsl";
 import ReceivedMessageAvatar from "./avatar";
 import ReceivedMessageUsername from "./username";
 
-export default def(({ $ }) =>
+export default defDSL(({ $ }) =>
   fragment(
     $(ReceivedMessageAvatar),
     html.section(

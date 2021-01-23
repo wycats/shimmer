@@ -1,13 +1,13 @@
 import {
   Args,
   AttributeModifier,
-  Block,
+  block,
   Blocks,
   Choice,
   Choices,
   CommentContent,
   Component,
-  ComponentData,
+  ComponentArgs,
   Content,
   createAttr,
   createComment,
@@ -21,22 +21,20 @@ import {
   EFFECTS,
   ElementArgs,
   ElementContent,
-  IntoBlock,
-  IntoBlockFunction,
-  IntoBlocksFor,
-  IntoComponentDefinition,
-  IntoContent,
-  IntoModifiers,
   Invoke,
   Match,
   Modifier,
-  PresentComponentDefinition,
   Services,
   TextContent,
 } from "@shimmer/core";
 import { userError } from "@shimmer/dev-mode";
-import type { ElementCursor } from "@shimmer/dom";
-import { isReactive, Pure, Reactive } from "@shimmer/reactive";
+import {
+  Block,
+  computed,
+  isInvokableBlock,
+  isReactive,
+  Reactive,
+} from "@shimmer/reactive";
 import {
   intoArgs,
   IntoArgs,
@@ -91,10 +89,10 @@ function coerceIntoBlock<A extends Args>(
     return undefined;
   }
 
-  if (Block.is(into)) {
+  if (isInvokableBlock(into)) {
     return into;
   } else if (typeof into === "function") {
-    return Block.of((args: A) => {
+    return block((args: A) => {
       return intoContent(into(...args));
     });
   } else {
@@ -103,30 +101,35 @@ function coerceIntoBlock<A extends Args>(
       `intoBlock must be called with IntoContent (string or Content)`
     );
 
-    return Block.of(() => intoContent(into));
+    return block(() => intoContent(into));
   }
 }
 
 export function attr(
   name: string,
-  value?: IntoReactive<string | null>
+  value?: IntoReactive<unknown>
 ): AttributeModifier {
   if (value === undefined) {
     return createAttr(name, Reactive.static(null));
   } else {
     let reactive = Reactive.from(value);
-    return createAttr(name, reactive);
+    return createAttr(
+      name,
+      computed(() => String(reactive.now))
+    );
   }
 }
 
-export function effect(callback: (element: Element) => void) {
-  return effectFunction((element) => callback(element.asElement()))();
+export function effect(callback: (element: Element) => void): EffectModifier {
+  return effectFunction((element) => callback(element))();
 }
 
 export function effectFunction<A extends Args>(
-  callback: (element: ElementCursor, ...args: A) => void
+  callback: (element: Element, ...args: A) => void
 ): (...args: IntoArgs<A>) => EffectModifier<A> {
-  let e = createEffect<A>((element, args) => callback(element, ...args));
+  let e = createEffect<A>((element, args) =>
+    callback(element.asElement(), ...args)
+  );
 
   return (...into: IntoArgs<A>): EffectModifier<A> => {
     let args = intoArgs(into);
@@ -143,7 +146,7 @@ export function intoReactiveIterable<T>(
 ): Reactive<Iterable<Reactive<T>>> {
   let reactive = intoReactive(into);
 
-  return Pure.of(() => {
+  return computed(() => {
     return intoIterable(reactive.now);
   });
 }
@@ -224,8 +227,10 @@ export function intoElementArgs(into: IntoElementArgs): ElementArgs {
 
   if (
     typeof overload === "string" ||
+    typeof overload === "function" ||
     Content.is(overload) ||
-    isReactive(overload)
+    isReactive(overload) ||
+    isCoercibleIntoContent(overload)
   ) {
     let body = [intoContent(overload), ...rest.map(intoContent)];
 
@@ -260,7 +265,7 @@ export function intoComponentData<C extends ComponentData>(
     } as C;
   }
 
-  let componentArgs = intoComponentArgs(args.args);
+  let componentArgs = intoComponentArgs(args.args as any);
   let componentAttrs = intoModifiers(args.attrs);
   let componentBlocks = intoBlocks(args.blocks);
 
@@ -293,25 +298,58 @@ function intoBlocks<B extends Blocks>(
   return out as B;
 }
 
-export function def<S extends Services>(
+export type JSXComponent<A extends ComponentArgs, B extends Blocks> = (
+  args: IntoComponentArgs<A>,
+  blocks: B extends {} ? void : IntoBlocksFor<B>
+) => Content;
+
+export function def<A extends ComponentArgs, B extends Blocks = {}>(
+  callback: (args: A, blocks: B) => IntoContent
+): JSXComponent<A, B> {
+  return (args: IntoComponentArgs<A>, blocks: IntoBlocksFor<B>): Content => {
+    let content = callback(intoComponentArgs(args), intoBlocks(blocks) as B);
+    return intoContent(content);
+  };
+}
+
+export type Outlet = () => IntoContent;
+
+export function defPage(callback: () => IntoContent): () => Content;
+export function defPage<O extends Record<string, Outlet>>(
+  callback: (outlets: O) => IntoContent
+): (outlets: O) => Content;
+export function defPage<O extends Record<string, Outlet>>(
+  callback: (outlets?: O) => IntoContent
+): (outlets?: O) => Content {
+  return (outlets?: O): Content => {
+    let content = callback(outlets);
+    return intoContent(content);
+  };
+}
+
+export function defDSL<S extends Services>(
   callback: (args: { $: Invoke<S> }) => IntoContent
 ): Component<[], S>;
-export function def<S extends Services>(
+export function defDSL<S extends Services>(
   callback: () => IntoContent
 ): Component<[], Services>;
-export function def<C extends PresentComponentDefinition>(
+export function defDSL<C extends PresentComponentDefinition>(
   callback: (args: C) => IntoContent
 ): Component<C, Services>;
-export function def<C extends PresentComponentDefinition, S extends Services>(
-  callback: (args: C & { $: Invoke<S> }) => IntoContent
-): Component<C, S>;
-export function def<C extends PresentComponentDefinition, S extends Services>(
-  callback: (args: C & { $: Invoke<S> }) => IntoContent
-): Component<C, S> {
-  return (intoData: IntoComponentDefinition<any>, $: Invoke): Content => {
+export function defDSL<
+  C extends PresentComponentDefinition,
+  S extends Services
+>(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S>;
+export function defDSL<
+  C extends PresentComponentDefinition,
+  S extends Services
+>(callback: (args: C & { $: Invoke<S> }) => IntoContent): Component<C, S> {
+  return (((intoData: IntoComponentDefinition<any>, $: Invoke): Content => {
     let data = intoComponentData<any>(intoData, $);
 
     let content = callback(data);
     return intoContent(content);
-  };
+  }) as unknown) as Component<C, S>;
 }
+
+// export function jsxDef(callback: ())

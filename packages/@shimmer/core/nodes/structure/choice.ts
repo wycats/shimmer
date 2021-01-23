@@ -1,5 +1,14 @@
 import type { Bounds, Cursor, SimplestDocument } from "@shimmer/dom";
-import { build, isStatic, Reactive } from "@shimmer/reactive";
+import {
+  Block,
+  build,
+  ChoiceKey,
+  Choices,
+  ChoiceValue,
+  Match,
+  Reactive,
+  ReactiveChoice,
+} from "@shimmer/reactive";
 import {
   Content,
   DynamicContent,
@@ -7,40 +16,9 @@ import {
   TemplateContent,
   UpdatableDynamicContent,
 } from "../content";
-import type { Block } from "./block";
 
-console.log("CHOICE");
-
-export type Choices = {
-  [P in string]: VariantInfo<P, Reactive<unknown>>;
-};
-
-export interface VariantInfo<K extends string, V extends Reactive<unknown>> {
-  readonly discriminant: K;
-  readonly value: V;
-}
-
-export class Variant<C extends Choices, K extends keyof C> {
-  constructor(readonly discriminant: K, readonly value: C[K]["value"]) {}
-
-  match<U>(match: Match<C, () => U>): U {
-    let { discriminant } = this;
-    return match[discriminant]();
-  }
-}
-
-export class Variants<C extends Choices> {
-  static define<C extends Choices>(): Variants<C> {
-    return new Variants();
-  }
-
-  of<K extends keyof C & string>(key: K, value: C[K]["value"]): Variant<C, K> {
-    return new Variant(key, value);
-  }
-}
-
-export type Match<C extends Choices, V> = {
-  [P in keyof C]: V;
+export type MatchBlocks<C extends Choices> = {
+  [P in ChoiceKey<C>]: Block<[Reactive<ChoiceValue<C, P>>]>;
 };
 
 export function matchIsStatic(match: Match<Choices, Content>): boolean {
@@ -53,11 +31,11 @@ export function matchIsStatic(match: Match<Choices, Content>): boolean {
   return true;
 }
 
-export type Choice<C extends Choices> = Variant<C, keyof C>;
+// export type Choice<C extends Choices> = Variant<C, keyof C>;
 
 export interface ChoiceInfo<C extends Choices = Choices> {
-  value: Reactive<Choice<C>>;
-  match: Match<C, Block<[]>>;
+  value: ReactiveChoice<C>;
+  match: MatchBlocks<C>;
 }
 
 export type ChoiceContent<C extends Choices = Choices> = TemplateContent<
@@ -71,13 +49,13 @@ interface ChoiceState<C extends Choices> {
 }
 
 export function createMatch<C extends Choices>(
-  reactive: Reactive<Choice<C>>,
-  match: Match<C, Block<[]>>
+  reactive: ReactiveChoice<C>,
+  match: MatchBlocks<C>
 ): Content {
   return build(() => {
-    if (isStatic(reactive)) {
-      let { discriminant } = reactive.now;
-      return match[discriminant].invoke([]);
+    if (reactive.isStatic()) {
+      let { discriminant, value } = reactive.variantNow;
+      return match[discriminant]([value.now as Reactive<ChoiceValue<C>>]);
     }
 
     let data: ChoiceInfo<C> = { value: reactive, match };
@@ -96,7 +74,7 @@ class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
   }
 
   isValid(state: ChoiceState<C>): boolean {
-    let { discriminant: newDiscriminant } = this.#data.value.now;
+    let { discriminant: newDiscriminant } = this.#data.value.variantNow;
 
     return state.discriminant === newDiscriminant;
   }
@@ -114,7 +92,7 @@ class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
     let { value, match } = this.#data;
 
     let { bounds, content } = initialize(value, match, cursor, dom);
-    let { discriminant } = value.now;
+    let { discriminant } = value.variantNow;
 
     return {
       bounds,
@@ -124,14 +102,14 @@ class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
 }
 
 function initialize<C extends Choices>(
-  reactive: Reactive<Choice<C>>,
-  match: Match<C, Block<[]>>,
+  reactive: ReactiveChoice<C>,
+  match: MatchBlocks<C>,
   cursor: Cursor,
   dom: SimplestDocument
 ): { bounds: Bounds; content: StableDynamicContent | null } {
-  let { discriminant } = reactive.now;
+  let { discriminant, value } = reactive.variantNow;
   let choice = match[discriminant];
-  let result = choice.invoke([]).render(cursor, dom);
+  let result = choice([value]).render(cursor, dom);
 
   if (result instanceof StableDynamicContent) {
     return { bounds: result, content: result };

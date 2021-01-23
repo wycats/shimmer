@@ -1,9 +1,9 @@
 import type { Modifiers } from "@shimmer/core";
-import { def, html } from "@shimmer/dsl";
+import { defDSL, html } from "@shimmer/dsl";
 import type { Reactive } from "@shimmer/reactive";
 import { Classes, If } from "../../utils";
 
-export default def(
+export default defDSL(
   ({
     args: { title, initial, isActive },
     attrs,

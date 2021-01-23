@@ -1,28 +1,31 @@
 import { consumeTag, createTag, dirtyTag } from "@glimmer/validator";
-import { isReactive, IS_CELL, IS_STATIC, IS_STATIC_REACTIVE } from "./brands";
+import {
+  isCell,
+  isReactive,
+  IS_CELL,
+  IS_STABLE_CELL,
+  IS_STATIC,
+  STATIC_REACTIVE_VALUE,
+} from "./brands";
 import type { Pure } from "./cache";
-import { isObject } from "./utils";
 
 export type IntoReactive<T> = Reactive<T> | T;
-
-export type Reactive<T> = Cell<T> | StaticReactive<T> | Pure<T>;
 
 export const Reactive = {
   static: <T>(value: T): StaticReactive<T> => new StaticReactive(value),
   cell: <T>(value: T): Cell<T> => new Cell(value),
+  stable: <T>(value: Reactive<T>): StableCell<T> => StableCell.of(value),
   from: intoReactive,
 };
 
-function intoReactive<T>(reactive: IntoReactive<T>): Reactive<T> {
-  if (!isObject(reactive)) {
-    return new StaticReactive(reactive);
-  }
-
+function intoReactive<T extends unknown>(
+  reactive: T | Reactive<T>
+): Reactive<T> {
   if (isReactive(reactive)) {
     return reactive;
+  } else {
+    return Reactive.static(reactive);
   }
-
-  return Reactive.static(reactive);
 }
 
 export abstract class AbstractStatic<T = unknown> {
@@ -48,7 +51,9 @@ export class StaticReactive<T = unknown> extends AbstractStatic<T> {
     return new StaticReactive(value);
   }
 
-  readonly [IS_STATIC_REACTIVE] = true;
+  get [STATIC_REACTIVE_VALUE](): T {
+    return super.now;
+  }
 
   get now(): T {
     assertDynamicContext(
@@ -78,6 +83,10 @@ export class Cell<T = unknown> {
     this.#value = value;
   }
 
+  _peek(): T {
+    return this.#value;
+  }
+
   get now(): T {
     assertDynamicContext(
       "getting the current JavaScript value of a reactive value (Cell)"
@@ -89,6 +98,10 @@ export class Cell<T = unknown> {
 
   get debug(): T {
     return this.now;
+  }
+
+  set(value: T): void {
+    this.update(() => value);
   }
 
   update(callback: (oldValue: T) => T): void {
@@ -115,3 +128,76 @@ export function build<T>(callback: () => T): T {
     IS_BUILDING = old;
   }
 }
+
+export class StableCell<T = unknown> {
+  static of<T>(reactive: Reactive<T>): StableCell<T> {
+    return new StableCell(reactive);
+  }
+
+  readonly type = "value";
+
+  [IS_STABLE_CELL] = true;
+
+  #reactive: Reactive<T>;
+  #cell: Cell<Reactive<T>>;
+
+  constructor(reactive: Reactive<T>) {
+    this.#reactive = reactive;
+    this.#cell = Cell.of(reactive);
+  }
+
+  get now(): T {
+    return this.#cell.now.now;
+  }
+
+  set(next: IntoReactive<T>): void {
+    if (isReactive(next)) {
+      this.setReactive(next);
+    } else {
+      this.setValue(next);
+    }
+  }
+
+  #updateReactive = (value: Reactive<T>): void => {
+    this.#cell.update(() => value);
+  };
+
+  #updateValue = (cell: Cell<T>, value: T): void => {
+    cell.update(() => value);
+  };
+
+  setValue(value: T): void {
+    if (isCell(this.#reactive)) {
+      this.#updateValue(this.#reactive, value);
+    } else {
+      this.#updateReactive(Cell.of(value));
+    }
+  }
+
+  setReactive(reactive: Reactive<T>): void {
+    this.#updateReactive(reactive);
+  }
+
+  // updateValue(callback: (prev: T) => T): void {
+  //   if (isCell(this.#reactive)) {
+  //     this.#reactive.update(callback);
+  //   } else {
+  //     this.#cell.update((prev) => {
+  //       let next = callback(prev.now);
+  //       return Cell.of(next);
+  //     });
+  //   }
+  // }
+
+  // update(callback: (prev: Reactive<T>) => Reactive<T>): void {
+  //   this.#cell.update((prev) => intoReactive(callback(prev)));
+  // }
+}
+
+// export function indirect<T>(value: Cell<Reactive<T>>):
+
+export type Reactive<T extends unknown> =
+  | Cell<T>
+  | StaticReactive<T>
+  | Pure<T>
+  | StableCell<T>;
