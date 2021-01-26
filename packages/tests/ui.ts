@@ -39,11 +39,12 @@ export class DOMReporter implements ReporterInstance {
     let {
       fragment,
       target,
-      targets: { showPassed, summary },
+      targets: { showPassedTests, showPassedExpectations, summary },
     }: HtmlFragment<
       HTMLUListElement,
       {
-        showPassed: HTMLInputElement;
+        showPassedTests: HTMLInputElement;
+        showPassedExpectations: HTMLInputElement;
         showSkipped: HTMLInputElement;
         summary: HTMLDivElement;
       }
@@ -75,6 +76,8 @@ export class DOMReporter implements ReporterInstance {
           --thin-v-pad: 0.1rem;
           --h-pad: 0.2rem;
           --full-width: 1 / span 4;
+
+          --dim: #999;
         }
 
         p,
@@ -233,19 +236,35 @@ export class DOMReporter implements ReporterInstance {
 
         /** end app generic */
 
-        #log :is(.test.ok .steps, .test.skipped) {
+        .toggle-passed-expectations {
           display: none;
         }
 
-        #log.show-skipped .test.skipped {
+        .show-passed-tests .toggle-passed-expectations {
+          display: flex;
+        }
+
+        :is(.test.ok .steps, .test.ok, .test.skipped) {
+          display: none;
+        }
+
+        .show-skipped .test.skipped {
           display: list-item;
         }
 
-        #log.show-passed .test.ok .steps {
+        .test.ok .steps {
+          display: none;
+        }
+
+        .show-passed-tests .test.ok {
           display: block;
         }
 
-        #log ul.stack {
+        .show-passed-expectations .test.ok .steps {
+          display: block;
+        }
+
+        ul.stack {
           margin-left: 0.5rem;
         }
 
@@ -256,6 +275,15 @@ export class DOMReporter implements ReporterInstance {
 
         .cluster > .fit {
           width: max-content;
+        }
+
+        li.module h1 span.desc {
+          font-weight: bold;
+        }
+
+        li.module h1 span.test-count {
+          font-size: 90%;
+          color: var(--dim);
         }
 
         li.ok .expectation {
@@ -349,15 +377,16 @@ export class DOMReporter implements ReporterInstance {
           appearance: auto;
         }
       </style>
-      <form>
+      <form class="cluster">
         ${Labeled(
-          "Show passed",
-          { input: "left" },
-          html`<input
-            type="checkbox"
-            id="show-passed"
-            data-target="showPassed"
-          />`
+          "Show passed tests",
+          { input: "left", class: "toggle-passed-tests" },
+          html`<input type="checkbox" data-target="showPassedTests" />`
+        )}
+        ${Labeled(
+          "Show passed expectations",
+          { input: "left", class: "toggle-passed-expectations" },
+          html`<input type="checkbox" data-target="showPassedExpectations" />`
         )}
       </form>
       <div class="summary">
@@ -369,8 +398,18 @@ export class DOMReporter implements ReporterInstance {
       <div id="test-content"></div>
     `;
 
-    showPassed.addEventListener("input", () =>
-      target.classList.toggle("show-passed", showPassed.checked)
+    showPassedTests.addEventListener("input", () =>
+      document.body.classList.toggle(
+        "show-passed-tests",
+        showPassedTests.checked
+      )
+    );
+
+    showPassedExpectations.addEventListener("input", () =>
+      document.body.classList.toggle(
+        "show-passed-expectations",
+        showPassedExpectations.checked
+      )
     );
 
     document.body.append(fragment);
@@ -391,14 +430,17 @@ export class DOMReporter implements ReporterInstance {
 
     if (showSkipped) {
       showSkipped.addEventListener("input", () =>
-        this.#log.classList.toggle("show-skipped", showSkipped.checked)
+        document.body.classList.toggle("show-skipped", showSkipped.checked)
       );
     }
 
     let { target, fragment }: HtmlFragment<HTMLTableSectionElement> = html`
       <li ${attr("class", `module stack ${module.status}`)}>
         <h1 ${attr("class", ROW)}>
-          ${Status(module.status)}<span>${module.desc}</span>
+          ${Status(module.status)}<span class="desc">[${module.desc}]</span>
+          <span class="test-count" title="count"
+            >(${Count(module.tests, "test")})</span
+          >
         </h1>
         <ul class="tests stack" data-target></ul>
       </li>
@@ -519,6 +561,80 @@ export class DOMReporter implements ReporterInstance {
 
   cleanup(): void {
     this.#log.remove();
+  }
+}
+
+interface Pluralize {
+  zero: string;
+  one: string;
+  two: string;
+  few: (count: number) => string;
+  many: (count: number) => string;
+  other: (count: number) => string;
+}
+
+interface MinPluralize {
+  zero: string;
+  one: string;
+  multiple: (count: number) => string;
+}
+
+const INFLECT: { test: MinPluralize } = {
+  test: {
+    zero: "no tests",
+    one: "one test",
+    multiple: (count: number) => `${count} tests`,
+  },
+};
+
+type INFLECT = typeof INFLECT;
+
+function normalizePlurals(
+  plurals: Pluralize | MinPluralize | keyof INFLECT
+): Pluralize {
+  if (typeof plurals === "string") {
+    return normalizePlurals(INFLECT[plurals]);
+  } else if ("multiple" in plurals) {
+    return {
+      zero: plurals.zero,
+      one: plurals.one,
+      two: plurals.multiple(2),
+      few: plurals.multiple,
+      many: plurals.multiple,
+      other: plurals.multiple,
+    };
+  } else {
+    return plurals;
+  }
+}
+
+function Count(
+  items: unknown[] | readonly unknown[],
+  definition: Pluralize | MinPluralize | keyof INFLECT
+) {
+  let rules = new Intl.PluralRules();
+  let count = items.length;
+  let plurals = normalizePlurals(definition);
+
+  switch (rules.select(count)) {
+    case "zero": {
+      return plurals.zero;
+    }
+    case "one": {
+      return plurals.one;
+    }
+    case "two": {
+      return plurals.two;
+    }
+    case "few": {
+      return plurals.few(count);
+    }
+    case "many": {
+      return plurals.many(count);
+    }
+    case "other": {
+      return plurals.other(count);
+    }
   }
 }
 
@@ -704,13 +820,23 @@ function Status(status: "ok" | "err" | "skipped") {
 
 function Labeled(
   label: string,
-  { input }: { input: "right" | "left" },
+  { input, class: className }: { input: "right" | "left"; class?: string },
   body: HtmlFragment
 ) {
+  let defaultClasses = `input cluster center:vertical pad-items:horizontal`;
+
+  let classAttr = className
+    ? attr("class", `${defaultClasses} ${className}`)
+    : attr("class", defaultClasses);
+
   if (input === "right") {
-    return html`<label class="right"><span>${label}</span>${body}</label>`;
+    return html`<label ${classAttr}
+      ><span>${label}</span><span>${body}</span></label
+    >`;
   } else {
-    return html`<label class="left">${body}<span>${label}</span></label>`;
+    return html`<label ${classAttr}
+      ><span>${body}</span><span>${label}</span></label
+    >`;
   }
 }
 

@@ -34,7 +34,7 @@ module("core rendering", (test) => {
     });
   });
 
-  test.focus("an element with attributes", async (ctx) => {
+  test("an element with attributes", async (ctx) => {
     let title = Cell.of("Tom");
 
     let el = createElement({
