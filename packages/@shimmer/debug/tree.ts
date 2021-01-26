@@ -1,14 +1,14 @@
 import type {
-  BlockInfo,
-  ChoiceContent,
-  CommentContent,
-  Content,
-  ContentType,
-  EachInfo,
-  ElementInfo,
-  FragmentContent,
-  TemplateContent,
-  TextContent,
+    BlockInfo,
+    ChoiceContent,
+    CommentContent,
+    Content,
+    ContentType,
+    EachInfo,
+    ElementInfo,
+    FragmentContent,
+    TemplateContent,
+    TextContent
 } from "@shimmer/core";
 import type { Block } from "@shimmer/reactive";
 

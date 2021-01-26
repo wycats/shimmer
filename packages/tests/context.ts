@@ -3,6 +3,7 @@ import { Cursor } from "@shimmer/dom";
 import {
   Assertion,
   Expectation,
+  IntoAssertion,
   ModuleResult,
   OkAssertion,
   OkStep,
@@ -24,8 +25,8 @@ class Steps {
   #assertions: Assertion[] = [];
   #current = "default";
 
-  addAssertion(assertion: Assertion): void {
-    this.#assertions.push(assertion);
+  addAssertion(assertion: IntoAssertion): void {
+    this.#assertions.push(Assertion.of(assertion));
   }
 
   finish(): void {
@@ -66,11 +67,16 @@ class Steps {
   }
 }
 
+export let CURRENT_TEST: TestContext | null;
+
 export class TestContext {
   #steps: Steps = new Steps();
   #done = false;
+  #start = performance.now();
 
-  constructor(readonly content: HTMLDivElement, readonly desc: string) {}
+  constructor(readonly content: HTMLDivElement, readonly desc: string) {
+    CURRENT_TEST = this;
+  }
 
   #assertNotDone = (op: string) => {
     if (this.#done === true) {
@@ -104,22 +110,15 @@ export class TestContext {
 
   done(): TestResult {
     this.#done = true;
+    let elapsed = performance.now() - this.#start;
+
+    CURRENT_TEST = null;
     let steps = this.#steps.steps;
 
     if (steps.every((s): s is OkStep => s.status === "ok")) {
-      return {
-        name: this.desc,
-        status: "ok",
-        todo: false,
-        steps,
-      };
+      return TestResult.ok(this.desc, steps, { todo: false, elapsed });
     } else {
-      return {
-        name: this.desc,
-        status: "err",
-        todo: false,
-        steps,
-      };
+      return TestResult.err(this.desc, steps, { todo: false, elapsed });
     }
   }
 
@@ -129,24 +128,30 @@ export class TestContext {
     this.#steps.start(desc);
   }
 
-  assert(assertion: boolean, desc: string): void {
+  assert(...args: [assertion: boolean, desc: string] | [Assertion]): void {
     this.#assertNotDone("assert");
 
-    if (assertion) {
-      this.#steps.addAssertion({
-        type: "assertion",
-        status: "ok",
-        expectation: Expectation.of(desc),
-        actual: Printable.of("ok"),
-      });
+    if (args.length === 1) {
+      let [assertion] = args;
+
+      this.#steps.addAssertion(assertion);
     } else {
-      this.#steps.addAssertion({
-        type: "assertion",
-        status: "err",
-        expectation: Expectation.of(desc),
-        actual: Printable.of("ok"),
-        expected: Printable.of("not ok"),
-      });
+      let [assertion, desc] = args;
+
+      if (assertion) {
+        this.#steps.addAssertion({
+          status: "ok",
+          expectation: Expectation.of(desc),
+          actual: Printable.of("ok"),
+        });
+      } else {
+        this.#steps.addAssertion({
+          status: "err:eq",
+          expectation: Expectation.of(desc),
+          actual: Printable.of("ok"),
+          expected: Printable.of("not ok"),
+        });
+      }
     }
   }
 
@@ -154,33 +159,20 @@ export class TestContext {
     this.#assertNotDone("assertHTML");
 
     if (el === null) {
-      this.#steps.addAssertion({
-        type: "assertion",
-        status: "err",
-        expectation: Expectation.of("element was not null"),
-        actual: Printable.of("null"),
-        expected: Printable.of("not null"),
-      });
+      this.#steps.addAssertion(
+        Assertion.errEq("element was not null", "null", "not null")
+      );
       return;
     }
 
     let actual = el.innerHTML;
 
     if (expected === actual) {
-      this.#steps.addAssertion({
-        type: "assertion",
-        status: "ok",
-        expectation: Expectation.of("rendered body was"),
-        actual: Printable.of(actual),
-      });
+      this.#steps.addAssertion(Assertion.ok("rendered body was", actual));
     } else {
-      this.#steps.addAssertion({
-        type: "assertion",
-        status: "err",
-        expectation: Expectation.of("rendered body was"),
-        actual: Printable.of(actual),
-        expected: Printable.of(expected),
-      });
+      this.#steps.addAssertion(
+        Assertion.errEq("rendered body was", actual, expected)
+      );
     }
   }
 
@@ -219,7 +211,7 @@ export class ModuleContext {
   }
 
   skip(name: string, focusMode: boolean) {
-    this.#tests.push({ name, status: "skipped", focusMode });
+    this.#tests.push(TestResult.skipped(name, { focusMode }));
   }
 
   done(): ModuleResult {
@@ -340,6 +332,7 @@ export async function main<R extends ReporterInstance>(
   ></div>`;
   document.body.append(target);
   let r = Reporter.of(reporter);
+  let modules: ModuleResult[] = [];
 
   for (let module of MODULES) {
     let moduleCtx = new ModuleContext(target, module.desc);
@@ -356,9 +349,11 @@ export async function main<R extends ReporterInstance>(
     }
 
     let results = moduleCtx.done();
+    modules.push(results);
     console.log("RESULTS", results);
     r.module(results);
   }
+  r.summarize(modules);
 }
 
 export interface RenderStep {

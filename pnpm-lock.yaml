@@ -17,6 +17,7 @@ importers:
       eslint-import-resolver-typescript: 2.3.0_d4477e7d44043beb7952cd76bd313965
       eslint-plugin-import: 2.22.1_eslint@7.18.0
       fast-array-diff: 1.0.0
+      fast-check: 2.12.0
       sass: 1.32.4
       typescript: 4.2.0-dev.20210122
       unexpected: 12.0.0
@@ -38,6 +39,7 @@ importers:
       eslint-import-resolver-typescript: ^2.3.0
       eslint-plugin-import: ^2.22.1
       fast-array-diff: ^1.0.0
+      fast-check: ^2.12.0
       sass: ^1.32.4
       typescript: ^4.2.0-dev.20210122
       unexpected: ^12.0.0
@@ -86,10 +88,12 @@ importers:
     dependencies:
       '@shimmer/core': link:../core
       '@shimmer/dev-mode': link:../dev-mode
+      '@shimmer/dom': link:../dom
       '@shimmer/reactive': link:../reactive
     specifiers:
       '@shimmer/core': workspace:*
       '@shimmer/dev-mode': workspace:*
+      '@shimmer/dom': workspace:*
       '@shimmer/reactive': workspace:*
   packages/@shimmer/dev-mode:
     specifiers: {}
@@ -1289,6 +1293,14 @@ packages:
   /fast-array-diff/1.0.0:
     resolution:
       integrity: sha512-ogkVOYhBglkIsl5pjxZ7dIuItFG+1Ihh1kCChVaNgPZ30gQggRcuSjm4v4lAoS8ruGu8wFnHWYMEMO8dtKNgoA==
+  /fast-check/2.12.0:
+    dependencies:
+      pure-rand: 4.1.2
+    dev: true
+    engines:
+      node: '>=8.0.0'
+    resolution:
+      integrity: sha512-6wZK9r2zymqtj/7k9LB4TTJGiyoGtN7NamXAKOWa4svZlFOdE3p7kbC46Au474E6R6votoQrM5aAjRnYnx0BNg==
   /fast-deep-equal/3.1.3:
     dev: true
     resolution:
@@ -2095,6 +2107,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+  /pure-rand/4.1.2:
+    dev: true
+    resolution:
+      integrity: sha512-uLzZpQWfroIqyFWmX/pl0OL2JHJdoU3dbh0dvZ25fChHFJJi56J5oQZhW6QgbT2Llwh1upki84LnTwlZvsungA==
   /randombytes/2.1.0:
     dependencies:
       safe-buffer: 5.2.1

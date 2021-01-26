@@ -6,8 +6,7 @@ import {
   createText,
 } from "@shimmer/core";
 import { Cell, Choice, Reactive, Variants } from "@shimmer/reactive";
-import { main, module } from "./context";
-import { DOMReporter } from "./ui";
+import { module } from "../context";
 
 module("core rendering", (test) => {
   test("it can render text", async (ctx) => {
@@ -205,5 +204,3 @@ module("core rendering", (test) => {
     });
   });
 });
-
-main(DOMReporter);

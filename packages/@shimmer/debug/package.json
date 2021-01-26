@@ -8,6 +8,7 @@
   "dependencies": {
     "@shimmer/core": "workspace:*",
     "@shimmer/dev-mode": "workspace:*",
+    "@shimmer/dom": "workspace:*",
     "@shimmer/reactive": "workspace:*"
   }
 }

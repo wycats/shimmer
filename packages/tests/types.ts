@@ -1,3 +1,5 @@
+import { unreachable } from "@shimmer/reactive";
+
 export interface OkStep {
   type: "step";
   status: "ok";
@@ -16,8 +18,15 @@ export type Step = OkStep | ErrStep;
 
 export class Printable {
   static of(message: IntoPrintable): Printable {
-    if (typeof message === "string") {
-      return new Printable(() => message);
+    if (
+      typeof message === "string" ||
+      typeof message === "number" ||
+      typeof message === "boolean" ||
+      typeof message === "undefined"
+    ) {
+      return new Printable(() => String(message));
+    } else if (message === null) {
+      return new Printable(() => "null");
     } else {
       return message;
     }
@@ -33,7 +42,13 @@ export class Printable {
   }
 }
 
-export type IntoPrintable = Printable | string;
+export type IntoPrintable =
+  | Printable
+  | string
+  | number
+  | boolean
+  | null
+  | undefined;
 
 export class Expectation {
   static of(expectation: IntoExpectation): Expectation {
@@ -57,45 +72,202 @@ export class Expectation {
 
 export type IntoExpectation = Expectation | string;
 
-export interface OkAssertion {
-  type: "assertion";
-  status: "ok";
-  expectation: Expectation;
-  actual: Printable;
+export abstract class AbstractAssertion {
+  declare abstract readonly status: "ok" | "err:ok" | "err:eq";
 }
 
-export interface ErrAssertion {
-  type: "assertion";
-  status: "err";
-  expectation: Expectation;
-  actual: Printable;
-  expected: Printable;
+export class OkAssertion extends AbstractAssertion {
+  readonly status = "ok";
+
+  constructor(readonly expectation: Expectation, readonly actual: Printable) {
+    super();
+  }
 }
 
-export type Assertion = OkAssertion | ErrAssertion;
+export class ErrEqAssertion extends AbstractAssertion {
+  readonly status = "err:eq";
 
-export interface OkTest {
-  name: string;
-  status: "ok";
+  constructor(
+    readonly expectation: Expectation,
+    readonly actual: Printable,
+    readonly expected: Printable
+  ) {
+    super();
+  }
+
+  throw(): never {
+    throw new Error(
+      `${this.expectation.print}: expected ${this.expected.print}, got ${this.actual.print}`
+    );
+  }
+}
+
+export class ErrOkAssertion extends AbstractAssertion {
+  readonly status = "err:ok";
+
+  constructor(
+    readonly expectation: Expectation,
+    readonly error: ErrorDetails,
+    readonly metadata?: Metadata
+  ) {
+    super();
+  }
+
+  throw(): never {
+    throw new Error(`${this.expectation.print}`);
+  }
+}
+
+export type Assertion = OkAssertion | ErrEqAssertion | ErrOkAssertion;
+
+export type ErrorDetails = Record<string, Printable>;
+export type Metadata = Record<string, Printable>;
+
+export type PrintableRecord = Record<string, Printable>;
+export type IntoPrintableRecord = Record<string, IntoPrintable>;
+
+export function intoPrintableRecord(
+  into: IntoPrintableRecord
+): PrintableRecord {
+  let out: PrintableRecord = {};
+
+  for (let [key, value] of Object.entries(into)) {
+    out[key] = Printable.of(value);
+  }
+
+  return out;
+}
+
+export type IntoAssertion =
+  | {
+      status: "ok";
+      expectation: IntoExpectation;
+      actual: IntoPrintable;
+    }
+  | {
+      status: "err:eq";
+      expectation: IntoExpectation;
+      actual: IntoPrintable;
+      expected: IntoPrintable;
+    }
+  | {
+      status: "err:ok";
+      expectation: IntoExpectation;
+      error: ErrorDetails;
+      metadata?: Metadata;
+    };
+
+export const Assertion = {
+  of(assertion: IntoAssertion): Assertion {
+    if (
+      assertion instanceof OkAssertion ||
+      assertion instanceof ErrEqAssertion
+    ) {
+      return assertion;
+    } else if (assertion.status === "ok") {
+      return Assertion.ok(assertion.expectation, assertion.actual);
+    } else if (assertion.status === "err:eq") {
+      return Assertion.errEq(
+        assertion.expectation,
+        assertion.actual,
+        assertion.expected
+      );
+    } else if (assertion.status === "err:ok") {
+      return Assertion.errOk(
+        assertion.expectation,
+        assertion.error,
+        assertion.metadata
+      );
+    } else {
+      unreachable(`exhaustive`, assertion);
+    }
+  },
+  ok(expectation: IntoExpectation, actual: IntoPrintable) {
+    return new OkAssertion(Expectation.of(expectation), Printable.of(actual));
+  },
+
+  errOk(
+    expectation: IntoExpectation,
+    error: IntoPrintableRecord,
+    metadata?: IntoPrintableRecord
+  ) {
+    return new ErrOkAssertion(
+      Expectation.of(expectation),
+      intoPrintableRecord(error),
+      metadata ? intoPrintableRecord(metadata) : undefined
+    );
+  },
+
+  errEq(
+    expectation: IntoExpectation,
+    actual: IntoPrintable,
+    expected: IntoPrintable
+  ) {
+    return new ErrEqAssertion(
+      Expectation.of(expectation),
+      Printable.of(actual),
+      Printable.of(expected)
+    );
+  },
+};
+
+abstract class AbstractTestResult {
+  abstract readonly status: string;
+
+  constructor(readonly name: string) {}
+}
+
+interface DoneTestMetadata {
   todo: boolean;
-  steps: readonly Step[];
+  elapsed: number;
 }
 
-export interface ErrTest {
-  name: string;
-  status: "err";
-  todo: boolean;
-  steps: readonly Step[];
+abstract class AbstractDoneTestResult extends AbstractTestResult {
+  constructor(
+    name: string,
+    readonly steps: readonly Step[],
+    readonly metadata: DoneTestMetadata
+  ) {
+    super(name);
+  }
 }
 
-export interface SkippedTest {
-  name: string;
-  status: "skipped";
+class OkTest extends AbstractDoneTestResult {
+  readonly status = "ok";
+}
+
+class ErrTest extends AbstractDoneTestResult {
+  readonly status = "err";
+}
+
+interface SkippedTestMetadata {
   focusMode: boolean;
+}
+
+class SkippedTest extends AbstractTestResult {
+  readonly status = "skipped";
+
+  constructor(name: string, readonly metadata: SkippedTestMetadata) {
+    super(name);
+  }
 }
 
 export type TestResult = OkTest | ErrTest | SkippedTest;
 export type SuccessfulTestResult = OkTest | SkippedTest;
+
+export const TestResult = {
+  ok(name: string, steps: readonly Step[], metadata: DoneTestMetadata) {
+    return new OkTest(name, steps, metadata);
+  },
+
+  err(name: string, steps: readonly Step[], metadata: DoneTestMetadata) {
+    return new ErrTest(name, steps, metadata);
+  },
+
+  skipped(name: string, metadata: SkippedTestMetadata) {
+    return new SkippedTest(name, metadata);
+  },
+};
 
 export interface OkModule {
   desc: string;

@@ -8,6 +8,7 @@ export interface ReporterDefinition<T extends ReporterInstance> {
 // export type ReporterDefinition<T extends ReporterInstance> = () => T;
 
 export interface ReporterInstance {
+  summarize(modules: ModuleResult[]): void;
   module(module: ModuleResult): void;
   cleanup(): void;
 }
@@ -23,6 +24,10 @@ export class Reporter {
 
   constructor(reporter: ReporterInstance) {
     this.#reporter = reporter;
+  }
+
+  summarize(modules: ModuleResult[]): void {
+    this.#reporter.summarize(modules);
   }
 
   module(module: ModuleResult): void {
@@ -64,9 +69,12 @@ export class DOMReporter implements ReporterInstance {
           --err-expected-fg: #669;
           --err-actual-bg: #fdd;
           --err-actual-fg: #966;
+          --err-meta-bg: #ddd;
+          --err-meta-fg: #666;
 
           --err-bg: #fcc;
           --err-fg: #633;
+
           --skipped-bg: #ccc;
           --skipped-fg: #666;
           --step-bg: #eef;
@@ -102,54 +110,42 @@ export class DOMReporter implements ReporterInstance {
 
         div.summary {
           display: grid;
-          grid-auto-columns: auto;
           padding: var(--pad);
           margin: var(--pad);
           border: 1px solid #333;
-        }
-
-        div.summary div.tests {
-          display: grid;
-          grid-template: "title summary" / max-content 1fr;
-          gap: 1rem;
-        }
-
-        div.summary div.tests > p.title {
-          grid-area: title;
-        }
-
-        div.summary div.tests > p.summary {
-          grid-area: summary;
-          display: grid;
-          grid-template: "ok err skipped" / max-content max-content max-content;
+          grid-template-columns: max-content max-content max-content max-content;
           column-gap: 1rem;
         }
 
-        div.summary div.tests > p.summary > span {
+        span.title {
+          grid-column-start: 1;
+        }
+
+        div.summary > span {
           color: gray;
         }
 
-        div.summary div.tests > p.summary > .skipped {
+        div.summary > .skipped {
           color: #ca0;
           font-weight: bold;
         }
 
-        div.summary div.tests > p.summary > .ok {
+        div.summary > .ok {
           color: green;
           font-weight: bold;
         }
 
-        div.summary div.tests > p.summary > .err.some {
+        div.summary > .err.some {
           color: red;
           font-weight: bold;
         }
 
-        div.summary div.tests > p.summary > .ok:after {
-          content: " succeeded";
+        div.summary > .ok:before {
+          content: "✔ ";
         }
 
-        div.summary div.tests > p.summary > .err:after {
-          content: " failed";
+        div.summary > .err:before {
+          content: "✖ ";
         }
 
         ul {
@@ -157,6 +153,24 @@ export class DOMReporter implements ReporterInstance {
         }
 
         /** generic */
+
+        .row {
+          display: grid;
+          grid-auto-flow: column;
+        }
+
+        .row.align-items\\:top {
+          align-items: stretch;
+        }
+
+        .row.align-items\\:top > * {
+          display: grid;
+          align-items: start;
+        }
+
+        .row > * {
+          padding-top: var(--v-pad);
+        }
 
         .stack > * + * {
           margin-top: var(--v-pad);
@@ -199,6 +213,11 @@ export class DOMReporter implements ReporterInstance {
         .pad-items\\:horizontal > * {
           padding-left: var(--h-pad);
           padding-right: var(--h-pad);
+        }
+
+        .pad-items\\:vertical > * {
+          padding-top: var(--v-pad);
+          padding-bottom: var(--v-pad);
         }
 
         .cluster {
@@ -281,8 +300,8 @@ export class DOMReporter implements ReporterInstance {
           font-weight: bold;
         }
 
-        li.module h1 span.test-count {
-          font-size: 90%;
+        span.test-count {
+          font-size: 80%;
           color: var(--dim);
         }
 
@@ -295,8 +314,19 @@ export class DOMReporter implements ReporterInstance {
         }
 
         li.actual,
-        li.expected {
+        li.expected,
+        li.error-info,
+        li.error-metadata {
           font-family: monospace;
+          white-space: pre;
+        }
+
+        :is(li.error-info, li.error-metadata) p.multiline {
+          margin-left: 1rem;
+        }
+
+        :is(li.error-info, li.error-metadata) :is(ul, li) {
+          display: block;
         }
 
         h1,
@@ -337,6 +367,16 @@ export class DOMReporter implements ReporterInstance {
           position: absolute;
           right: var(--h-pad);
           font-weight: bold;
+        }
+
+        li.err > ul > li.error-info {
+          background-color: var(--err-actual-bg);
+          color: var(--err-actual-fg);
+        }
+
+        li.err > ul > li.error-metadata {
+          background-color: var(--err-meta-bg);
+          color: var(--err-meta-fg);
         }
 
         li.err > ul > li.actual {
@@ -389,11 +429,7 @@ export class DOMReporter implements ReporterInstance {
           html`<input type="checkbox" data-target="showPassedExpectations" />`
         )}
       </form>
-      <div class="summary">
-        <div class="tests" data-target="summary">
-          <p class="title">Tests</p>
-        </div>
-      </div>
+      <div class="summary" data-target="summary"></div>
       <ul id="log" class="stack" data-target></ul>
       <div id="test-content"></div>
     `;
@@ -425,21 +461,27 @@ export class DOMReporter implements ReporterInstance {
     this.#summary = summary;
   }
 
-  module(module: ModuleResult): void {
-    let showSkipped = this.#summarize(module);
+  summarize(modules: ModuleResult[]): void {
+    let showSkipped = this.#summarize(modules);
 
     if (showSkipped) {
       showSkipped.addEventListener("input", () =>
         document.body.classList.toggle("show-skipped", showSkipped.checked)
       );
     }
+  }
 
+  module(module: ModuleResult): void {
     let { target, fragment }: HtmlFragment<HTMLTableSectionElement> = html`
-      <li ${attr("class", `module stack ${module.status}`)}>
+      <li ${attr("class", `module stack ${statusClass(module.status)}`)}>
         <h1 ${attr("class", ROW)}>
           ${Status(module.status)}<span class="desc">[${module.desc}]</span>
           <span class="test-count" title="count"
-            >(${Count(module.tests, "test")})</span
+            >${Count(
+              module.tests,
+              (test) => (test.status === "skipped" ? 0 : test.metadata.elapsed),
+              "test"
+            )}</span
           >
         </h1>
         <ul class="tests stack" data-target></ul>
@@ -453,25 +495,33 @@ export class DOMReporter implements ReporterInstance {
     }
   }
 
-  #summarize = (module: ModuleResult): HTMLInputElement => {
-    let {
-      tests: { ok, err, skipped },
-    } = summarize(module);
+  #summarize = (moduleList: ModuleResult[]) => {
+    let { tests, modules, expectations } = summarize(moduleList);
 
     let {
       fragment,
       targets: { showSkipped },
-    }: HtmlFragment<undefined, { showSkipped: HTMLInputElement }> = html`<p
-      class="summary"
-    >
-      <span class="ok">${String(ok)}</span>
-      <span ${attr("class", `err ${err === 0 ? "none" : "some"}`)}
-        >${String(err)}</span
+    }: HtmlFragment<undefined, { showSkipped: HTMLInputElement }> = html`
+      ${this.#summaryLine("Modules", modules)}
+      ${this.#summaryLine("Tests", tests)}
+      ${this.#summaryLine("Expectations", expectations)}
+    `;
+
+    this.#summary.append(fragment);
+    return showSkipped;
+  };
+
+  #summaryLine = (title: string, line: SummaryLine) => {
+    return html`
+      <span class="title">${title}</span>
+      <span class="ok">${String(line.ok)}</span>
+      <span ${attr("class", `err ${line.err === 0 ? "none" : "some"}`)}
+        >${String(line.err)}</span
       >
       ${If(
-        skipped !== 0,
+        line.skipped !== 0,
         html`<span class="skipped cluster pad-items:horizontal center:vertical"
-          >${String(skipped)} skipped
+          >${String(line.skipped)} skipped
           <label>
             (<input
               type="checkbox"
@@ -481,17 +531,19 @@ export class DOMReporter implements ReporterInstance {
           </label>
         </span>`
       )}
-    </p>`;
-
-    this.#summary.append(fragment);
-    return showSkipped;
+    `;
   };
 
   #test = (test: TestResult, into: HTMLTableSectionElement): void => {
     let { target, fragment }: HtmlFragment<HTMLTableSectionElement> = html`
-      <li ${attr("class", `test stack ${test.status}`)}>
+      <li ${attr("class", `test stack ${statusClass(test.status)}`)}>
         <h2 ${attr("class", ROW)}>
-          ${Status(test.status)}<span>${test.name}</span>
+          ${Status(test.status)}<span>${test.name}</span>${test.status ===
+          "skipped"
+            ? null
+            : html`<span class="test-count"
+                >${formatMs(test.metadata.elapsed)}</span
+              >`}
         </h2>
         <ul class="steps stack" data-target></ul>
       </li>
@@ -525,38 +577,97 @@ export class DOMReporter implements ReporterInstance {
     `;
 
     for (let assertion of step.assertions) {
-      target.append(this.#assertion(assertion));
+      target.append(this.#assertion(assertion).fragment);
     }
 
     return fragment;
   };
 
-  #assertion = (assertion: Assertion): DocumentFragment => {
-    let { status, expectation, actual } = assertion;
-    let expected = assertion.status === "err" ? assertion.expected.print : "";
+  #assertion = (assertion: Assertion): HtmlFragment => {
+    let { status, expectation } = assertion;
 
-    let { fragment } = html`<li
-      ${attr("class", `${status} with-annotation assertion`)}
-    >
-      <h4 class="annotation">${Status(status)}</h4>
+    if (assertion.status === "ok") {
+      let { actual } = assertion;
 
-      <ul ${attr("class", ROW)}>
-        <li class="expectation fit" title="expectation">
-          <span>${expectation.print}</span>
-        </li>
-        <li class="actual fill:horizontal" aria-label="actual">
-          <span>${actual.print}</span>
-        </li>
-        ${If(
-          assertion.status === "err",
-          html`<li class="expected fill:horizontal" aria-label="expected">
+      return html`<li
+        ${attr("class", `${statusClass(status)} with-annotation assertion`)}
+      >
+        <h4 class="annotation">${Status(status)}</h4>
+
+        <ul ${attr("class", ROW)}>
+          <li class="expectation fit" title="expectation">
+            <span>${expectation.print}</span>
+          </li>
+          <li class="actual fill:horizontal" aria-label="actual">
+            <span>${actual.print}</span>
+          </li>
+        </ul>
+      </li> `;
+    } else if (assertion.status === "err:eq") {
+      let expected = assertion.expected.print;
+      let { actual } = assertion;
+
+      return html`<li
+        ${attr("class", `${statusClass(status)} with-annotation assertion`)}
+      >
+        <h4 class="annotation">${Status(status)}</h4>
+
+        <ul ${attr("class", ROW)}>
+          <li class="expectation fit" title="expectation">
+            <span>${expectation.print}</span>
+          </li>
+          <li class="actual fill:horizontal" aria-label="actual">
+            <span>${actual.print}</span>
+          </li>
+          <li class="expected fill:horizontal" aria-label="expected">
             <span>${expected}</span>
-          </li>`
-        )}
-      </ul>
-    </li> `;
+          </li>
+        </ul>
+      </li> `;
+    } else if (assertion.status === "err:ok") {
+      let { error, metadata } = assertion;
 
-    return fragment;
+      return html`<li
+        ${attr("class", `${statusClass(status)} with-annotation assertion`)}
+      >
+        <h4 class="annotation">${Status(status)}</h4>
+
+        <ul class="row pad-items:horizontal pad-items:vertical align-items:top">
+          <li class="expectation fit" title="expectation">
+            <span>${expectation.print}</span>
+          </li>
+          <li class="error-info list stack fill:horizontal" aria-label="error">
+            ${Map(Object.entries(error), ([k, value]) => {
+              let v = value.print;
+              if (v.includes("\n")) {
+                return html`
+                  <p>${k}:</p>
+                  <p class="multiline">${v}</p>
+                `;
+              } else {
+                return html`<p>${k}: ${value.print}</p>`;
+              }
+            })}
+          </li>
+          ${If(
+            metadata !== undefined,
+            () => html`
+              <li
+                class="error-metadata list stack fill:horizontal"
+                aria-label="metadata"
+              >
+                ${Map(
+                  Object.entries(metadata || {}),
+                  ([key, value]) => html`<p>${key}: ${value.print}</p>`
+                )}
+              </li>
+            `
+          )}
+        </ul>
+      </li> `;
+    } else {
+      unreachable(`exhaustive`, assertion);
+    }
   };
 
   cleanup(): void {
@@ -608,7 +719,35 @@ function normalizePlurals(
   }
 }
 
-function Count(
+function Count<T>(
+  items: T[] | readonly T[],
+  elapsed: (value: T) => number,
+  definition: Pluralize | MinPluralize | keyof INFLECT
+) {
+  let sum = 0;
+
+  for (let item of items) {
+    sum += elapsed(item);
+  }
+
+  return `${count(items, definition)}, ${formatMs(sum)}`;
+}
+
+function formatMs(duration: number): string {
+  return `${Math.round(duration)}ms`;
+}
+
+function elapsed<T>(items: T[] | readonly T[], elapsed: (value: T) => number) {
+  let sum = 0;
+
+  for (let item of items) {
+    sum += elapsed(item);
+  }
+
+  return formatMs(sum);
+}
+
+function count(
   items: unknown[] | readonly unknown[],
   definition: Pluralize | MinPluralize | keyof INFLECT
 ) {
@@ -638,11 +777,17 @@ function Count(
   }
 }
 
-type IntoDynamicContent = string | DynamicContent;
+type IntoDynamicContent =
+  | null
+  | string
+  | DynamicContent
+  | (() => DynamicContent);
 
-function intoDynamicContent(into: IntoDynamicContent): DynamicContent {
+function intoDynamicContent(into: IntoDynamicContent): DynamicContent | null {
   if (typeof into === "string") {
     return new DynamicStringContent(into);
+  } else if (typeof into === "function") {
+    return into();
   } else {
     return into;
   }
@@ -653,6 +798,7 @@ const ROW = `cluster center:vertical pad-items:horizontal`;
 type DynamicContent =
   | DynamicStringContent
   | CondContent
+  | MapContent
   | HtmlFragment<Element | undefined>;
 
 export class DynamicStringContent {
@@ -664,19 +810,15 @@ export class DynamicStringContent {
 }
 
 export class CondContent {
-  static is(value: unknown): value is Attr {
-    return isObject(value) && value instanceof CondContent;
-  }
-
   constructor(
     readonly cond: boolean,
-    readonly ifTrue: DynamicContent,
-    readonly ifFalse?: DynamicContent
+    readonly ifTrue: DynamicContent | null,
+    readonly ifFalse?: DynamicContent | null
   ) {}
 
   get node(): Node | undefined {
     if (this.cond) {
-      return this.ifTrue.node;
+      return this.ifTrue ? this.ifTrue.node : undefined;
     } else if (this.ifFalse) {
       return this.ifFalse.node;
     } else {
@@ -695,6 +837,31 @@ export function If(
     intoDynamicContent(ifTrue),
     ifFalse ? intoDynamicContent(ifFalse) : undefined
   );
+}
+
+export class MapContent {
+  constructor(
+    readonly iterable: Iterable<unknown>,
+    readonly callback: (value: unknown) => HtmlFragment
+  ) {}
+
+  get node(): Node | undefined {
+    let frag = document.createDocumentFragment();
+    let { callback, iterable } = this;
+
+    for (let item of iterable) {
+      frag.append(callback(item).fragment);
+    }
+
+    return frag;
+  }
+}
+
+export function Map<T>(
+  iterable: Iterable<T>,
+  callback: (value: T) => HtmlFragment
+): MapContent {
+  return new MapContent(iterable, callback as (value: unknown) => HtmlFragment);
 }
 
 export class HtmlFragment<
@@ -746,8 +913,12 @@ export function html<
         placeholderAttrs[String(i)] = value;
         body.push(` data-placeholder data-placeholder-${i}="" `);
       } else {
-        placeholders[String(i)] = intoDynamicContent(value);
-        body.push(`<script type="placeholder" id="${i}"></script>`);
+        let content = intoDynamicContent(value);
+
+        if (content !== null) {
+          placeholders[String(i)] = content;
+          body.push(`<script type="placeholder" id="${i}"></script>`);
+        }
       }
     }
   }
@@ -800,15 +971,28 @@ export function html<
   return new HtmlFragment(fragment, defaultTarget, targets as Targets);
 }
 
-function Status(status: "ok" | "err" | "skipped") {
+function statusClass(status: "ok" | "err:eq" | "err:ok" | "err" | "skipped") {
+  switch (status) {
+    case "err:eq":
+    case "err:ok":
+    case "err":
+      return "err";
+    default:
+      return status;
+  }
+}
+
+function Status(status: "ok" | "err:eq" | "err:ok" | "err" | "skipped") {
   let icon;
 
   switch (status) {
     case "ok":
-      icon = "✅";
+      icon = "✔️";
       break;
+    case "err:eq":
+    case "err:ok":
     case "err":
-      icon = "❌";
+      icon = "✖️";
       break;
     case "skipped":
       icon = "⏭️";
@@ -840,36 +1024,104 @@ function Labeled(
   }
 }
 
-interface Summary {
-  tests: {
-    ok: number;
-    err: number;
-    skipped: number;
-  };
+interface SummaryLine {
+  ok: number;
+  err: number;
+  skipped: number;
 }
 
-function summarize(module: ModuleResult): Summary {
-  let ok = 0;
-  let err = 0;
-  let skipped = 0;
+interface Summary {
+  modules: SummaryLine;
+  tests: SummaryLine;
+  expectations: SummaryLine;
+  elapsed: number;
+}
 
-  for (let test of module.tests) {
-    if (test.status === "ok") {
-      ok++;
-    } else if (test.status === "err") {
-      err++;
-    } else if (test.status === "skipped") {
-      skipped++;
-    } else {
-      unreachable(`exhaustive`, test);
+function summarize(modules: ModuleResult[]): Summary {
+  let okExpectations = 0;
+  let errExpectations = 0;
+  let skippedExpectations = 0;
+
+  let okTests = 0;
+  let errTests = 0;
+  let skippedTests = 0;
+
+  let okModules = 0;
+  let errModules = 0;
+
+  let totalElapsed = 0;
+
+  for (let module of modules) {
+    switch (module.status) {
+      case "ok": {
+        okModules++;
+        break;
+      }
+
+      case "err": {
+        errModules++;
+        break;
+      }
+
+      default: {
+        unreachable(`exhaustive`, module);
+      }
+    }
+
+    for (let test of module.tests) {
+      if (test.status === "ok" || test.status === "err") {
+        let elapsed = test.metadata.elapsed;
+        totalElapsed += elapsed;
+      }
+
+      if (test.status === "ok") {
+        okTests++;
+      } else if (test.status === "err") {
+        errTests++;
+      } else if (test.status === "skipped") {
+        skippedTests++;
+      } else {
+        unreachable(`exhaustive`, test);
+      }
+
+      if (test.status !== "skipped") {
+        for (let step of test.steps) {
+          for (let assertion of step.assertions) {
+            switch (assertion.status) {
+              case "ok": {
+                okExpectations++;
+                break;
+              }
+              case "err:ok":
+              case "err:eq": {
+                errExpectations++;
+                break;
+              }
+              default:
+                unreachable(`exhaustive`, assertion);
+            }
+          }
+        }
+      }
     }
   }
 
   return {
+    elapsed: totalElapsed,
     tests: {
-      ok,
-      err,
-      skipped,
+      ok: okTests,
+      err: errTests,
+      skipped: skippedTests,
+    },
+    modules: {
+      ok: okModules,
+      err: errModules,
+      skipped: 0,
+    },
+    expectations: {
+      ok: okExpectations,
+      err: errExpectations,
+      skipped: skippedExpectations,
     },
   };
 }
