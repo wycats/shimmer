@@ -50,12 +50,13 @@ class Steps {
   }
 
   start(desc: string): void {
+    this.finish();
+
     if (this.#assertions.length === 0 && this.#current === "default") {
       this.#current = desc;
       return;
     }
 
-    this.finish();
     this.#current = desc;
   }
 
@@ -67,28 +68,42 @@ class Steps {
 
 export class TestContext {
   #steps: Steps = new Steps();
+  #done = false;
 
   constructor(readonly content: HTMLDivElement, readonly desc: string) {}
+
+  #assertNotDone = (op: string) => {
+    if (this.#done === true) {
+      throw new Error(
+        `Unexpected ${op} outside of a test. Did you forget an 'await'?`
+      );
+    }
+  };
 
   async inur(
     content: Content,
     initial: string,
     ...steps: RenderStep[]
   ): Promise<void> {
+    this.#assertNotDone("inur");
+
     let app = Doc.of(document).render(content, Cursor.appending(this.content));
-    GLIMMER.addRenderable(app);
+    GLIMMER.render(app);
+    await GLIMMER.wait();
 
     this.step("initial render");
-    this.assert(initial);
+    this.assertHTML(initial);
 
     for (let step of steps) {
       this.step(step.desc);
-      await step.update();
-      this.assert(step.expect);
+      step.update();
+      await GLIMMER.wait();
+      this.assertHTML(step.expect);
     }
   }
 
   done(): TestResult {
+    this.#done = true;
     let steps = this.#steps.steps;
 
     if (steps.every((s): s is OkStep => s.status === "ok")) {
@@ -109,11 +124,47 @@ export class TestContext {
   }
 
   step(desc: string): void {
+    this.#assertNotDone("step");
+
     this.#steps.start(desc);
   }
 
-  assert(expected: string): void {
-    let actual = this.content.innerHTML;
+  assert(assertion: boolean, desc: string): void {
+    this.#assertNotDone("assert");
+
+    if (assertion) {
+      this.#steps.addAssertion({
+        type: "assertion",
+        status: "ok",
+        expectation: Expectation.of(desc),
+        actual: Printable.of("ok"),
+      });
+    } else {
+      this.#steps.addAssertion({
+        type: "assertion",
+        status: "err",
+        expectation: Expectation.of(desc),
+        actual: Printable.of("ok"),
+        expected: Printable.of("not ok"),
+      });
+    }
+  }
+
+  assertHTML(expected: string, el: Element | null = this.content): void {
+    this.#assertNotDone("assertHTML");
+
+    if (el === null) {
+      this.#steps.addAssertion({
+        type: "assertion",
+        status: "err",
+        expectation: Expectation.of("element was not null"),
+        actual: Printable.of("null"),
+        expected: Printable.of("not null"),
+      });
+      return;
+    }
+
+    let actual = el.innerHTML;
 
     if (expected === actual) {
       this.#steps.addAssertion({
@@ -135,13 +186,15 @@ export class TestContext {
 
   async update(callback: () => void, assertions: () => void): Promise<void> {
     callback();
+
     await GLIMMER.wait();
     assertions();
   }
 
-  render(content: Content, assertions: () => void): void {
+  async render(content: Content, assertions: () => void): Promise<void> {
     let app = Doc.of(document).render(content, Cursor.appending(this.content));
-    GLIMMER.addRenderable(app);
+    GLIMMER.render(app);
+    await GLIMMER.wait();
     assertions();
   }
 }
@@ -163,6 +216,10 @@ export class ModuleContext {
 
   endTest(test: TestContext): void {
     this.#tests.push(test.done());
+  }
+
+  skip(name: string, focusMode: boolean) {
+    this.#tests.push({ name, status: "skipped", focusMode });
   }
 
   done(): ModuleResult {
@@ -189,16 +246,90 @@ export class ModuleContext {
 
 export type TestFunction = (context: TestContext) => void | Promise<void>;
 
-export interface Test {
-  message: string;
-  callback: TestFunction;
+export class Test {
+  constructor(
+    readonly message: string,
+    readonly callback: TestFunction,
+    readonly run: boolean,
+    readonly focusMode: boolean = false
+  ) {}
+
+  focusRun(): Test {
+    if (this.run === false) {
+      throw new Error(`You can't focus a skipped test`);
+    } else {
+      return new Test(this.message, this.callback, true, true);
+    }
+  }
+
+  focusSkip(): Test {
+    return new Test(this.message, this.callback, false, true);
+  }
 }
 
-const TESTS: Test[] = [];
-
-export function test(message: string, callback: TestFunction): void {
-  TESTS.push({ message, callback });
+class TestModule {
+  constructor(
+    readonly desc: string,
+    readonly tests: Test[],
+    readonly focus: Test[] | null
+  ) {}
 }
+
+const MODULES: TestModule[] = [];
+
+// const TESTS: Test[] = [];
+
+export function module(
+  desc: string,
+  callback: (test: ModuleTestCallback) => void
+): void {
+  let tests: Test[] = [];
+  let focus: Set<Test> = new Set();
+
+  function TestFunction(message: string, callback: TestFunction): void {
+    tests.push(new Test(message, callback, true));
+  }
+
+  TestFunction.focus = (message: string, callback: TestFunction): void => {
+    let test = new Test(message, callback, true);
+    tests.push(test);
+    focus.add(test);
+  };
+
+  TestFunction.skip = (message: string, callback: TestFunction): void => {
+    let test = new Test(message, callback, false);
+    tests.push(test);
+  };
+
+  callback(TestFunction);
+
+  if (focus.size === 0) {
+    let module = new TestModule(desc, tests, null);
+    MODULES.push(module);
+  } else {
+    tests = tests.map((t) => {
+      if (focus.has(t)) {
+        return t.focusRun();
+      } else {
+        return t.focusSkip();
+      }
+    });
+    let module = new TestModule(desc, tests, [...focus]);
+    MODULES.push(module);
+  }
+}
+
+interface ModuleTestCallback {
+  (message: string, callback: TestFunction): void;
+  focus: (message: string, callback: TestFunction) => void;
+  skip: (message: string, callback: TestFunction) => void;
+}
+
+export class TestTest {}
+
+// export function test(message: string, callback: TestFunction): void {
+//   TESTS.push({ message, callback });
+// }
 
 export async function main<R extends ReporterInstance>(
   reporter: ReporterDefinition<R>
@@ -208,22 +339,26 @@ export async function main<R extends ReporterInstance>(
     data-target
   ></div>`;
   document.body.append(target);
-
-  let module = new ModuleContext(target, "main");
-
-  for (let test of TESTS) {
-    let ctx = module.startTest(test.message);
-    await test.callback(ctx);
-    module.endTest(ctx);
-    target.innerHTML = "";
-  }
-
-  let results = module.done();
-
-  console.log("RESULTS", results);
-
   let r = Reporter.of(reporter);
-  r.module(results);
+
+  for (let module of MODULES) {
+    let moduleCtx = new ModuleContext(target, module.desc);
+
+    for (let test of module.tests) {
+      if (test.run) {
+        let ctx = moduleCtx.startTest(test.message);
+        await test.callback(ctx);
+        moduleCtx.endTest(ctx);
+        target.innerHTML = "";
+      } else {
+        moduleCtx.skip(test.message, test.focusMode);
+      }
+    }
+
+    let results = moduleCtx.done();
+    console.log("RESULTS", results);
+    r.module(results);
+  }
 }
 
 export interface RenderStep {

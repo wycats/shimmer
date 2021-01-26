@@ -39,12 +39,12 @@ export class DOMReporter implements ReporterInstance {
     let {
       fragment,
       target,
-      targets: { checkbox, log, summary },
+      targets: { showPassed, summary },
     }: HtmlFragment<
-      HTMLTableSectionElement,
+      HTMLUListElement,
       {
-        checkbox: HTMLInputElement;
-        log: HTMLTableElement;
+        showPassed: HTMLInputElement;
+        showSkipped: HTMLInputElement;
         summary: HTMLDivElement;
       }
     > = html`
@@ -54,23 +54,27 @@ export class DOMReporter implements ReporterInstance {
         }
 
         :root {
-          --test-ok-bg: #cfc;
-          --test-ok-fg: #363;
-          --test-err-bg: #fcc;
-          --test-err-fg: #633;
+          --ok-bg: #cfc;
+          --ok-fg: #363;
+          --ok-actual-bg: #efe;
+          --ok-actual-fg: #696;
+
+          --err-expected-bg: #eef;
+          --err-expected-fg: #669;
+          --err-actual-bg: #fdd;
+          --err-actual-fg: #966;
+
+          --err-bg: #fcc;
+          --err-fg: #633;
+          --skipped-bg: #ccc;
+          --skipped-fg: #666;
           --step-bg: #eef;
           --step-fg: #669;
           --pad: var(--v-pad) var(--h-pad);
           --v-pad: 0.3rem;
           --thin-v-pad: 0.1rem;
           --h-pad: 0.2rem;
-          --pad: 0.5rem;
           --full-width: 1 / span 4;
-        }
-
-        th,
-        td {
-          display: block;
         }
 
         p,
@@ -84,6 +88,13 @@ export class DOMReporter implements ReporterInstance {
         thead {
           margin: unset;
           padding: unset;
+        }
+
+        label {
+          cursor: pointer;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--h-pad);
         }
 
         div.summary {
@@ -115,6 +126,11 @@ export class DOMReporter implements ReporterInstance {
           color: gray;
         }
 
+        div.summary div.tests > p.summary > .skipped {
+          color: #ca0;
+          font-weight: bold;
+        }
+
         div.summary div.tests > p.summary > .ok {
           color: green;
           font-weight: bold;
@@ -133,214 +149,191 @@ export class DOMReporter implements ReporterInstance {
           content: " failed";
         }
 
-        div.summary div.tests > p.summary > .skipped:after {
-          content: " skipped";
+        ul {
+          list-style-type: none;
         }
 
-        table#log {
-          width: 100%;
-          display: grid;
-          grid-template-columns: max-content max-content 1fr 1fr;
-          align-items: center;
+        /** generic */
+
+        .stack > * + * {
           margin-top: var(--v-pad);
         }
 
-        table#log table {
+        .with-annotation {
           display: grid;
-          margin-left: 0.5rem;
+          grid-template: "annotation annotated" / max-content 1fr;
         }
 
-        table#log table.test {
-          display: grid;
+        .with-annotation.gap {
+          gap: var(--h-pad);
         }
 
-        table#log th {
-          margin-bottom: var(--v-pad);
+        .with-annotation > .annotation {
+          grid-area: annotation;
         }
 
-        table#log td,
-        table#log th {
-          padding: var(--v-pad) var(--h-pad);
+        .with-annotation > :not(.annotation) {
+          grid-area: annotated;
         }
 
-        table#log thead td {
-          grid-column: var(--full-width);
-          padding: var(--v-pad) var(--h-pad);
+        .with-sidebar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--h-pad);
         }
 
-        table#log.hide-passed .step.ok {
-          display: none;
+        .with-sidebar > .sidebar {
+          flex-basis: 20rem;
+          flex-grow: 1;
         }
 
-        table#log td.full,
-        table#log th.full {
-          grid-column: var(--full-width);
-          margin: 0;
-          padding: 0 var(--h-pad);
+        .with-sidebar > :not(.sidebar) {
+          flex-basis: 0;
+          flex-grow: 999;
+          min-width: calc(50% - 1rem);
         }
 
-        table#log tr.description > th.full {
-          margin-top: var(--v-pad);
-          margin-bottom: var(--v-pad);
+        .pad-items\\:horizontal > * {
+          padding-left: var(--h-pad);
+          padding-right: var(--h-pad);
+        }
+
+        .cluster {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: stretch;
+        }
+
+        .display\\:flex {
+          display: flex;
+        }
+
+        .gap\\:normal {
+          gap: var(--h-pad);
+        }
+
+        /** end generic */
+
+        /** app generic */
+
+        /* padding is for inline content */
+        .padding\\:horizontal {
+          padding-left: var(--h-pad);
+          padding-right: var(--h-pad);
+        }
+
+        .padding\\:vertical {
           padding-top: var(--v-pad);
           padding-bottom: var(--v-pad);
         }
 
-        table#log table.test > thead > tr.description > th {
-          display: grid;
-          padding: 0;
-          grid-template-columns: max-content 1fr;
+        .fill\\:horizontal {
+          flex-grow: 1;
         }
 
-        table#log table.test > thead > tr.description > th > span {
-          padding: var(--v-pad) var(--h-pad);
+        /** end app generic */
+
+        #log :is(.test.ok .steps, .test.skipped) {
+          display: none;
         }
 
-        table#log table.test.ok > thead > tr.description > th > span {
-          background-color: var(--test-ok-bg);
+        #log.show-skipped .test.skipped {
+          display: list-item;
         }
 
-        table#log table.test.err > thead > tr.description > th > span {
-          background-color: var(--test-err-bg);
+        #log.show-passed .test.ok .steps {
+          display: block;
         }
 
-        table#log table.test.ok > thead > tr.description > th {
-          color: var(--test-ok-fg);
+        #log ul.stack {
+          margin-left: 0.5rem;
         }
 
-        table#log table.test.err > thead > tr.description > th {
-          background-color: var(--test-err-bg);
-          color: var(--test-err-fg);
+        .cluster.center\\:vertical > * {
+          display: flex;
+          align-items: center;
         }
 
-        table#log table.step-table > thead > tr.description > th {
+        .cluster > .fit {
+          width: max-content;
+        }
+
+        li.ok .expectation {
+          border-right: 1px solid var(--ok-fg);
+        }
+
+        li.err .expectation {
+          border-right: 1px solid var(--err-fg);
+        }
+
+        li.actual,
+        li.expected {
+          font-family: monospace;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          padding: var(--pad);
+        }
+
+        li.ok > :is(h1, h2, h3, h4, h5, h6) {
+          background-color: var(--ok-bg);
+          color: var(--ok-fg);
+        }
+
+        li.err > :is(h1, h2, h3, h4, h5, h6) {
+          background-color: var(--err-bg);
+          color: var(--err-fg);
+        }
+
+        li.skipped > :is(h1, h2, h3, h4, h5, h6) {
+          background-color: var(--skipped-bg);
+          color: var(--skipped-fg);
+        }
+
+        li.ok > ul > li.actual {
+          background-color: var(--ok-actual-bg);
+          color: var(--ok-actual-fg);
+        }
+
+        :is(li.ok, li.err) > ul > li {
+          position: relative;
+        }
+
+        :is(li.actual, li.expected):hover:after {
+          content: attr(aria-label);
+          position: absolute;
+          right: var(--h-pad);
+          font-weight: bold;
+        }
+
+        li.err > ul > li.actual {
+          background-color: var(--err-actual-bg);
+          color: var(--err-actual-fg);
+        }
+
+        li.err > ul > li.expected {
+          background-color: var(--err-expected-bg);
+          color: var(--err-expected-fg);
+        }
+
+        li.step.ok > :is(h1, h2, h3, h4, h5, h6) {
           background-color: var(--step-bg);
           color: var(--step-fg);
         }
 
-        thead,
-        tbody,
-        tr {
-          display: contents;
+        li.ok > ul > li.expectation {
+          background-color: var(--ok-bg);
+          color: var(--ok-fg);
         }
 
-        table.sub-table > thead > tr > th {
-          grid-column: var(--full-width);
-        }
-
-        tr.step > td {
-          grid-column: var(--full-width);
-        }
-
-        table.step-table {
-          grid-template-columns: max-content max-content 1fr 1fr;
-        }
-
-        table.step-table tr.status td {
-          padding: var(--v-pad) var(--h-pad);
-          margin-top: var(--thin-v-pad);
-          margin-bottom: var(--thin-v-pad);
-        }
-
-        span.status {
-          text-align: center;
-          line-height: 1rem;
-          font-size: 0.9rem;
-        }
-
-        tr.ok span.status {
-          content: "✅";
-        }
-
-        tr.err td.actual {
-          background-color: #fcc;
-        }
-
-        tr.status td.expected {
-          position: relative;
-          color: #66f;
-        }
-
-        tr.status td.expected:hover:after {
-          content: "expected";
-          position: absolute;
-          right: var(--h-pad);
-          color: #33c;
-        }
-
-        tr.status td.expected:hover {
-          font-weight: bold;
-        }
-
-        tr.status td.actual {
-          position: relative;
-          color: #f66;
-        }
-
-        tr.status td.actual:hover {
-          font-weight: bold;
-        }
-
-        tr.status td.actual:hover:after {
-          content: "actual";
-          position: absolute;
-          right: var(--h-pad);
-          color: #c33;
-        }
-
-        tr.status td.expectation {
-          background-color: #eee;
-        }
-
-        tbody.hide-passed tr.ok {
-          display: none;
-        }
-
-        tr.ok td.actual {
-          background-color: #efe;
-          border-left: 1px solid #6c6;
-          grid-column: 3 / span 2;
-        }
-
-        tr.ok td.expected {
-          display: none;
-        }
-
-        tr.status > td:first-child {
-          padding-left: 0.5rem;
-          font-size: 0.8rem;
-        }
-
-        tr.status td:first-child {
-          display: grid;
-          align-items: center;
-          grid-template-columns: max-content;
-          background-color: transparent;
-        }
-
-        tr.status span.status {
-          text-align: center;
-          color: white;
-          line-height: 1rem;
-        }
-
-        tr.err td.actual {
-          background-color: #fcc;
-        }
-
-        tr.err td.expected {
-          background-color: #ccf;
-        }
-
-        table {
-          font-size: 0.9rem;
-        }
-
-        tr.status td.actual,
-        tr.status td.expected {
-          white-space: pre;
-          font-family: monospace;
-          line-height: 1.1rem;
+        li.err > ul > li.expectation {
+          background-color: var(--err-bg);
+          color: var(--err-fg);
         }
 
         form {
@@ -357,24 +350,27 @@ export class DOMReporter implements ReporterInstance {
         }
       </style>
       <form>
-        <label>
-          <input type="checkbox" id="hide-passed" data-target="checkbox" />
-          Hide passed
-        </label>
+        ${Labeled(
+          "Show passed",
+          { input: "left" },
+          html`<input
+            type="checkbox"
+            id="show-passed"
+            data-target="showPassed"
+          />`
+        )}
       </form>
       <div class="summary">
         <div class="tests" data-target="summary">
           <p class="title">Tests</p>
         </div>
       </div>
-      <table id="log" data-target="log">
-        <tbody data-target></tbody>
-      </table>
+      <ul id="log" class="stack" data-target></ul>
       <div id="test-content"></div>
     `;
 
-    checkbox.addEventListener("click", () =>
-      log.classList.toggle("hide-passed", checkbox.checked)
+    showPassed.addEventListener("input", () =>
+      target.classList.toggle("show-passed", showPassed.checked)
     );
 
     document.body.append(fragment);
@@ -382,102 +378,108 @@ export class DOMReporter implements ReporterInstance {
     return new DOMReporter(target, summary);
   }
 
-  #log: HTMLTableSectionElement;
+  #log: HTMLUListElement;
   #summary: HTMLDivElement;
 
-  constructor(log: HTMLTableSectionElement, summary: HTMLDivElement) {
+  constructor(log: HTMLUListElement, summary: HTMLDivElement) {
     this.#log = log;
     this.#summary = summary;
   }
 
   module(module: ModuleResult): void {
-    // if (module.status === "ok") {
-    // } else {
-    // }
+    let showSkipped = this.#summarize(module);
 
-    this.#summarize(module);
+    if (showSkipped) {
+      showSkipped.addEventListener("input", () =>
+        this.#log.classList.toggle("show-skipped", showSkipped.checked)
+      );
+    }
+
+    let { target, fragment }: HtmlFragment<HTMLTableSectionElement> = html`
+      <li ${attr("class", `module stack ${module.status}`)}>
+        <h1 ${attr("class", ROW)}>
+          ${Status(module.status)}<span>${module.desc}</span>
+        </h1>
+        <ul class="tests stack" data-target></ul>
+      </li>
+    `;
+
+    this.#log.append(fragment);
 
     for (let test of module.tests) {
-      this.#test(test);
+      this.#test(test, target);
     }
   }
 
-  #summarize = (module: ModuleResult) => {
+  #summarize = (module: ModuleResult): HTMLInputElement => {
     let {
       tests: { ok, err, skipped },
     } = summarize(module);
 
-    let { fragment } = html`<p class="summary">
+    let {
+      fragment,
+      targets: { showSkipped },
+    }: HtmlFragment<undefined, { showSkipped: HTMLInputElement }> = html`<p
+      class="summary"
+    >
       <span class="ok">${String(ok)}</span>
       <span ${attr("class", `err ${err === 0 ? "none" : "some"}`)}
         >${String(err)}</span
       >
       ${If(
         skipped !== 0,
-        html`<span class="skipped">${String(skipped)}</span>`
+        html`<span class="skipped cluster pad-items:horizontal center:vertical"
+          >${String(skipped)} skipped
+          <label>
+            (<input
+              type="checkbox"
+              id="show-skipped"
+              data-target="showSkipped"
+            />show)
+          </label>
+        </span>`
       )}
     </p>`;
 
     this.#summary.append(fragment);
+    return showSkipped;
   };
 
-  #test = (test: TestResult): void => {
-    if (test.status === "skipped") {
-      return;
-    }
-
-    // if (test.status === "ok") {
-    // } else if (test.status === "err") {
-    // }
-
+  #test = (test: TestResult, into: HTMLTableSectionElement): void => {
     let { target, fragment }: HtmlFragment<HTMLTableSectionElement> = html`
-      <tr ${attr("class", `test ${test.status}`)} class="test">
-        <td class="full">
-          <table ${attr("class", `test sub-table ${test.status}`)}>
-            <thead>
-              <tr class="description">
-                <th class="full">
-                  ${Status(test.status)}<span>${test.name}</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody data-target></tbody>
-          </table>
-        </td>
-      </tr>
+      <li ${attr("class", `test stack ${test.status}`)}>
+        <h2 ${attr("class", ROW)}>
+          ${Status(test.status)}<span>${test.name}</span>
+        </h2>
+        <ul class="steps stack" data-target></ul>
+      </li>
     `;
 
-    for (let step of test.steps) {
-      target.append(this.#step(step));
+    into.append(fragment);
+
+    if (test.status !== "skipped") {
+      for (let step of test.steps) {
+        target.append(this.#step(step));
+      }
     }
 
     this.#log.append(fragment);
   };
 
   #step = (step: Step): DocumentFragment => {
-    // if (step.status === "ok") {
-    // } else if (step.status === "err") {
-    // }
-
     let { fragment, target }: HtmlFragment<HTMLTableSectionElement> = html`
-      <tr ${attr("class", `step ${step.status}`)}>
-        <td class="full">
-          <table class="step-table sub-table">
-            ${If(
-              step.desc !== "default",
-              html`<thead>
-                <tr class="description">
-                  <th class="full">
-                    ${step.status === "err" ? "❌" : ""}
-                    <span class="title">${step.desc}</span>
-                  </th>
-                </tr>
-              </thead>`
-            )}
-            <tbody data-target></tbody>
-          </table>
-        </td>
-      </tr>
+      <li ${attr("class", `step ${step.status}`)}>
+        ${If(
+          step.desc !== "default",
+          html`
+            <h3 ${attr("class", ROW)}>
+              ${step.status === "err" ? "❌" : ""}
+              <span class="title">${step.desc}</span>
+            </h3>
+          `
+        )}
+        <ul class="assertions stack" data-target></ul>
+      </li>
     `;
 
     for (let assertion of step.assertions) {
@@ -491,12 +493,26 @@ export class DOMReporter implements ReporterInstance {
     let { status, expectation, actual } = assertion;
     let expected = assertion.status === "err" ? assertion.expected.print : "";
 
-    let { fragment } = html`<tr ${attr("class", `${status} status`)}>
-      <td>${Status(status)}</td>
-      <td class="expectation">${expectation.print}</td>
-      <td class="actual">${actual.print}</td>
-      <td class="expected">${expected}</td>
-    </tr>`;
+    let { fragment } = html`<li
+      ${attr("class", `${status} with-annotation assertion`)}
+    >
+      <h4 class="annotation">${Status(status)}</h4>
+
+      <ul ${attr("class", ROW)}>
+        <li class="expectation fit" title="expectation">
+          <span>${expectation.print}</span>
+        </li>
+        <li class="actual fill:horizontal" aria-label="actual">
+          <span>${actual.print}</span>
+        </li>
+        ${If(
+          assertion.status === "err",
+          html`<li class="expected fill:horizontal" aria-label="expected">
+            <span>${expected}</span>
+          </li>`
+        )}
+      </ul>
+    </li> `;
 
     return fragment;
   };
@@ -515,6 +531,8 @@ function intoDynamicContent(into: IntoDynamicContent): DynamicContent {
     return into;
   }
 }
+
+const ROW = `cluster center:vertical pad-items:horizontal`;
 
 type DynamicContent =
   | DynamicStringContent
@@ -660,15 +678,40 @@ export function html<
 
   for (let el of targetElements) {
     let id = el.getAttribute("data-target")!;
-    el.removeAttribute("data-target");
     targets[id] = el;
   }
 
   return new HtmlFragment(fragment, defaultTarget, targets as Targets);
 }
 
-function Status(status: "ok" | "err") {
-  return html`<span class="status">${status === "ok" ? "✅" : "❌"}</span>`;
+function Status(status: "ok" | "err" | "skipped") {
+  let icon;
+
+  switch (status) {
+    case "ok":
+      icon = "✅";
+      break;
+    case "err":
+      icon = "❌";
+      break;
+    case "skipped":
+      icon = "⏭️";
+      break;
+  }
+
+  return html`<span class="status">${icon}</span>`;
+}
+
+function Labeled(
+  label: string,
+  { input }: { input: "right" | "left" },
+  body: HtmlFragment
+) {
+  if (input === "right") {
+    return html`<label class="right"><span>${label}</span>${body}</label>`;
+  } else {
+    return html`<label class="left">${body}<span>${label}</span></label>`;
+  }
 }
 
 interface Summary {

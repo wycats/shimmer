@@ -1,6 +1,6 @@
 import setGlobalContext, {
   Destroyable,
-  Destructor,
+  Destructor
 } from "@glimmer/global-context";
 import { GLIMMER } from "./glimmer";
 

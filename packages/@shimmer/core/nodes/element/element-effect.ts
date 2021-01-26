@@ -1,4 +1,5 @@
 import type { ElementCursor } from "@shimmer/dom";
+import { GLIMMER } from "../../glimmer/index";
 import type { Args } from "../../types";
 import {
   DynamicModifier,
@@ -20,8 +21,8 @@ export function createEffect<A extends Args>(
 ): (args: A) => TemplateModifier<"effect", ElementEffectInfo<A>> {
   return (args: A): TemplateModifier<"effect", ElementEffectInfo<A>> => {
     return DynamicModifier.of("effect", { callback }, (cursor) => {
-      // TODO: no
-      Promise.resolve().then(() => callback(cursor, args));
+      GLIMMER.enqueueModifier((cursor) => callback(cursor, args), cursor);
+      // Promise.resolve().then(() => callback(cursor, args));
       // callback(cursor, args);
 
       return UpdatableModifier.of(cursor, () => {

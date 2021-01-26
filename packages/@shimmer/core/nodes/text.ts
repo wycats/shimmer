@@ -28,6 +28,7 @@ export function createText(
           text.data = string.now;
         },
         render: (cursor, dom, state) => {
+          console.log("render", string.now);
           if (state) {
             state.data = string.now;
             return { bounds: StaticBounds.single(state), state };

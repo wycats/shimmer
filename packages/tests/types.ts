@@ -91,6 +91,7 @@ export interface ErrTest {
 export interface SkippedTest {
   name: string;
   status: "skipped";
+  focusMode: boolean;
 }
 
 export type TestResult = OkTest | ErrTest | SkippedTest;
