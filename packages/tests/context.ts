@@ -350,7 +350,6 @@ export async function main<R extends ReporterInstance>(
 
     let results = moduleCtx.done();
     modules.push(results);
-    console.log("RESULTS", results);
     r.module(results);
   }
   r.summarize(modules);

@@ -111,10 +111,17 @@ export class Cell<T = unknown> {
 }
 
 let IS_BUILDING = false;
+let IN_CLOSED_FUNCTION = false;
 
 export function assertDynamicContext(operation: string): void {
   if (IS_BUILDING) {
     throw new Error(`You cannot ${operation} while building a component`);
+  }
+
+  if (IN_CLOSED_FUNCTION) {
+    throw new Error(
+      `A closed function cannot read from reactive values other than its arguments.`
+    );
   }
 }
 
@@ -126,6 +133,17 @@ export function build<T>(callback: () => T): T {
     return callback();
   } finally {
     IS_BUILDING = old;
+  }
+}
+
+export function inClosedFunction<T>(callback: () => T): T {
+  let old = IN_CLOSED_FUNCTION;
+  IN_CLOSED_FUNCTION = true;
+
+  try {
+    return callback();
+  } finally {
+    IN_CLOSED_FUNCTION = old;
   }
 }
 

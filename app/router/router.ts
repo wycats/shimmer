@@ -38,7 +38,6 @@ export class Router implements RouterService {
     );
 
     let destructor = bar.onChange((url) => {
-      console.log("bar changed", url);
       router.route(url);
     });
 

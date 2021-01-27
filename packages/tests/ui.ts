@@ -1,5 +1,12 @@
 import { enumerate, isObject, unreachable } from "@shimmer/reactive";
-import type { Assertion, ModuleResult, Step, TestResult } from "./types";
+import {
+  Assertion,
+  ModuleResult,
+  Printable,
+  PrintableRecord,
+  Step,
+  TestResult,
+} from "./types";
 
 export interface ReporterDefinition<T extends ReporterInstance> {
   begin(): T;
@@ -60,10 +67,17 @@ export class DOMReporter implements ReporterInstance {
         }
 
         :root {
-          --ok-bg: #cfc;
+          --ok-bg: #beb;
           --ok-fg: #363;
+
+          --ok-divider: #9c9;
+          --err-divider: #c99;
+
           --ok-actual-bg: #efe;
           --ok-actual-fg: #696;
+
+          --ok-test-bg: #dfd;
+          --ok-test-fg: #363;
 
           --err-expected-bg: #eef;
           --err-expected-fg: #669;
@@ -77,8 +91,11 @@ export class DOMReporter implements ReporterInstance {
 
           --skipped-bg: #ccc;
           --skipped-fg: #666;
+
           --step-bg: #eef;
+          --step-accent: #bbd;
           --step-fg: #669;
+
           --pad: var(--v-pad) var(--h-pad);
           --v-pad: 0.3rem;
           --thin-v-pad: 0.1rem;
@@ -210,12 +227,16 @@ export class DOMReporter implements ReporterInstance {
           min-width: calc(50% - 1rem);
         }
 
-        .pad-items\\:horizontal > * {
+        .pad-items\\:horizontal > *,
+        .pad-items\\:horizontal:before,
+        .pad-items\\:horizontal:after {
           padding-left: var(--h-pad);
           padding-right: var(--h-pad);
         }
 
-        .pad-items\\:vertical > * {
+        .pad-items\\:vertical > *,
+        .pad-items\\:vertical:before,
+        .pad-items\\:vertical:after {
           padding-top: var(--v-pad);
           padding-bottom: var(--v-pad);
         }
@@ -283,6 +304,22 @@ export class DOMReporter implements ReporterInstance {
           display: block;
         }
 
+        li.step > ul.stack:first-child {
+          margin-left: 0;
+        }
+
+        li.step > h3 > span.title:before {
+          content: "step";
+          font-size: 80%;
+          font-style: italic;
+        }
+
+        li.test > h2 > span.title:before {
+          content: "test";
+          font-size: 80%;
+          font-style: italic;
+        }
+
         ul.stack {
           margin-left: 0.5rem;
         }
@@ -306,11 +343,11 @@ export class DOMReporter implements ReporterInstance {
         }
 
         li.ok .expectation {
-          border-right: 1px solid var(--ok-fg);
+          border-right: 1px solid var(--ok-divider);
         }
 
         li.err .expectation {
-          border-right: 1px solid var(--err-fg);
+          border-right: 1px solid var(--err-divider);
         }
 
         li.actual,
@@ -318,10 +355,9 @@ export class DOMReporter implements ReporterInstance {
         li.error-info,
         li.error-metadata {
           font-family: monospace;
-          white-space: pre;
         }
 
-        :is(li.error-info, li.error-metadata) p.multiline {
+        .multiline {
           margin-left: 1rem;
         }
 
@@ -338,13 +374,34 @@ export class DOMReporter implements ReporterInstance {
           padding: var(--pad);
         }
 
-        li.ok > :is(h1, h2, h3, h4, h5, h6) {
+        li.ok > h1 {
           background-color: var(--ok-bg);
+        }
+
+        li.err > h1 {
+          background-color: var(--err-bg);
+        }
+
+        li.ok > h2 {
+          background-color: var(--ok-test-bg);
+        }
+
+        li.err > h2 {
+          background-color: var(--err-test-bg);
+        }
+
+        li.ok > :is(h3, h4, h5, h6) {
+          background-color: var(--ok-actual-bg);
           color: var(--ok-fg);
         }
 
-        li.err > :is(h1, h2, h3, h4, h5, h6) {
-          background-color: var(--err-bg);
+        li.ok > ul > li.actual {
+          background-color: var(--ok-actual-bg);
+          color: var(--ok-actual-fg);
+        }
+
+        li.err > :is(h3, h4, h5, h6) {
+          background-color: var(--err-actual-bg);
           color: var(--err-fg);
         }
 
@@ -395,8 +452,8 @@ export class DOMReporter implements ReporterInstance {
         }
 
         li.ok > ul > li.expectation {
-          background-color: var(--ok-bg);
-          color: var(--ok-fg);
+          background-color: var(--ok-actual-bg);
+          color: var(--ok-actual-fg);
         }
 
         li.err > ul > li.expectation {
@@ -513,7 +570,7 @@ export class DOMReporter implements ReporterInstance {
 
   #summaryLine = (title: string, line: SummaryLine) => {
     return html`
-      <span class="title">${title}</span>
+      <span class="title cluster pad-items:horizontal">${title}</span>
       <span class="ok">${String(line.ok)}</span>
       <span ${attr("class", `err ${line.err === 0 ? "none" : "some"}`)}
         >${String(line.err)}</span
@@ -538,8 +595,9 @@ export class DOMReporter implements ReporterInstance {
     let { target, fragment }: HtmlFragment<HTMLTableSectionElement> = html`
       <li ${attr("class", `test stack ${statusClass(test.status)}`)}>
         <h2 ${attr("class", ROW)}>
-          ${Status(test.status)}<span>${test.name}</span>${test.status ===
-          "skipped"
+          ${Status(test.status)}<span class="title cluster pad-items:horizontal"
+            >${test.name}</span
+          >${test.status === "skipped"
             ? null
             : html`<span class="test-count"
                 >${formatMs(test.metadata.elapsed)}</span
@@ -568,7 +626,9 @@ export class DOMReporter implements ReporterInstance {
           html`
             <h3 ${attr("class", ROW)}>
               ${step.status === "err" ? "❌" : ""}
-              <span class="title">${step.desc}</span>
+              <span class="title cluster pad-items:horizontal"
+                >${step.desc}</span
+              >
             </h3>
           `
         )}
@@ -637,17 +697,7 @@ export class DOMReporter implements ReporterInstance {
             <span>${expectation.print}</span>
           </li>
           <li class="error-info list stack fill:horizontal" aria-label="error">
-            ${Map(Object.entries(error), ([k, value]) => {
-              let v = value.print;
-              if (v.includes("\n")) {
-                return html`
-                  <p>${k}:</p>
-                  <p class="multiline">${v}</p>
-                `;
-              } else {
-                return html`<p>${k}: ${value.print}</p>`;
-              }
-            })}
+            ${PrintRecord(error)}
           </li>
           ${If(
             metadata !== undefined,
@@ -656,10 +706,7 @@ export class DOMReporter implements ReporterInstance {
                 class="error-metadata list stack fill:horizontal"
                 aria-label="metadata"
               >
-                ${Map(
-                  Object.entries(metadata || {}),
-                  ([key, value]) => html`<p>${key}: ${value.print}</p>`
-                )}
+                ${PrintRecord(metadata || null)}
               </li>
             `
           )}
@@ -672,6 +719,43 @@ export class DOMReporter implements ReporterInstance {
 
   cleanup(): void {
     this.#log.remove();
+  }
+}
+
+function PrintRecord(record: PrintableRecord | null): DynamicContent {
+  if (record === null) {
+    return html`null`;
+  }
+
+  return Map(Object.entries(record), ([k, value]) => {
+    if (Printable.is(value)) {
+      let v = value.print;
+      if (v.includes("\n")) {
+        return html`
+          <p>${formatKey(k)}:</p>
+          <div class="multiline">${v}</div>
+        `;
+      } else {
+        return html`<div>${formatKey(k)}: ${value.print}</div>`;
+      }
+    } else {
+      if (Object.entries(value).length === 0) {
+        return html`<p>${formatKey(k)}: {}</p>`;
+      }
+
+      return html`
+        <p>${formatKey(k)}:</p>
+        <div class="multiline">${PrintRecord(value)}</div>
+      `;
+    }
+  });
+}
+
+function formatKey(key: string) {
+  if (key.match(/^\p{XID_Start}\p{XID_Continue}*$/u)) {
+    return key;
+  } else {
+    return JSON.stringify(key);
   }
 }
 

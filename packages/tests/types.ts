@@ -1,4 +1,4 @@
-import { unreachable } from "@shimmer/reactive";
+import { isObject, unreachable } from "@shimmer/reactive";
 
 export interface OkStep {
   type: "step";
@@ -17,6 +17,10 @@ export interface ErrStep {
 export type Step = OkStep | ErrStep;
 
 export class Printable {
+  static is(value: unknown): value is Printable {
+    return isObject(value) && value instanceof Printable;
+  }
+
   static of(message: IntoPrintable): Printable {
     if (
       typeof message === "string" ||
@@ -49,6 +53,18 @@ export type IntoPrintable =
   | boolean
   | null
   | undefined;
+
+export function isIntoPrintable(value: unknown): value is IntoPrintable {
+  switch (typeof value) {
+    case "string":
+    case "number":
+    case "boolean":
+    case "undefined":
+      return true;
+    default:
+      return value === null || Printable.is(value);
+  }
+}
 
 export class Expectation {
   static of(expectation: IntoExpectation): Expectation {
@@ -120,11 +136,13 @@ export class ErrOkAssertion extends AbstractAssertion {
 
 export type Assertion = OkAssertion | ErrEqAssertion | ErrOkAssertion;
 
-export type ErrorDetails = Record<string, Printable>;
-export type Metadata = Record<string, Printable>;
+export type ErrorDetails = PrintableRecord;
+export type Metadata = PrintableRecord;
 
-export type PrintableRecord = Record<string, Printable>;
-export type IntoPrintableRecord = Record<string, IntoPrintable>;
+export type PrintableRecord = { [P in string]: Printable | PrintableRecord };
+export type IntoPrintableRecord = {
+  [P in string]: IntoPrintableRecord | IntoPrintable;
+};
 
 export function intoPrintableRecord(
   into: IntoPrintableRecord
@@ -132,7 +150,11 @@ export function intoPrintableRecord(
   let out: PrintableRecord = {};
 
   for (let [key, value] of Object.entries(into)) {
-    out[key] = Printable.of(value);
+    if (isIntoPrintable(value)) {
+      out[key] = Printable.of(value);
+    } else {
+      out[key] = intoPrintableRecord(value);
+    }
   }
 
   return out;

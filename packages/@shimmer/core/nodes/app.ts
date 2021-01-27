@@ -29,7 +29,6 @@ export class App implements Renderable {
 
     if (content instanceof StableDynamicContent) {
       this.render = createCache(() => {
-        // console.log("polling", content);
         content.poll();
       });
     } else {

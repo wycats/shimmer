@@ -10,96 +10,36 @@ import {
   ElementContent,
   TextContent,
 } from "@shimmer/core";
-import { isStaticReactive, Reactive } from "@shimmer/reactive";
-import type { Arbitrary, RunDetails } from "fast-check";
+import { isStaticReactive } from "@shimmer/reactive";
+import type { Arbitrary } from "fast-check";
 import * as fc from "fast-check";
-import { displayContent } from "../../@shimmer/debug/index";
-import { CURRENT_TEST, module } from "../context";
-import {
-  Assertion,
-  IntoExpectation,
-  IntoPrintable,
-  IntoPrintableRecord,
-} from "../types";
+import { displayContent } from "../../../@shimmer/debug/index";
+import { module } from "../../context";
+import type { IntoPrintableRecord } from "../../types";
+import { arbitraryReactive, PrintableScenario, Prop, reporter } from "./utils";
 
-module("staticness", (test) => {
+module("staticness (content)", (test) => {
   test("text nodes are static if their input is static", (ctx) => {
     fc.assert(TextModel.property(), {
       verbose: true,
-      reporter: reporter("expected isStatic to be"),
+      reporter: reporter("correct isStatic"),
     });
   });
 
   test("comment nodes are static if their input is static", (ctx) => {
     fc.assert(CommentModel.property(), {
       verbose: true,
-      reporter: reporter("expected isStatic to be"),
+      reporter: reporter("correct isStatic"),
     });
   });
 
   test("content nodes are static if their input is static", (ctx) => {
     fc.assert(ContentModel.property(), {
       verbose: true,
-      reporter: reporter("expected isStatic to be"),
+      reporter: reporter("correct isStatic"),
     });
   });
 });
-
-function addError<T extends PrintableScenario>(
-  expectation: IntoExpectation,
-  scenario: PrintableScenario,
-  metadata: RunDetails<[T]>
-): void {
-  let assertion = Assertion.errOk(expectation, scenario.record, {
-    seed: metadata.seed,
-  });
-
-  if (CURRENT_TEST) {
-    CURRENT_TEST.assert(assertion);
-  } else {
-    assertion.throw();
-  }
-}
-
-function addSuccess<T>(
-  expectation: IntoExpectation,
-  actual: { value: T; printable: IntoPrintable }
-): void {
-  let assertion = Assertion.ok(expectation, actual.printable);
-
-  if (CURRENT_TEST) {
-    CURRENT_TEST.assert(assertion);
-  }
-}
-
-function reporter(expectation: IntoExpectation) {
-  return <T extends PrintableScenario>(result: fc.RunDetails<[T]>) => {
-    if (result.failed) {
-      addError(expectation, result.failures[0][0], result);
-    } else {
-      addSuccess(expectation, { value: true, printable: "success" });
-    }
-  };
-}
-
-interface PrintableScenario {
-  record: IntoPrintableRecord;
-  check(): boolean;
-}
-
-function arbitraryReactive<T>(value: Arbitrary<T>): Arbitrary<Reactive<T>> {
-  return fc
-    .record({ value, isStatic: fc.boolean() })
-    .map(({ value, isStatic }) => {
-      if (isStatic) {
-        return Reactive.static(value);
-      } else {
-        return Reactive.cell(value);
-      }
-    });
-}
-
-type Prop<T extends PrintableScenario> = fc.IProperty<[T]>;
 
 type AnyContentModel = TextModel | CommentModel | FragmentModel | ElementModel;
 
