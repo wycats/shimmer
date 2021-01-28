@@ -1,10 +1,10 @@
 import type { ElementCursor } from "@shimmer/dom";
-import { GLIMMER } from "../../glimmer/index";
+import { GLIMMER } from "../../glimmer";
 import type { Args } from "../../types";
 import {
   DynamicModifier,
   TemplateModifier,
-  UpdatableModifier,
+  UpdatableModifier
 } from "./modifier-content";
 
 export interface ElementEffectInfo<A extends Args = Args> {

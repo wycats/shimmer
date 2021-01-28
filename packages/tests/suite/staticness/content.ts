@@ -19,21 +19,21 @@ import type { IntoPrintableRecord } from "../../types";
 import { arbitraryReactive, PrintableScenario, Prop, reporter } from "./utils";
 
 module("staticness (content)", (test) => {
-  test("text nodes are static if their input is static", (ctx) => {
+  test("text nodes are static if their input is static", () => {
     fc.assert(TextModel.property(), {
       verbose: true,
       reporter: reporter("correct isStatic"),
     });
   });
 
-  test("comment nodes are static if their input is static", (ctx) => {
+  test("comment nodes are static if their input is static", () => {
     fc.assert(CommentModel.property(), {
       verbose: true,
       reporter: reporter("correct isStatic"),
     });
   });
 
-  test("content nodes are static if their input is static", (ctx) => {
+  test("content nodes are static if their input is static", () => {
     fc.assert(ContentModel.property(), {
       verbose: true,
       reporter: reporter("correct isStatic"),
@@ -220,7 +220,7 @@ const leaf = fc.oneof(CommentModel.arbitrary(), TextModel.arbitrary());
 
 const ContentModel = {
   arbitrary: (): Arbitrary<AnyContentModel> => {
-    const leaves: fc.Memo<AnyContentModel> = fc.memo((n) => {
+    const leaves: fc.Memo<AnyContentModel> = fc.memo(() => {
       return fc.array(leaf).map((list) => {
         let content = createFragment(list.map((c) => c.content));
         let expectedStatic = list.every((c) => c.expectedStatic);
@@ -240,7 +240,7 @@ const ContentModel = {
       }
     });
 
-    const attr: fc.Memo<AttrModel> = fc.memo((n) => {
+    const attr: fc.Memo<AttrModel> = fc.memo(() => {
       return fc
         .tuple(domNameArb, arbitraryReactive(fc.option(fc.string())))
         .map(([name, value]) => {

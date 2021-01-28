@@ -20,26 +20,30 @@
     "extends": "./.config/.eslintrc.json",
     "root": true
   },
+  "pnpm": {
+    "overrides": {
+      "typescript": "4.2.0-dev.20210127"
+    }
+  },
   "devDependencies": {
-    "@glimmer/destroyable": "^0.73.1",
-    "@glimmer/global-context": "^0.73.1",
-    "@glimmer/validator": "^0.73.1",
+    "@glimmer/destroyable": "^0.73.2",
+    "@glimmer/global-context": "^0.73.2",
+    "@glimmer/validator": "^0.73.2",
     "@shimmer/core": "workspace:*",
     "@shimmer/dom": "workspace:*",
     "@shimmer/dsl": "workspace:*",
     "@shimmer/reactive": "workspace:*",
     "@simple-dom/interface": "^1.4.0",
     "@testing-library/dom": "^7.29.4",
-    "@typescript-eslint/eslint-plugin": "^4.13.0",
-    "@typescript-eslint/parser": "^4.13.0",
-    "@vitejs/plugin-legacy": "^1.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
     "eslint": "^7.18.0",
     "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
     "fast-array-diff": "^1.0.0",
     "fast-check": "^2.12.0",
-    "sass": "^1.32.4",
-    "typescript": "^4.2.0-dev.20210122",
+    "sass": "^1.32.5",
+    "typescript": "*",
     "unexpected": "^12.0.0",
     "vite": "2.0.0-beta.33"
   }

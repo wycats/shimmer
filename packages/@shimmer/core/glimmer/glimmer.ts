@@ -135,6 +135,7 @@ class Waiting {
     await this.#promise();
     await this.#waitRender();
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       if (this.#modifiers) {
         while (this.#modifiers) {

@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "rohit-gohri.format-code-action",
+    "esbenp.prettier-vscode",
+    "stkb.rewrap",
+    "tobermory.es6-string-html"
+  ]
+}

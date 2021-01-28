@@ -9,26 +9,25 @@ import fc from "fast-check";
 import type { IntoPrintable, IntoPrintableRecord } from "../../types";
 import type { PrintableScenario, Prop } from "./utils";
 
-export class ReactiveModel<T extends IntoPrintable>
-  implements PrintableScenario {
+export class CellModel<T extends IntoPrintable> implements PrintableScenario {
   static arbitrary<T extends IntoPrintable>(
     value: Arbitrary<T>
-  ): Arbitrary<ReactiveModel<T>> {
+  ): Arbitrary<CellModel<T>> {
     return fc
       .record({ value, isStatic: fc.boolean() })
       .map(({ value, isStatic }) => {
         if (isStatic) {
-          return new ReactiveModel(Reactive.static(value), true);
+          return new CellModel(Reactive.static(value), true);
         } else {
-          return new ReactiveModel(Reactive.cell(value), false);
+          return new CellModel(Reactive.cell(value), false);
         }
       });
   }
 
   static property<T extends IntoPrintable>(
     value: Arbitrary<T>
-  ): Prop<ReactiveModel<T>> {
-    let arbitrary = ReactiveModel.arbitrary(value);
+  ): Prop<CellModel<T>> {
+    let arbitrary = CellModel.arbitrary(value);
 
     return fc.property(arbitrary, (model) => model.check());
   }
@@ -55,43 +54,86 @@ export class ReactiveModel<T extends IntoPrintable>
   }
 }
 
-export class ClosedFunctionModel implements PrintableScenario {
-  static arbitrary() {
-    let args = fc.dictionary(fc.string(), ReactiveModel.arbitrary(fc.string()));
-    let func = ClosedFunction.of((args: Record<string, Reactive<string>>) => {
-      let out: Record<string, string> = {};
+export class ArgsRecordModel<T extends IntoPrintable>
+  implements PrintableScenario {
+  static memo<T extends IntoPrintable>(
+    value: Arbitrary<T>
+  ): fc.Memo<ArgsRecordModel<T>> {
+    return fc.memo((n) => {
+      let dict;
 
-      for (let [key, value] of Object.entries(args)) {
-        out[key] = value.now;
+      if (n <= 1) {
+        dict = fc.dictionary(fc.string(), leaf(value));
+      } else {
+        dict = fc.dictionary(fc.string(), ReactiveModel.memo(value)());
       }
 
-      return out;
-    });
-
-    return args.map((args) => {
-      let out: Record<string, Reactive<string>> = {};
-      let isStatic = true;
-
-      for (let [key, value] of Object.entries(args)) {
-        let reactive = value.reactive;
-        out[key] = reactive;
-        isStatic = isStatic && isStaticReactive(reactive);
-      }
-
-      let result = func(out);
-      return new ClosedFunctionModel(args, result, isStatic);
+      return dict.map(ArgsRecordModel.of);
     });
   }
 
-  static property(): Prop<ClosedFunctionModel> {
-    let arbitrary = ClosedFunctionModel.arbitrary();
+  static of<T extends IntoPrintable>(
+    dictionary: Record<string, AnyReactiveModel<T>>
+  ): ArgsRecordModel<T> {
+    let expectsStatic = true;
 
-    return fc.property(arbitrary, (model) => model.check());
+    for (let value of Object.values(dictionary)) {
+      if (!isStaticReactive(value.reactive)) {
+        expectsStatic = false;
+        break;
+      }
+    }
+
+    return new ArgsRecordModel(dictionary, expectsStatic);
   }
 
   constructor(
-    readonly args: Record<string, ReactiveModel<string>>,
-    readonly reactive: Reactive<Record<string, string>>,
+    readonly dictionary: Record<string, AnyReactiveModel<T>>,
+    readonly expectedStatic: boolean
+  ) {}
+
+  get args(): Record<string, Reactive<T>> {
+    return mapRecord(this.dictionary, (value) => value.reactive);
+  }
+
+  get record(): IntoPrintableRecord {
+    return {
+      type: "Args",
+      args: mapRecord(this.dictionary, (a) => a.record),
+    };
+  }
+
+  check(): boolean {
+    if (this.expectedStatic) {
+      return isStaticReactive(this.args);
+    } else {
+      return !isStaticReactive(this.args);
+    }
+  }
+}
+
+export class ClosedFunctionModel<T extends IntoPrintable>
+  implements PrintableScenario {
+  static memo<T extends IntoPrintable>(
+    value: Arbitrary<T>
+  ): fc.Memo<ClosedFunctionModel<T>> {
+    return fc.memo(() => {
+      let args = ArgsRecordModel.memo(value)();
+
+      return fc.tuple(args, value).map(([args, value]) => {
+        let func = ClosedFunction.of((_args: Record<string, T>) => {
+          return value;
+        });
+
+        let result = func(args.args);
+        return new ClosedFunctionModel(args, result, args.expectedStatic);
+      });
+    });
+  }
+
+  constructor(
+    readonly args: ArgsRecordModel<T>,
+    readonly reactive: Reactive<T>,
     readonly expectedStatic: boolean
   ) {}
 
@@ -106,9 +148,41 @@ export class ClosedFunctionModel implements PrintableScenario {
   get record(): IntoPrintableRecord {
     return {
       type: "ClosedFunction",
-      args: mapRecord(this.args, (model) => model.record),
+      args: this.args.record,
       now: this.reactive.now,
       expected: this.expectedStatic ? "static" : "dynamic",
     };
   }
 }
+
+type LeafModel<T extends IntoPrintable> = CellModel<T>;
+
+type AnyReactiveModel<T extends IntoPrintable> =
+  | LeafModel<T>
+  | ClosedFunctionModel<T>;
+
+function leaf<T extends IntoPrintable>(
+  value: Arbitrary<T>
+): Arbitrary<CellModel<T>> {
+  return fc.oneof(CellModel.arbitrary(value));
+}
+
+export const ReactiveModel = {
+  memo: <T extends IntoPrintable>(
+    value: Arbitrary<T>
+  ): fc.Memo<AnyReactiveModel<T>> => {
+    return fc.memo(() =>
+      fc.oneof(CellModel.arbitrary(value), ClosedFunctionModel.memo(value)())
+    );
+  },
+
+  property: <T extends IntoPrintable>(
+    value: Arbitrary<T>
+  ): ((depth: number) => Prop<AnyReactiveModel<T>>) => {
+    return (n: number) => {
+      let arbitrary = ReactiveModel.memo(value)(n);
+
+      return fc.property(arbitrary, (model) => model.check());
+    };
+  },
+};

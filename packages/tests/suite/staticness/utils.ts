@@ -16,6 +16,7 @@ export function addError<T extends PrintableScenario>(
 ): void {
   let assertion = Assertion.errOk(expectation, scenario.record, {
     seed: metadata.seed,
+    path: metadata.counterexamplePath,
   });
 
   if (CURRENT_TEST) {

@@ -16,6 +16,7 @@
     "fast-array-diff": "*",
     "@testing-library/dom": "*",
     "mocha": "*",
-    "chai": "*"
+    "chai": "*",
+    "fast-check": "*"
   }
 }
