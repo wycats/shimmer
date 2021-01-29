@@ -44,7 +44,7 @@ importers:
       vite: 2.0.0-beta.33
   app:
     dependencies:
-      '@glimmer/destroyable': 0.73.1
+      '@glimmer/destroyable': 0.73.2
       '@material/button': 9.0.0
       '@material/ripple': 9.0.0
       '@material/textfield': 9.0.0
@@ -67,9 +67,9 @@ importers:
       '@shimmer/reactive': workspace:*
   packages/@shimmer/core:
     dependencies:
-      '@glimmer/destroyable': 0.73.1
-      '@glimmer/global-context': 0.73.1
-      '@glimmer/validator': 0.73.1
+      '@glimmer/destroyable': 0.73.2
+      '@glimmer/global-context': 0.73.2
+      '@glimmer/validator': 0.73.2
       '@shimmer/dev-mode': link:../dev-mode
       '@shimmer/dom': link:../dom
       '@shimmer/reactive': link:../reactive
@@ -116,9 +116,9 @@ importers:
       '@shimmer/reactive': workspace:*
   packages/@shimmer/reactive:
     dependencies:
-      '@glimmer/destroyable': 0.73.1
-      '@glimmer/global-context': 0.73.1
-      '@glimmer/validator': 0.73.1
+      '@glimmer/destroyable': 0.73.2
+      '@glimmer/global-context': 0.73.2
+      '@glimmer/validator': 0.73.2
       fast-array-diff: 1.0.0
     specifiers:
       '@glimmer/destroyable': '*'
@@ -127,10 +127,11 @@ importers:
       fast-array-diff: '*'
   packages/tests:
     dependencies:
-      '@glimmer/destroyable': 0.73.1
-      '@glimmer/global-context': 0.73.1
-      '@glimmer/validator': 0.73.1
+      '@glimmer/destroyable': 0.73.2
+      '@glimmer/global-context': 0.73.2
+      '@glimmer/validator': 0.73.2
       '@shimmer/core': link:../@shimmer/core
+      '@shimmer/debug': link:../@shimmer/debug
       '@shimmer/dom': link:../@shimmer/dom
       '@shimmer/reactive': link:../@shimmer/reactive
       '@testing-library/dom': 7.29.4
@@ -143,6 +144,7 @@ importers:
       '@glimmer/global-context': '*'
       '@glimmer/validator': '*'
       '@shimmer/core': '*'
+      '@shimmer/debug': '*'
       '@shimmer/dom': '*'
       '@shimmer/reactive': '*'
       '@testing-library/dom': '*'
@@ -197,79 +199,38 @@ packages:
       node: ^10.12.0 || >=12.0.0
     resolution:
       integrity: sha512-1JTKgrOKAHVivSvOYw+sJOunkBjUOvjqWk1DPja7ZFhIS2mX/4EgTT8M7eTK9jrKhL/FvXXEbQwIs3pg1xp3dg==
-  /@glimmer/destroyable/0.73.1:
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/global-context': 0.73.1
-      '@glimmer/interfaces': 0.73.1
-      '@glimmer/util': 0.73.1
-    dev: false
-    resolution:
-      integrity: sha512-xm8XH4Yy55N5P/9RWnmeJM7LfrHyTZe/q81KgoQgIuxMxC8ABq+V068Fyx0VKB49y1RPc4OcMS65aFSIOy9c7w==
   /@glimmer/destroyable/0.73.2:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.73.2
       '@glimmer/interfaces': 0.73.2
       '@glimmer/util': 0.73.2
-    dev: true
     resolution:
       integrity: sha512-9MZSB1G4PRsUh6hlO+gE2cSk9W84d1vz1smDqFCRwxzQchqpO7g8HPJd9vJno2Ke17PbyxkZGK0F94CLib8fXw==
   /@glimmer/env/0.1.7:
     resolution:
       integrity: sha1-/S0rVakCnGs3psk16MiHGucN+gc=
-  /@glimmer/global-context/0.73.1:
-    dependencies:
-      '@glimmer/env': 0.1.7
-    dev: false
-    resolution:
-      integrity: sha512-jilS1HXMf/bzVQETCetlggAFLMYukvOxxGVi5FokL23g3jfWjQncEFf3p3OR17I3HDsEa1FmrZc4iuOp/i2gGQ==
   /@glimmer/global-context/0.73.2:
     dependencies:
       '@glimmer/env': 0.1.7
-    dev: true
     resolution:
       integrity: sha512-a/q6E27JMvF5oqKRYG5RFoTH0PrHaLp/Ix6W5OZ1TqvpiiuEgd4Olb55Ehxw2jH+wvmQHQtTxFKDyv0iDJYZ1Q==
-  /@glimmer/interfaces/0.73.1:
-    dependencies:
-      '@simple-dom/interface': 1.4.0
-    dev: false
-    resolution:
-      integrity: sha512-MttMIyWGZ+IbiJJpr4q9dwMmn+7eOMdxjMiuaEYeLBN/DXe8T9VePqgapURkSL9CEmKByB/pLvcaVTSYfm0RYg==
   /@glimmer/interfaces/0.73.2:
     dependencies:
       '@simple-dom/interface': 1.4.0
-    dev: true
     resolution:
       integrity: sha512-SjV0/TtFiv+Sxl3WJ2I5oR6hH+EabTfk3qvllU8WAYBqf6LnNPSMjaFv2Fucn7bIvOqZ8zHl36q6HboAychD/A==
-  /@glimmer/util/0.73.1:
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.73.1
-      '@simple-dom/interface': 1.4.0
-    dev: false
-    resolution:
-      integrity: sha512-zFXY9OgR6wx7Cy4yYJkmgoUsdx3MQYAmZytuEDTghLXJyUoSh5Jcvner+qhFkqLSzj2pvE4btn3yUNnx3QOBtg==
   /@glimmer/util/0.73.2:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/interfaces': 0.73.2
       '@simple-dom/interface': 1.4.0
-    dev: true
     resolution:
       integrity: sha512-ng726SZl/o2NKOLeHdqU9LTH4tP9FW7H1CveZGE8HMTgTDpXA7NCF7TVHqccOMmJNXqspkegtGQFGOLi10HArg==
-  /@glimmer/validator/0.73.1:
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/global-context': 0.73.1
-    dev: false
-    resolution:
-      integrity: sha512-DGodNSpf1v9Xsu7l7GSitVhNnESVx9qn6RFQ/zVwvptSXaPvLh5RIxsvYqJwkhBsxyPCVqnjz1p+MwqtfJukDA==
   /@glimmer/validator/0.73.2:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.73.2
-    dev: true
     resolution:
       integrity: sha512-Bk4xLmZ6tj46yEZzeOqpPla7KHRQP2QiHLo941ieZawc8vP/tZSO0znvuA+SXbqpSjxPPyjMtsXfYiUK7rLfZg==
   /@jest/types/26.6.2:
@@ -828,7 +789,7 @@ packages:
       check-error: 1.0.2
       deep-eql: 3.0.1
       get-func-name: 2.0.0
-      pathval: 1.1.0
+      pathval: 1.1.1
       type-detect: 4.0.8
     dev: false
     engines:
@@ -2065,10 +2026,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
-  /pathval/1.1.0:
+  /pathval/1.1.1:
     dev: false
     resolution:
-      integrity: sha1-uULm1L3mUwBe9rcTYd74cn0GReA=
+      integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==
   /picomatch/2.2.2:
     engines:
       node: '>=8.6'

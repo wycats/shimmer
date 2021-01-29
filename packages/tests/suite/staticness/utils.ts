@@ -1,5 +1,4 @@
 import { Reactive } from "@shimmer/reactive";
-import type { Arbitrary } from "fast-check";
 import fc from "fast-check";
 import { CURRENT_TEST } from "../../context";
 import {
@@ -63,8 +62,8 @@ export interface PrintableScenario {
 }
 
 export function arbitraryReactive<T>(
-  value: Arbitrary<T>
-): Arbitrary<Reactive<T>> {
+  value: fc.Arbitrary<T>
+): fc.Arbitrary<Reactive<T>> {
   return fc
     .record({ value, isStatic: fc.boolean() })
     .map(({ value, isStatic }) => {

@@ -4,15 +4,14 @@ import {
   mapRecord,
   Reactive,
 } from "@shimmer/reactive";
-import type { Arbitrary } from "fast-check";
 import fc from "fast-check";
 import type { IntoPrintable, IntoPrintableRecord } from "../../types";
 import type { PrintableScenario, Prop } from "./utils";
 
 export class CellModel<T extends IntoPrintable> implements PrintableScenario {
   static arbitrary<T extends IntoPrintable>(
-    value: Arbitrary<T>
-  ): Arbitrary<CellModel<T>> {
+    value: fc.Arbitrary<T>
+  ): fc.Arbitrary<CellModel<T>> {
     return fc
       .record({ value, isStatic: fc.boolean() })
       .map(({ value, isStatic }) => {
@@ -25,7 +24,7 @@ export class CellModel<T extends IntoPrintable> implements PrintableScenario {
   }
 
   static property<T extends IntoPrintable>(
-    value: Arbitrary<T>
+    value: fc.Arbitrary<T>
   ): Prop<CellModel<T>> {
     let arbitrary = CellModel.arbitrary(value);
 
@@ -57,7 +56,7 @@ export class CellModel<T extends IntoPrintable> implements PrintableScenario {
 export class ArgsRecordModel<T extends IntoPrintable>
   implements PrintableScenario {
   static memo<T extends IntoPrintable>(
-    value: Arbitrary<T>
+    value: fc.Arbitrary<T>
   ): fc.Memo<ArgsRecordModel<T>> {
     return fc.memo((n) => {
       let dict;
@@ -115,7 +114,7 @@ export class ArgsRecordModel<T extends IntoPrintable>
 export class ClosedFunctionModel<T extends IntoPrintable>
   implements PrintableScenario {
   static memo<T extends IntoPrintable>(
-    value: Arbitrary<T>
+    value: fc.Arbitrary<T>
   ): fc.Memo<ClosedFunctionModel<T>> {
     return fc.memo(() => {
       let args = ArgsRecordModel.memo(value)();
@@ -162,14 +161,14 @@ type AnyReactiveModel<T extends IntoPrintable> =
   | ClosedFunctionModel<T>;
 
 function leaf<T extends IntoPrintable>(
-  value: Arbitrary<T>
-): Arbitrary<CellModel<T>> {
+  value: fc.Arbitrary<T>
+): fc.Arbitrary<CellModel<T>> {
   return fc.oneof(CellModel.arbitrary(value));
 }
 
 export const ReactiveModel = {
   memo: <T extends IntoPrintable>(
-    value: Arbitrary<T>
+    value: fc.Arbitrary<T>
   ): fc.Memo<AnyReactiveModel<T>> => {
     return fc.memo(() =>
       fc.oneof(CellModel.arbitrary(value), ClosedFunctionModel.memo(value)())
@@ -177,7 +176,7 @@ export const ReactiveModel = {
   },
 
   property: <T extends IntoPrintable>(
-    value: Arbitrary<T>
+    value: fc.Arbitrary<T>
   ): ((depth: number) => Prop<AnyReactiveModel<T>>) => {
     return (n: number) => {
       let arbitrary = ReactiveModel.memo(value)(n);

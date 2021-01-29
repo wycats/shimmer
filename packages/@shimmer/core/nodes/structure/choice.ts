@@ -32,8 +32,6 @@ export function matchIsStatic(match: Match<Choices, Content>): boolean {
   return true;
 }
 
-// export type Choice<C extends Choices> = Variant<C, keyof C>;
-
 export interface ChoiceInfo<C extends Choices = Choices> {
   value: ReactiveChoice<C>;
   match: MatchBlocks<C>;

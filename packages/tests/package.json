@@ -13,6 +13,7 @@
     "@shimmer/core": "*",
     "@shimmer/dom": "*",
     "@shimmer/reactive": "*",
+    "@shimmer/debug": "*",
     "fast-array-diff": "*",
     "@testing-library/dom": "*",
     "mocha": "*",
