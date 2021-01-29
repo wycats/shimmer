@@ -2,7 +2,7 @@ import type { ElementCursor, SimplestDocument } from "@shimmer/dom";
 import { Effect } from "@shimmer/reactive";
 import { isObject } from "../../utils";
 import type { AttributeModifier } from "./attribute";
-import type { EffectModifier } from "./element-effect";
+import type { EffectContext, EffectModifier } from "./element-effect";
 
 export type ModifierType = "attribute" | "effect";
 
@@ -20,7 +20,7 @@ export const StaticModifier = {
   of: <Type extends ModifierType, Info>(
     type: Type,
     info: Info,
-    render: (cursor: ElementCursor, dom: SimplestDocument) => ElementCursor
+    render: (context: EffectContext, dom: SimplestDocument) => void
   ): StaticTemplateModifier<Type, Info> => {
     return new StaticTemplateModifier({
       type,
@@ -41,7 +41,7 @@ export const DynamicModifier = {
   of: <Type extends ModifierType, Info>(
     type: Type,
     info: Info,
-    render: (cursor: ElementCursor, dom: SimplestDocument) => UpdatableModifier
+    render: (context: EffectContext, dom: SimplestDocument) => UpdatableModifier
   ): DynamicTemplateModifier<Type, Info> => {
     return new DynamicTemplateModifier({
       type,
@@ -52,14 +52,14 @@ export const DynamicModifier = {
 };
 
 export interface UpdatableModifier {
-  readonly element: ElementCursor;
+  readonly context: EffectContext;
 
   update(): void;
 }
 
 export const UpdatableModifier = {
-  of: (element: ElementCursor, update: () => void): UpdatableModifier => {
-    return { element, update };
+  of: (context: EffectContext, update: () => void): UpdatableModifier => {
+    return { context, update };
   },
 };
 
@@ -74,9 +74,9 @@ export abstract class AbstractModifierContent<Type extends ModifierType, Info> {
       type: Type;
       info: Info;
       render: (
-        cursor: ElementCursor,
+        context: EffectContext,
         dom: SimplestDocument
-      ) => ElementCursor | UpdatableModifier;
+      ) => void | UpdatableModifier;
     }
   ) {
     this.type = content.type;
@@ -84,7 +84,7 @@ export abstract class AbstractModifierContent<Type extends ModifierType, Info> {
   }
 
   abstract render(
-    cursor: ElementCursor,
+    context: EffectContext,
     dom: SimplestDocument
   ): ElementCursor | Effect<RenderedModifier>;
 }
@@ -98,11 +98,12 @@ export class StaticTemplateModifier<
   declare readonly content: {
     type: Type;
     info: Info;
-    render: (cursor: ElementCursor, dom: SimplestDocument) => ElementCursor;
+    render: (context: EffectContext) => void;
   };
 
-  render(cursor: ElementCursor, dom: SimplestDocument): ElementCursor {
-    return this.content.render(cursor, dom);
+  render(context: EffectContext): ElementCursor {
+    this.content.render(context);
+    return context.cursor;
   }
 }
 
@@ -125,15 +126,12 @@ export class DynamicTemplateModifier<
   declare readonly content: {
     type: Type;
     info: Info;
-    render: (cursor: ElementCursor, dom: SimplestDocument) => UpdatableModifier;
+    render: (context: EffectContext) => UpdatableModifier;
   };
 
-  render(
-    cursor: ElementCursor,
-    dom: SimplestDocument
-  ): Effect<RenderedModifier> {
+  render(ctx: EffectContext): Effect<RenderedModifier> {
     return Effect.of({
-      initialize: () => new RenderedModifier(this.content.render(cursor, dom)),
+      initialize: () => new RenderedModifier(this.content.render(ctx)),
       update: (content) => content.update(),
     });
   }
@@ -162,7 +160,7 @@ export class RenderedModifier<C extends UpdatableModifier = UpdatableModifier> {
   constructor(readonly content: C) {}
 
   get element(): ElementCursor {
-    return this.content.element;
+    return this.content.context.cursor;
   }
 
   update(): this {

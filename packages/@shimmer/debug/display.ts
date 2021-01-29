@@ -1,6 +1,7 @@
 import type {
   AttributeModifier,
   BlockInfo,
+  ChoiceContent,
   CommentContent,
   Content,
   ContentType,
@@ -12,7 +13,7 @@ import type {
   TextContent,
 } from "@shimmer/core";
 import { HTML_NS, SimplestDocument, SimplestElement } from "@shimmer/dom";
-import type { Block } from "@shimmer/reactive";
+import type { Block, Reactive } from "@shimmer/reactive";
 
 export function displayContent(content: Content | Modifier): string {
   return TreeDisplay.display(content);
@@ -45,7 +46,7 @@ interface EachNode extends DebugNode {
 interface ChoiceNode extends DebugNode {
   type: "choice";
   data: unknown;
-  matches: Record<string, Block<[]>>;
+  matches: Record<string, Block<[Reactive<unknown>]>>;
 }
 
 interface ElementNode extends DebugNode {
@@ -197,12 +198,12 @@ class TreeDisplay {
     return frag;
   }
 
-  each(content: TemplateContent<"each", EachInfo>): EachNode {
+  each(content: TemplateContent<"each", EachInfo>): SimplestElement {
     return { type: "each", static: content.isStatic };
   }
 
-  choice(content: ChoiceContent): ChoiceNode {
-    let matches: Record<string, Block<[]>> = {};
+  choice(content: ChoiceContent): SimplestElement {
+    let matches: Record<string, Block<[Reactive<unknown>]>> = {};
 
     for (let [key, value] of Object.entries(content.info.match)) {
       matches[key] = value;
@@ -211,12 +212,12 @@ class TreeDisplay {
     return {
       type: "choice",
       static: content.isStatic,
-      data: content.info.value.now,
+      data: content.info.value.variantNow,
       matches,
     };
   }
 
-  block(content: TemplateContent<"block", BlockInfo>): BlockNode {
+  block(content: TemplateContent<"block", BlockInfo>): SimplestElement {
     return {
       type: "block",
       static: content.isStatic,

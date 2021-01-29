@@ -1,4 +1,4 @@
-import type { Bounds, Cursor, SimplestDocument } from "@shimmer/dom";
+import type { Bounds } from "@shimmer/dom";
 import {
   Block,
   build,
@@ -11,6 +11,7 @@ import {
 } from "@shimmer/reactive";
 import {
   Content,
+  ContentContext,
   DynamicContent,
   StableDynamicContent,
   TemplateContent,
@@ -85,13 +86,10 @@ class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
     }
   }
 
-  render(
-    cursor: Cursor,
-    dom: SimplestDocument
-  ): { bounds: Bounds; state: ChoiceState<C> } {
+  render(ctx: ContentContext): { bounds: Bounds; state: ChoiceState<C> } {
     let { value, match } = this.#data;
 
-    let { bounds, content } = initialize(value, match, cursor, dom);
+    let { bounds, content } = initialize(value, match, ctx);
     let { discriminant } = value.variantNow;
 
     return {
@@ -104,12 +102,11 @@ class UpdatableChoice<C extends Choices> extends UpdatableDynamicContent<
 function initialize<C extends Choices>(
   reactive: ReactiveChoice<C>,
   match: MatchBlocks<C>,
-  cursor: Cursor,
-  dom: SimplestDocument
+  ctx: ContentContext
 ): { bounds: Bounds; content: StableDynamicContent | null } {
   let { discriminant, value } = reactive.variantNow;
   let choice = match[discriminant];
-  let result = choice([value]).render(cursor, dom);
+  let result = choice([value]).render(ctx);
 
   if (result instanceof StableDynamicContent) {
     return { bounds: result, content: result };

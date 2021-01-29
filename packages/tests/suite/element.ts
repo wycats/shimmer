@@ -4,35 +4,36 @@ import { module } from "../context";
 
 module("element rendering", (test) => {
   test("merged class (static)", async (ctx) => {
-    let el = createElement({
-      tag: "div",
-      modifiers: [
-        createAttr("class", Reactive.static("first")),
-        createAttr("class", Reactive.static("second")),
-      ],
-      body: createText(Reactive.static("hello world")),
-    });
-
-    await ctx.render(el, () => {
-      ctx.assertHTML(`<div class="first second">hello world</div>`);
-    });
+    await ctx.render(
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: [
+            createAttr("class", Reactive.static("first")),
+            createAttr("class", Reactive.static("second")),
+          ],
+          body: createText(Reactive.static("hello world")),
+        }),
+      () => {
+        ctx.assertHTML(`<div class="first second">hello world</div>`);
+      }
+    );
   });
 
   test("merged class (dynamic)", async (ctx) => {
     let first = Cell.of("first");
     let body = Cell.of("hello world");
 
-    let el = createElement({
-      tag: "div",
-      modifiers: [
-        createAttr("class", first),
-        createAttr("class", Reactive.static("second")),
-      ],
-      body: createText(body),
-    });
-
     return ctx.inur(
-      el,
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: [
+            createAttr("class", first),
+            createAttr("class", Reactive.static("second")),
+          ],
+          body: createText(body),
+        }),
       `<div class="first second">hello world</div>`,
       {
         desc: "update class cell",
@@ -62,17 +63,16 @@ module("element rendering", (test) => {
     let desc2 = Cell.of("desc2");
     let body = Cell.of("hello world");
 
-    let el = createElement({
-      tag: "div",
-      modifiers: [
-        createAttr("aria-describedby", desc1),
-        createAttr("aria-describedby", desc2),
-      ],
-      body: createText(body),
-    });
-
     return ctx.inur(
-      el,
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: [
+            createAttr("aria-describedby", desc1),
+            createAttr("aria-describedby", desc2),
+          ],
+          body: createText(body),
+        }),
       `<div aria-describedby="desc1 desc2">hello world</div>`,
       {
         desc: "update aria-describedby cell",

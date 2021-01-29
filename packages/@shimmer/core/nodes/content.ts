@@ -1,11 +1,15 @@
-import type { Cursor, SimplestDocument, SimplestNode } from "@shimmer/dom";
 import {
   AbstractBounds,
   Bounds,
+  Cursor,
   DynamicBounds,
+  SimplestDocument,
+  SimplestElement,
+  SimplestNode,
   StaticBounds,
 } from "@shimmer/dom";
 import type { DynamicRenderedContent } from "../glimmer";
+import type { Realm, Services } from "../realm";
 import { isObject } from "../utils";
 import type { CommentInfo } from "./comment";
 import type { ElementInfo } from "./element";
@@ -29,6 +33,29 @@ export type ContentType =
   | "element"
   | "block";
 
+export class ContentContext<S extends Services = Services> {
+  static of<S extends Services>(
+    cursor: Cursor,
+    realm: Realm<S>
+  ): ContentContext<S> {
+    return new ContentContext(cursor, realm);
+  }
+
+  constructor(readonly cursor: Cursor, readonly realm: Realm<S>) {}
+
+  get dom(): SimplestDocument {
+    return this.realm.doc.dom;
+  }
+
+  withCursor(cursor: Cursor): ContentContext<S> {
+    return new ContentContext(cursor, this.realm);
+  }
+
+  withAppendingCursor(element: SimplestElement): ContentContext<S> {
+    return new ContentContext(Cursor.appending(element), this.realm);
+  }
+}
+
 export interface StaticContent<
   Type extends ContentType = ContentType,
   Info = unknown
@@ -36,14 +63,14 @@ export interface StaticContent<
   readonly type: ContentType;
   readonly info: Info;
 
-  render(cursor: Cursor, dom: SimplestDocument): Bounds;
+  render(ctx: ContentContext): Bounds;
 }
 
 export const StaticContent = {
   of: <Type extends ContentType, Info>(
     type: Type,
     info: Info,
-    render: (cursor: Cursor, dom: SimplestDocument) => Bounds
+    render: (ctx: ContentContext) => Bounds
   ): StaticTemplateContent<Type, Info> => {
     return new StaticTemplateContent({
       type,
@@ -70,7 +97,7 @@ export abstract class AbstractTemplateContent<Type extends ContentType, Info> {
     this.info = content.info;
   }
 
-  abstract render(cursor: Cursor, dom: SimplestDocument): StableContentResult;
+  abstract render(ctx: ContentContext): StableContentResult;
 }
 
 export class StaticTemplateContent<
@@ -86,8 +113,8 @@ export class StaticTemplateContent<
     render: StaticRenderFunction;
   };
 
-  render(cursor: Cursor, dom: SimplestDocument): Bounds {
-    return this.content.render(cursor, dom);
+  render(ctx: ContentContext): Bounds {
+    return this.content.render(ctx);
   }
 }
 
@@ -101,10 +128,9 @@ export interface DynamicContentHooks<State> {
   readonly shouldClear: boolean;
 
   isValid(state: State): boolean;
-  poll(state: State, dom: SimplestDocument): void;
+  poll(state: State, realm: Realm): void;
   render(
-    cursor: Cursor,
-    dom: SimplestDocument,
+    ctx: ContentContext,
     state: State | null
   ): { bounds: Bounds; state: State };
 }
@@ -126,10 +152,9 @@ export abstract class UpdatableDynamicContent<State = unknown>
   readonly shouldClear: boolean = true;
 
   abstract isValid(state: State): boolean;
-  abstract poll(state: State, dom: SimplestDocument): void;
+  abstract poll(state: State, realm: Realm): void;
   abstract render(
-    cursor: Cursor,
-    dom: SimplestDocument,
+    ctx: ContentContext,
     state: State | null
   ): { bounds: Bounds; state: State };
 }
@@ -148,28 +173,21 @@ export class ConcreteUpdatableDynamicContent<
     return this.#hooks.isValid(state);
   }
 
-  poll(state: State, dom: SimplestDocument): void {
-    return this.#hooks.poll(state, dom);
+  poll(state: State, realm: Realm): void {
+    return this.#hooks.poll(state, realm);
   }
 
   render(
-    cursor: Cursor,
-    dom: SimplestDocument,
+    ctx: ContentContext,
     state: State | null
   ): { bounds: Bounds; state: State } {
-    return this.#hooks.render(cursor, dom, state);
+    return this.#hooks.render(ctx, state);
   }
 }
 
-export type StableRenderFunction = (
-  cursor: Cursor,
-  dom: SimplestDocument
-) => StableContentResult;
+export type StableRenderFunction = (ctx: ContentContext) => StableContentResult;
 
-export type StaticRenderFunction = (
-  cursor: Cursor,
-  dom: SimplestDocument
-) => Bounds;
+export type StaticRenderFunction = (ctx: ContentContext) => Bounds;
 
 export class StableDynamicContent<State = unknown> extends AbstractBounds {
   static is(value: unknown): value is StableDynamicContent {
@@ -180,28 +198,28 @@ export class StableDynamicContent<State = unknown> extends AbstractBounds {
     hooks: DynamicContentHooks<State>,
     info: { type: ContentType; info: unknown }
   ): StableRenderFunction {
-    return (cursor, dom) => {
-      let first = hooks.render(cursor, dom, null);
-      return new StableDynamicContent(hooks, first, info, dom);
+    return (ctx) => {
+      let first = hooks.render(ctx, null);
+      return new StableDynamicContent(hooks, first, info, ctx.realm);
     };
   }
 
   readonly #hooks: UpdatableDynamicContent<State>;
   #info: { type: ContentType; info: unknown };
   #last: { bounds: Bounds; state: State };
-  #dom: SimplestDocument;
+  #realm: Realm;
 
   constructor(
     hooks: UpdatableDynamicContent<State>,
     first: { bounds: Bounds; state: State },
     info: { type: ContentType; info: unknown },
-    dom: SimplestDocument
+    realm: Realm
   ) {
     super(first.bounds.parent);
     this.#hooks = hooks;
     this.#last = first;
     this.#info = info;
-    this.#dom = dom;
+    this.#realm = realm;
   }
 
   readonly kind = "dynamic";
@@ -228,14 +246,17 @@ export class StableDynamicContent<State = unknown> extends AbstractBounds {
 
   poll(): void {
     if (this.#hooks.isValid(this.#last.state)) {
-      this.#hooks.poll(this.#last.state, this.#dom);
+      this.#hooks.poll(this.#last.state, this.#realm);
       return;
     }
 
     let cursor = this.#hooks.shouldClear
       ? this.#last.bounds.clear()
       : this.#last.bounds.cursorAfter;
-    this.#last = this.#hooks.render(cursor, this.#dom, this.#last.state);
+    this.#last = this.#hooks.render(
+      this.#realm.contentContext(cursor),
+      this.#last.state
+    );
   }
 }
 
@@ -264,8 +285,8 @@ export class DynamicContent<
     render: StableRenderFunction;
   };
 
-  render(cursor: Cursor, dom: SimplestDocument): StableContentResult {
-    return this.content.render(cursor, dom);
+  render(ctx: ContentContext): StableContentResult {
+    return this.content.render(ctx);
   }
 }
 

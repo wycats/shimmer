@@ -1,8 +1,9 @@
-import type { Bounds, Cursor, SimplestDocument } from "@shimmer/dom";
+import type { Bounds } from "@shimmer/dom";
 import { Block, InvokableBlock, INVOKABLE_BLOCK } from "@shimmer/reactive";
 import type { Args } from "../../types";
 import {
   Content,
+  ContentContext,
   DynamicContent,
   StableContentResult,
   StableDynamicContent,
@@ -49,7 +50,7 @@ export function BlockWithArgs<A extends Args>(
           callback,
           content,
         },
-        (cursor, dom) => (content as StaticTemplateContent).render(cursor, dom)
+        (ctx) => (content as StaticTemplateContent).render(ctx)
       );
     } else {
       return DynamicContent.of("block", info, new UpdatableBlock(info));
@@ -88,11 +89,8 @@ class UpdatableBlock extends UpdatableDynamicContent<BlockState> {
     // TODO: we shouldn't get here if state.content is not an effect
   }
 
-  render(
-    cursor: Cursor,
-    dom: SimplestDocument
-  ): { bounds: Bounds; state: BlockState } {
-    let rendered = this.#data.content.render(cursor, dom);
+  render(ctx: ContentContext): { bounds: Bounds; state: BlockState } {
+    let rendered = this.#data.content.render(ctx);
 
     return {
       bounds: rendered.bounds,

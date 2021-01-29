@@ -1,5 +1,12 @@
-import { Content, Doc, GLIMMER } from "@shimmer/core";
-import { Cursor } from "@shimmer/dom";
+import {
+  Content,
+  GLIMMER,
+  Realm,
+  RealmResult,
+  RenderDetails,
+} from "@shimmer/core";
+import { Cursor, EventService } from "@shimmer/dom";
+import { TestServices } from "./realm";
 import {
   Assertion,
   Expectation,
@@ -73,12 +80,13 @@ export class TestContext {
   #steps: Steps = new Steps();
   #done = false;
   #start = performance.now();
+  #realm = Realm.of(TestServices(document));
 
   constructor(readonly content: HTMLDivElement, readonly desc: string) {
     CURRENT_TEST = this;
   }
 
-  #assertNotDone = (op: string) => {
+  #assertNotDone = (op: string): void => {
     if (this.#done === true) {
       throw new Error(
         `Unexpected ${op} outside of a test. Did you forget an 'await'?`
@@ -86,16 +94,18 @@ export class TestContext {
     }
   };
 
-  async inur(
-    content: Content,
+  clear(): void {
+    this.content.innerHTML = "";
+  }
+
+  async inur<T>(
+    content: () => RenderDetails<T> | Content,
     initial: string,
     ...steps: RenderStep[]
   ): Promise<void> {
     this.#assertNotDone("inur");
 
-    let app = Doc.of(document).render(content, Cursor.appending(this.content));
-    GLIMMER.render(app);
-    await GLIMMER.wait();
+    await this.render(content);
 
     this.step("initial render");
     this.assertHTML(initial);
@@ -183,11 +193,27 @@ export class TestContext {
     assertions();
   }
 
-  async render(content: Content, assertions: () => void): Promise<void> {
-    let app = Doc.of(document).render(content, Cursor.appending(this.content));
-    GLIMMER.render(app);
+  async fire(element: Element, eventName: string, data: Event): Promise<void> {
+    this.events().fire(element, eventName, data);
+    await GLIMMER.wait();
+  }
+
+  private events(): EventService {
+    return this.#realm.events;
+  }
+
+  async render<T>(
+    callback: () => RenderDetails<T> | Content,
+    assertions: () => void = () => {}
+  ): Promise<{ content: Content; details: T; result: RealmResult }> {
+    let { result, content, details } = this.#realm.render(
+      Cursor.appending(this.content),
+      callback
+    );
+    GLIMMER.render(result);
     await GLIMMER.wait();
     assertions();
+    return { content, result, details };
   }
 }
 
@@ -202,6 +228,10 @@ export class ModuleContext {
     assertions();
   }
 
+  clear(): void {
+    this.content.innerHTML = "";
+  }
+
   startTest(name: string): TestContext {
     return new TestContext(this.content, name);
   }
@@ -210,7 +240,7 @@ export class ModuleContext {
     this.#tests.push(test.done());
   }
 
-  skip(name: string, focusMode: boolean) {
+  skip(name: string, focusMode: boolean): void {
     this.#tests.push(TestResult.skipped(name, { focusMode }));
   }
 

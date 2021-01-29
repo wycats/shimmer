@@ -22,7 +22,7 @@
   },
   "pnpm": {
     "overrides": {
-      "typescript": "4.2.0-dev.20210127"
+      "typescript": "4.2.0-dev.20210128"
     }
   },
   "devDependencies": {
@@ -43,7 +43,7 @@
     "fast-array-diff": "^1.0.0",
     "fast-check": "^2.12.0",
     "sass": "^1.32.5",
-    "typescript": "*",
+    "typescript": "4.2.0-dev.20210128",
     "unexpected": "^12.0.0",
     "vite": "2.0.0-beta.33"
   }

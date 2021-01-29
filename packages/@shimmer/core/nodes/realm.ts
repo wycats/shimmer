@@ -2,8 +2,13 @@ import { registerDestructor } from "@glimmer/destroyable";
 import type { Cursor, SimplestDocument } from "@shimmer/dom";
 import { createCache, TrackedCache } from "@shimmer/reactive";
 import type { Renderable } from "../glimmer";
-import type { DocService } from "../owner";
-import { Content, StableContentResult, StableDynamicContent } from "./content";
+import type { DocService, Realm } from "../realm";
+import {
+  Content,
+  ContentContext,
+  StableContentResult,
+  StableDynamicContent,
+} from "./content";
 
 export class Doc implements DocService {
   static of(dom: SimplestDocument): Doc {
@@ -11,13 +16,19 @@ export class Doc implements DocService {
   }
 
   constructor(readonly dom: SimplestDocument) {}
-
-  render(content: Content, cursor: Cursor): App {
-    return new App(content.render(cursor, this.dom));
-  }
 }
 
-export class App implements Renderable {
+export class RealmResult implements Renderable {
+  static render<T>(
+    content: Content,
+    cursor: Cursor
+  ): (realm: Realm) => RealmResult {
+    return (realm) => {
+      let rendered = content.render(ContentContext.of(cursor, realm));
+      return new RealmResult(rendered);
+    };
+  }
+
   readonly render: TrackedCache<void> | null;
 
   #content: StableContentResult | null;

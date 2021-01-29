@@ -1,19 +1,15 @@
-import {
-  Bounds,
-  Cursor,
-  ElementCursor,
-  SimplestDocument,
-  StaticBounds,
-} from "@shimmer/dom";
+import { Bounds, ElementCursor, StaticBounds } from "@shimmer/dom";
 import { Effect } from "@shimmer/reactive";
 import {
   Content,
+  ContentContext,
   DynamicContent,
   StableDynamicContent,
   StaticContent,
   TemplateContent,
   UpdatableDynamicContent,
 } from "../content";
+import { EffectContext } from "./element-effect";
 import type { Modifier, RenderedModifier } from "./modifier-content";
 
 export interface ElementInfo {
@@ -50,13 +46,9 @@ export function createElement({
     modifiers === null || modifiers.every((m) => m.isStatic);
 
   if (staticBody && staticModifiers) {
-    return StaticContent.of(
-      "element",
-      { tag, modifiers, body },
-      (cursor, dom) => {
-        return render({ tag, modifiers, body }, cursor, dom).bounds;
-      }
-    );
+    return StaticContent.of("element", { tag, modifiers, body }, (ctx) => {
+      return render({ tag, modifiers, body }, ctx).bounds;
+    });
   } else {
     return DynamicContent.of(
       "element",
@@ -90,11 +82,8 @@ class UpdatableElement extends UpdatableDynamicContent<ElementState> {
     }
   }
 
-  render(
-    cursor: Cursor,
-    dom: SimplestDocument
-  ): { bounds: Bounds; state: ElementState } {
-    return render(this.#data, cursor, dom);
+  render(ctx: ContentContext): { bounds: Bounds; state: ElementState } {
+    return render(this.#data, ctx);
   }
 }
 
@@ -108,8 +97,7 @@ function render(
     modifiers: readonly Modifier[] | null;
     body: Content | null;
   },
-  cursor: Cursor,
-  dom: SimplestDocument
+  ctx: ContentContext
 ): {
   bounds: StaticBounds;
   state: {
@@ -117,7 +105,7 @@ function render(
     modifiers: readonly Effect<RenderedModifier>[] | null;
   };
 } {
-  let element = cursor.createElement(tag, dom);
+  let element = ctx.cursor.createElement(tag, ctx.dom);
 
   let dynamicModifiers: Effect<RenderedModifier>[] = [];
 
@@ -125,7 +113,12 @@ function render(
   if (modifiers) {
     for (let modifier of modifiers) {
       if (modifier.type === "attribute") {
-        let rendered = modifier.render(ElementCursor.of(element), dom);
+        let effectContext = EffectContext.of(
+          ElementCursor.of(element),
+          ctx.realm
+        );
+
+        let rendered = modifier.render(effectContext);
 
         if (Effect.is(rendered)) {
           dynamicModifiers.push(rendered);
@@ -134,9 +127,7 @@ function render(
     }
   }
 
-  cursor.insert(element);
-
-  let appending = Cursor.appending(element);
+  ctx.cursor.insert(element);
 
   if (body === null) {
     return {
@@ -148,13 +139,18 @@ function render(
     };
   }
 
-  let renderedBody = body.render(appending, dom);
+  let renderedBody = body.render(ctx.withAppendingCursor(element));
 
   // run effects
   if (modifiers) {
     for (let modifier of modifiers) {
       if (modifier.type === "effect") {
-        let rendered = modifier.render(ElementCursor.of(element), dom);
+        let effectContext = EffectContext.of(
+          ElementCursor.of(element),
+          ctx.realm
+        );
+
+        let rendered = modifier.render(effectContext);
 
         if (Effect.is(rendered)) {
           dynamicModifiers.push(rendered);

@@ -70,6 +70,9 @@ export class DOMReporter implements ReporterInstance {
           --ok-bg: #beb;
           --ok-fg: #363;
 
+          --err-bg: #ebb;
+          --err-fg: #633;
+
           --ok-divider: #9c9;
           --err-divider: #c99;
 
@@ -79,15 +82,15 @@ export class DOMReporter implements ReporterInstance {
           --ok-test-bg: #dfd;
           --ok-test-fg: #363;
 
+          --err-test-bg: #fdd;
+          --err-test-fg: #633;
+
           --err-expected-bg: #eef;
           --err-expected-fg: #669;
-          --err-actual-bg: #fdd;
+          --err-actual-bg: #fee;
           --err-actual-fg: #966;
           --err-meta-bg: #ddd;
           --err-meta-fg: #666;
-
-          --err-bg: #fcc;
-          --err-fg: #633;
 
           --skipped-bg: #ccc;
           --skipped-fg: #666;
@@ -355,6 +358,7 @@ export class DOMReporter implements ReporterInstance {
         li.error-info,
         li.error-metadata {
           font-family: monospace;
+          overflow-wrap: anywhere;
         }
 
         .multiline {
@@ -457,7 +461,7 @@ export class DOMReporter implements ReporterInstance {
         }
 
         li.err > ul > li.expectation {
-          background-color: var(--err-bg);
+          background-color: var(--err-actual-bg);
           color: var(--err-fg);
         }
 
@@ -552,7 +556,7 @@ export class DOMReporter implements ReporterInstance {
     }
   }
 
-  #summarize = (moduleList: ModuleResult[]) => {
+  #summarize = (moduleList: ModuleResult[]): HTMLInputElement => {
     let { tests, modules, expectations } = summarize(moduleList);
 
     let {
@@ -568,7 +572,7 @@ export class DOMReporter implements ReporterInstance {
     return showSkipped;
   };
 
-  #summaryLine = (title: string, line: SummaryLine) => {
+  #summaryLine = (title: string, line: SummaryLine): HtmlFragment => {
     return html`
       <span class="title cluster pad-items:horizontal">${title}</span>
       <span class="ok">${String(line.ok)}</span>

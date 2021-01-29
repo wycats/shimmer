@@ -1,10 +1,10 @@
-import type { Cursor, SimplestDocument } from "@shimmer/dom";
 import { Bounds } from "@shimmer/dom";
 import { build, Reactive } from "@shimmer/reactive";
 import { OptionalArray, PresentArray } from "../utils";
 import { createComment } from "./comment";
 import {
   Content,
+  ContentContext,
   DynamicContent,
   StableContentResult,
   StableDynamicContent,
@@ -31,17 +31,9 @@ export function createFragment(content: readonly Content[]): Content {
   if (list.isPresent()) {
     return build(() => {
       if (list.every(TemplateContent.isStatic)) {
-        return StaticContent.of(
-          "fragment",
-          { children: list },
-          (cursor, dom) => {
-            return initializeFragment(
-              list as PresentArray<Content>,
-              cursor,
-              dom
-            ).bounds;
-          }
-        ) as any;
+        return StaticContent.of("fragment", { children: list }, (ctx) => {
+          return initializeFragment(list as PresentArray<Content>, ctx).bounds;
+        }) as any;
       } else {
         return DynamicContent.of(
           "fragment",
@@ -78,8 +70,7 @@ class UpdatableFragment extends UpdatableDynamicContent<FragmentState> {
   }
 
   render(
-    cursor: Cursor,
-    dom: SimplestDocument,
+    ctx: ContentContext,
     state: FragmentState | null
   ): { bounds: Bounds; state: FragmentState } {
     if (state) {
@@ -87,11 +78,7 @@ class UpdatableFragment extends UpdatableDynamicContent<FragmentState> {
       return { bounds: state.bounds, state };
     }
 
-    let { bounds, dynamic, nodes } = initializeFragment(
-      this.#list,
-      cursor,
-      dom
-    );
+    let { bounds, dynamic, nodes } = initializeFragment(this.#list, ctx);
 
     return { bounds, state: { nodes, bounds, dynamic } };
   }
@@ -99,8 +86,7 @@ class UpdatableFragment extends UpdatableDynamicContent<FragmentState> {
 
 export function initializeFragment(
   content: PresentArray<Content>,
-  cursor: Cursor,
-  dom: SimplestDocument
+  ctx: ContentContext
 ): {
   bounds: Bounds;
 } & FragmentState {
@@ -109,7 +95,7 @@ export function initializeFragment(
   let dynamic: StableDynamicContent[] = [];
   let nodes: StableContentResult[] = [];
 
-  let head = first.render(cursor, dom);
+  let head = first.render(ctx);
   let tail = head;
 
   if (head instanceof StableDynamicContent) {
@@ -119,7 +105,7 @@ export function initializeFragment(
   nodes.push(head);
 
   for (let item of rest) {
-    tail = item.render(cursor, dom);
+    tail = item.render(ctx);
 
     if (tail instanceof StableDynamicContent) {
       dynamic.push(tail);

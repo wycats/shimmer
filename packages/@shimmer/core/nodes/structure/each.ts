@@ -1,5 +1,5 @@
 import { assert, unwrap } from "@shimmer/dev-mode";
-import type { Cursor, SimplestDocument } from "@shimmer/dom";
+import type { SimplestDocument } from "@shimmer/dom";
 import { Bounds } from "@shimmer/dom";
 import {
   Block,
@@ -13,6 +13,7 @@ import {
 import { OptionalArray } from "../../utils";
 import {
   Content,
+  ContentContext,
   DynamicContent,
   StableContentResult,
   StableDynamicContent,
@@ -95,15 +96,13 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
   }
 
   render(
-    cursor: Cursor,
-    dom: SimplestDocument,
+    ctx: ContentContext,
     state: EachState<T> | null
   ): { bounds: Bounds; state: EachState<T> } {
     let each = this.#initialize(
       state ? state.last.artifacts : RenderArtifacts.empty(),
       this.#data.reactive.now,
-      cursor,
-      dom
+      ctx
     );
 
     return { bounds: each.bounds, state: { last: each } };
@@ -112,10 +111,9 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
   #initialize = (
     artifacts: RenderArtifacts,
     iterable: Iterable<Reactive<T>>,
-    cursor: Cursor,
-    dom: SimplestDocument
+    ctx: ContentContext
   ) => {
-    let nextArtifacts = this.#renderAll(artifacts, iterable, cursor, dom);
+    let nextArtifacts = this.#renderAll(artifacts, iterable, ctx);
 
     // This polls new dynamic nodes. This is not ideal, but not the
     // end of the world.
@@ -137,16 +135,15 @@ class UpdatableEach<T> extends UpdatableDynamicContent<EachState<T>> {
   #renderAll = (
     artifacts: RenderArtifacts,
     iterable: Iterable<Reactive<T>>,
-    cursor: Cursor,
-    dom: SimplestDocument
+    ctx: ContentContext
   ) => {
     let render = new RenderEach(artifacts);
 
     for (let item of iterable) {
-      this.#render(render, item, dom);
+      this.#render(render, item, ctx.dom);
     }
 
-    return render.patch(cursor, dom);
+    return render.patch(ctx);
   };
 
   #render = (render: RenderEach, item: Reactive<T>, dom: SimplestDocument) => {
@@ -318,7 +315,7 @@ class RenderEach {
     }
   }
 
-  patch(cursor: Cursor, dom: SimplestDocument): RenderArtifacts {
+  patch(ctx: ContentContext): RenderArtifacts {
     let nextNodes = [...this.#prev.nodes];
 
     this.#diff().applyPatch(nextNodes, {
@@ -331,12 +328,15 @@ class RenderEach {
         trace("inserting", content);
 
         let next = nextNodes[before];
-        let nextCursor = next ? next.inner.bounds.cursorBefore : cursor;
+        let nextCursor = next ? next.inner.bounds.cursorBefore : ctx.cursor;
 
         nextNodes.splice(
           before,
           0,
-          new KeyedNode(content.key, content.inner.render(nextCursor, dom))
+          new KeyedNode(
+            content.key,
+            content.inner.render(ctx.withCursor(nextCursor))
+          )
         );
       },
       move: (node, from, to) => {

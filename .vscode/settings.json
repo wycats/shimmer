@@ -23,5 +23,12 @@
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.preferences.importModuleSpecifierEnding": "index",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.alwaysShowStatus": true,
+  "eslint.debug": true,
+  "eslint.lintTask.enable": true,
+  "eslint.packageManager": "pnpm",
+  "editor.fontLigatures": "'ss04', 'ss08'",
+  "editor.fontFamily": "Fira Code",
+  "editor.inlineHints.fontFamily": "Consolas, 'Courier New', monospace"
 }

@@ -1,11 +1,11 @@
-import {
-  Cursor,
-  SimplestCharacterData,
-  SimplestDocument,
-  StaticBounds,
-} from "@shimmer/dom";
+import { SimplestCharacterData, StaticBounds } from "@shimmer/dom";
 import { build, isStaticReactive, Reactive } from "@shimmer/reactive";
-import { DynamicContent, StaticContent, TemplateContent } from "./content";
+import {
+  ContentContext,
+  DynamicContent,
+  StaticContent,
+  TemplateContent,
+} from "./content";
 
 export type CommentInfo = Reactive<string>;
 export type CommentContent = TemplateContent<"comment", CommentInfo>;
@@ -13,8 +13,8 @@ export type CommentContent = TemplateContent<"comment", CommentInfo>;
 export function createComment(string: Reactive<string>): CommentContent {
   return build(() => {
     if (isStaticReactive(string)) {
-      return StaticContent.of("comment", string, (cursor, dom) => {
-        let text = initialize(string, cursor, dom);
+      return StaticContent.of("comment", string, (ctx) => {
+        let text = initialize(string, ctx);
 
         return StaticBounds.single(text);
       });
@@ -25,8 +25,8 @@ export function createComment(string: Reactive<string>): CommentContent {
         poll: (text: SimplestCharacterData) => {
           text.data = string.now;
         },
-        render: (cursor, dom) => {
-          let text = initialize(string, cursor, dom);
+        render: (ctx) => {
+          let text = initialize(string, ctx);
           let bounds = StaticBounds.single(text);
           return { bounds, state: text };
         },
@@ -37,8 +37,7 @@ export function createComment(string: Reactive<string>): CommentContent {
 
 function initialize(
   value: Reactive<string>,
-  cursor: Cursor,
-  dom: SimplestDocument
+  { cursor, dom }: ContentContext
 ): SimplestCharacterData {
   return cursor.insert(dom.createComment(value.now));
 }

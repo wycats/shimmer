@@ -1,5 +1,5 @@
 import type { Block, Reactive, StaticValue } from "@shimmer/reactive";
-import type { Owner, Services } from "../owner";
+import type { Realm, Services } from "../realm";
 import type { Args, Component, ComponentArgs } from "../types";
 import type { Content } from "./content";
 
@@ -12,7 +12,7 @@ export type ReactiveArg =
 
 export type ReactiveArgs = readonly ReactiveArg[];
 
-export type ComponentCallback<A extends Args, O extends Owner> = (
+export type ComponentCallback<A extends Args, O extends Realm> = (
   owner: O
 ) => (args: A) => Content;
 

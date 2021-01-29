@@ -1,5 +1,5 @@
-import type { SimplestElement } from "@shimmer/dom";
 import { getValue, TrackedCache } from "@shimmer/reactive";
+import type { EffectContext } from "../nodes";
 
 export interface Renderable {
   readonly render: TrackedCache<void> | null;
@@ -240,11 +240,11 @@ class Glimmer {
     };
   }
 
-  enqueueModifier<E extends SimplestElement>(
-    modifier: (element: E) => void,
-    element: E
+  enqueueModifier(
+    modifier: (context: EffectContext) => void,
+    context: EffectContext
   ) {
-    this.#modifiers.add(() => modifier(element));
+    this.#modifiers.add(() => modifier(context));
     this.#waiting.modifiers(this);
   }
 

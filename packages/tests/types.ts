@@ -204,7 +204,7 @@ export const Assertion = {
       unreachable(`exhaustive`, assertion);
     }
   },
-  ok(expectation: IntoExpectation, actual: IntoPrintable) {
+  ok(expectation: IntoExpectation, actual: IntoPrintable): OkAssertion {
     return new OkAssertion(Expectation.of(expectation), Printable.of(actual));
   },
 
@@ -212,7 +212,7 @@ export const Assertion = {
     expectation: IntoExpectation,
     error: IntoPrintableRecord,
     metadata?: IntoPrintableRecord
-  ) {
+  ): ErrOkAssertion {
     return new ErrOkAssertion(
       Expectation.of(expectation),
       intoPrintableRecord(error),
@@ -224,7 +224,7 @@ export const Assertion = {
     expectation: IntoExpectation,
     actual: IntoPrintable,
     expected: IntoPrintable
-  ) {
+  ): ErrEqAssertion {
     return new ErrEqAssertion(
       Expectation.of(expectation),
       Printable.of(actual),
@@ -278,15 +278,19 @@ export type TestResult = OkTest | ErrTest | SkippedTest;
 export type SuccessfulTestResult = OkTest | SkippedTest;
 
 export const TestResult = {
-  ok(name: string, steps: readonly Step[], metadata: DoneTestMetadata) {
+  ok(name: string, steps: readonly Step[], metadata: DoneTestMetadata): OkTest {
     return new OkTest(name, steps, metadata);
   },
 
-  err(name: string, steps: readonly Step[], metadata: DoneTestMetadata) {
+  err(
+    name: string,
+    steps: readonly Step[],
+    metadata: DoneTestMetadata
+  ): ErrTest {
     return new ErrTest(name, steps, metadata);
   },
 
-  skipped(name: string, metadata: SkippedTestMetadata) {
+  skipped(name: string, metadata: SkippedTestMetadata): SkippedTest {
     return new SkippedTest(name, metadata);
   },
 };

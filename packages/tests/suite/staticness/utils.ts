@@ -38,7 +38,7 @@ export function addSuccess<T>(
 }
 
 export function reporter(expectation: IntoExpectation) {
-  return <T extends PrintableScenario>(result: fc.RunDetails<[T]>) => {
+  return <T extends PrintableScenario>(result: fc.RunDetails<[T]>): void => {
     if (result.failed) {
       if (result.counterexample) {
         addError(expectation, result.counterexample[0], result);

@@ -19,7 +19,7 @@ export function createAttr(
   value: Reactive<string | null>
 ): AttributeModifier {
   if (isStatic(value)) {
-    return StaticModifier.of("attribute", { name, value }, (cursor) => {
+    return StaticModifier.of("attribute", { name, value }, ({ cursor }) => {
       if (cursor.isTokenList(name)) {
         initializeMerged(cursor, name, value);
       } else {
@@ -29,18 +29,18 @@ export function createAttr(
       return cursor;
     });
   } else {
-    return DynamicModifier.of("attribute", { name, value }, (cursor) => {
-      if (cursor.isTokenList(name)) {
-        let last = initializeMerged(cursor, name, value);
+    return DynamicModifier.of("attribute", { name, value }, (ctx) => {
+      if (ctx.cursor.isTokenList(name)) {
+        let last = initializeMerged(ctx.cursor, name, value);
 
-        return UpdatableModifier.of(cursor, () => {
-          last = updateMerged(last, cursor, name, value);
+        return UpdatableModifier.of(ctx, () => {
+          last = updateMerged(last, ctx.cursor, name, value);
         });
       } else {
-        initializeNormal(cursor, name, value);
+        initializeNormal(ctx.cursor, name, value);
 
-        return UpdatableModifier.of(cursor, () => {
-          updateNormal(cursor, name, value);
+        return UpdatableModifier.of(ctx, () => {
+          updateNormal(ctx.cursor, name, value);
         });
       }
     });

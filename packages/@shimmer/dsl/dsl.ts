@@ -17,6 +17,7 @@ import {
   createFragment,
   createMatch,
   createText,
+  EffectContext,
   EffectModifier,
   EFFECTS,
   ElementArgs,
@@ -120,16 +121,14 @@ export function attr(
   }
 }
 
-export function effect(callback: (element: Element) => void): EffectModifier {
-  return effectFunction((element) => callback(element))();
+export function effect(callback: (ctx: EffectContext) => void): EffectModifier {
+  return effectFunction((ctx) => callback(ctx))();
 }
 
 export function effectFunction<A extends Args>(
-  callback: (element: Element, ...args: A) => void
+  callback: (ctx: EffectContext, ...args: A) => void
 ): (...args: IntoArgs<A>) => EffectModifier<A> {
-  let e = createEffect<A>((element, args) =>
-    callback(element.asElement(), ...args)
-  );
+  let e = createEffect<A>((ctx, args) => callback(ctx, ...args));
 
   return (...into: IntoArgs<A>): EffectModifier<A> => {
     let args = intoArgs(into);

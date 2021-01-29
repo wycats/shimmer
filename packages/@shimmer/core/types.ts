@@ -1,6 +1,6 @@
 import type { Block, Reactive } from "@shimmer/reactive";
 import type { Content, Modifier } from "./nodes";
-import type { Owner, Services } from "./owner";
+import type { Realm, Services } from "./realm";
 
 export const EFFECTS = Symbol("EFFECTS");
 export type EFFECTS = typeof EFFECTS;
@@ -16,7 +16,7 @@ export type ComponentArgs<S extends Services = Services> = {
   args: Record<string, Reactive<unknown>>;
   modifiers: Modifier[];
   blocks: Record<string, Block>;
-  $: Owner<S>;
+  $: Realm<S>;
 };
 
 export type Component<A extends ComponentArgs<Services>> = (args: A) => Content;

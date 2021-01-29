@@ -11,7 +11,10 @@ import { module } from "../context";
 module("core rendering", (test) => {
   test("it can render text", async (ctx) => {
     let body = Cell.of("hello");
-    await ctx.render(createText(body), () => ctx.assertHTML("hello"));
+    await ctx.render<void>(
+      () => createText(body),
+      () => ctx.assertHTML("hello")
+    );
 
     ctx.step("updating cell");
 
@@ -26,23 +29,26 @@ module("core rendering", (test) => {
   });
 
   test("a simple element", async (ctx) => {
-    let el = createElement({ tag: "div", modifiers: null, body: null });
-
-    await ctx.render(el, () => {
-      ctx.assertHTML("<div></div>");
-    });
+    await ctx.render(
+      () => createElement({ tag: "div", modifiers: null, body: null }),
+      () => {
+        ctx.assertHTML("<div></div>");
+      }
+    );
   });
 
   test("an element with attributes", async (ctx) => {
     let title = Cell.of("Tom");
 
-    let el = createElement({
-      tag: "div",
-      modifiers: [createAttr("title", title)],
-      body: null,
-    });
-
-    await ctx.render(el, () => ctx.assertHTML(`<div title="Tom"></div>`));
+    await ctx.render(
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: [createAttr("title", title)],
+          body: null,
+        }),
+      () => ctx.assertHTML(`<div title="Tom"></div>`)
+    );
 
     await ctx.update(
       () => title.update(() => "Thomas"),
@@ -54,14 +60,14 @@ module("core rendering", (test) => {
     let classA = Cell.of("classa");
     let classB = Cell.of("classb");
 
-    let el = createElement({
-      tag: "div",
-      modifiers: [createAttr("class", classA), createAttr("class", classB)],
-      body: null,
-    });
-
-    await ctx.render(el, () =>
-      ctx.assertHTML(`<div class="classa classb"></div>`)
+    await ctx.render(
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: [createAttr("class", classA), createAttr("class", classB)],
+          body: null,
+        }),
+      () => ctx.assertHTML(`<div class="classa classb"></div>`)
     );
 
     await ctx.update(
@@ -86,17 +92,20 @@ module("core rendering", (test) => {
   test("an element with a body", async (ctx) => {
     let body = Cell.of("hello");
 
-    let el = createElement({
-      tag: "div",
-      modifiers: null,
-      body: createText(body),
-    });
-
-    await ctx.inur(el, `<div>hello</div>`, {
-      desc: "update cell",
-      update: () => body.update(() => "goodbye"),
-      expect: `<div>goodbye</div>`,
-    });
+    await ctx.inur(
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: null,
+          body: createText(body),
+        }),
+      `<div>hello</div>`,
+      {
+        desc: "update cell",
+        update: () => body.update(() => "goodbye"),
+        expect: `<div>goodbye</div>`,
+      }
+    );
   });
 
   test("a simple choice", async (ctx) => {
@@ -109,13 +118,12 @@ module("core rendering", (test) => {
 
     let bool = Bool.cell("true");
 
-    let cond = createMatch(bool, {
-      true: () => createText(Reactive.static("true")),
-      false: () => createText(Reactive.static("false")),
-    });
-
     return ctx.inur(
-      cond,
+      () =>
+        createMatch(bool, {
+          true: () => createText(Reactive.static("true")),
+          false: () => createText(Reactive.static("false")),
+        }),
       "true",
       {
         desc: "update cell",
@@ -145,13 +153,12 @@ module("core rendering", (test) => {
 
     let person = Option.cell("some", tom);
 
-    let match = createMatch(person, {
-      some: ([person]) => createText(person),
-      none: () => createText(Reactive.static("no person")),
-    });
-
     return ctx.inur(
-      match,
+      () =>
+        createMatch(person, {
+          some: ([person]) => createText(person),
+          none: () => createText(Reactive.static("no person")),
+        }),
       "Tom",
       {
         desc: "update cell",
@@ -190,17 +197,19 @@ module("core rendering", (test) => {
       effectEl = el;
     }
 
-    let el = createElement({
-      tag: "div",
-      modifiers: [
-        createEffect((el, args: []) => gotEffect(el.asElement()))([]),
-      ],
-      body: createText(Reactive.static("hello world")),
-    });
-
-    await ctx.render(el, () => {
-      ctx.assert(count === 1, "the effect was called");
-      ctx.assertHTML("hello world", effectEl);
-    });
+    await ctx.render(
+      () =>
+        createElement({
+          tag: "div",
+          modifiers: [
+            createEffect(({ cursor }) => gotEffect(cursor.asElement()))([]),
+          ],
+          body: createText(Reactive.static("hello world")),
+        }),
+      () => {
+        ctx.assert(count === 1, "the effect was called");
+        ctx.assertHTML("hello world", effectEl);
+      }
+    );
   });
 });
