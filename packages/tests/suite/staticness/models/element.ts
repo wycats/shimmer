@@ -8,7 +8,7 @@ import { isStaticReactive } from "@shimmer/reactive";
 import fc from "fast-check";
 import { arbitraryReactive } from "../utils";
 import { AbstractRenderModel } from "./abstract";
-import { FragmentModel } from "./basic-content";
+import { FragmentModel } from "./fragment";
 
 function chr(string: string): number {
   return string.charCodeAt(0);

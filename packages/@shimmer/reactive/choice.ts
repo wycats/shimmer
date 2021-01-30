@@ -260,6 +260,17 @@ export class StaticReactiveChoice<
     this.#value = value;
   }
 
+  get staticVariant(): { discriminant: K; value: ChoiceValue<C> } {
+    return {
+      discriminant: this.#discriminant,
+      value: this.#value,
+    };
+  }
+
+  get staticValue(): ChoiceValue<C> {
+    return this.#value;
+  }
+
   get variantNow(): ExposedChoiceFor<C> {
     return {
       discriminant: this.#discriminant,

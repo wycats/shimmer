@@ -53,8 +53,8 @@ export function createMatch<C extends Choices>(
 ): Content {
   return build(() => {
     if (reactive.isStatic()) {
-      let { discriminant, value } = reactive.variantNow;
-      return match[discriminant]([value.now as Reactive<ChoiceValue<C>>]);
+      let { discriminant, value } = reactive.staticVariant;
+      return match[discriminant]([Reactive.static(value)]);
     }
 
     let data: ChoiceInfo<C> = { value: reactive, match };

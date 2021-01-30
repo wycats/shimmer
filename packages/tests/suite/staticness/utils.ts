@@ -1,4 +1,10 @@
-import { Reactive } from "@shimmer/reactive";
+import {
+  Cell,
+  Choices,
+  Reactive,
+  ReactiveChoice,
+  Variants,
+} from "@shimmer/reactive";
 import fc from "fast-check";
 import { CURRENT_TEST } from "../../context";
 import {
@@ -59,6 +65,61 @@ export function reporter(expectation: IntoExpectation) {
 export interface PrintableScenario {
   record: IntoPrintableRecord;
   check(): boolean;
+}
+
+export class ArbitraryChoice {
+  static arbitrary(): fc.Arbitrary<ArbitraryChoice> {
+    const variants = fc.array(fc.string(), { minLength: 5, maxLength: 5 });
+
+    return variants.map((v) => new ArbitraryChoice(v, 5));
+  }
+
+  #options: string[];
+  #variant: fc.Arbitrary<Reactive<string> | string>;
+  #index: fc.Arbitrary<number>;
+
+  constructor(options: string[], length: number) {
+    this.#options = options;
+    this.#index = fc.integer({ min: 0, max: length - 1 });
+    this.#variant = arbitraryMaybeCell(
+      this.#index.map((index) => this.#options[index])
+    );
+  }
+
+  get options(): string[] {
+    return this.#options;
+  }
+
+  choice(): fc.Arbitrary<ReactiveChoice<Choices>> {
+    return this.#variant.map((s) => ReactiveChoice.of(s));
+  }
+}
+
+export function arbitraryChoice(): fc.Arbitrary<ReactiveChoice<Choices>> {
+  const choice = Variants.define();
+  const variants = fc.array(fc.string(), { minLength: 5, maxLength: 5 });
+
+  let variant = variants.chain((choices) => {
+    return fc.integer({ min: 0, max: 4 }).map((index) => choices[index]);
+  });
+
+  return arbitraryReactive(variant).map((variant) =>
+    ReactiveChoice.of(variant as any)
+  );
+}
+
+export function arbitraryMaybeCell<T>(
+  value: fc.Arbitrary<T>
+): fc.Arbitrary<Cell<T> | T> {
+  return fc
+    .record({ value, isStatic: fc.boolean() })
+    .map(({ value, isStatic }) => {
+      if (isStatic) {
+        return value;
+      } else {
+        return Reactive.cell(value);
+      }
+    });
 }
 
 export function arbitraryReactive<T>(

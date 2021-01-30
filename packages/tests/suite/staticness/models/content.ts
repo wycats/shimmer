@@ -1,7 +1,8 @@
 import fc from "fast-check";
 import type { Prop } from "../utils";
-import { FragmentModel, LeafModel } from "./basic-content";
+import { LeafModel } from "./basic-content";
 import { ElementModel } from "./element";
+import { FragmentModel } from "./fragment";
 
 type AnyContentModel = LeafModel | FragmentModel | ElementModel;
 
@@ -9,6 +10,7 @@ const CONTENT_MIX = fc.memo(() =>
   fc.oneof(
     FragmentModel.arbitrary(),
     ElementModel.arbitrary(),
+    // makes leaves twice as frequent
     LeafModel.arbitrary(),
     LeafModel.arbitrary()
   )
