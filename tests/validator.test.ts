@@ -1,5 +1,5 @@
 import { Runtime } from "../src/index";
-import { Update } from "../src/validation/validator";
+import { Update } from "../src/validation/input-validator";
 
 describe("Validator", () => {
   const RUNTIME = Runtime.simple();

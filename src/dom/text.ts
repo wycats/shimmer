@@ -1,4 +1,5 @@
 import { Reactive } from "../reactive/reactive";
+import { Revision } from "../reactive/revision";
 import { DOM } from "./abstract";
 import { Output } from "./output";
 import { DomText } from "./simplest";
@@ -31,6 +32,10 @@ export class OutputText<R extends Reactive<string>>
   render(): DomText {
     let val = this.#input.current;
     return this.#dom.text(val);
+  }
+
+  isFresh(lastChecked: Revision): boolean {
+    return this.#input.isFresh(lastChecked);
   }
 
   update(node: DomText): void {

@@ -1,5 +1,6 @@
 import { Reactive, Runtime, StrictReactiveFunction } from "../src/index";
-import { toHTML } from "./support";
+import { html } from "./expectations";
+import { SUITE, toHTML, update } from "./support";
 
 describe("text", () => {
   const RUNTIME = Runtime.simple();
@@ -12,16 +13,16 @@ describe("text", () => {
   });
 
   test("output text node from cell", () => {
-    let output = RUNTIME.text((v) => v.cell("hello world"));
-    let text = output.render();
+    let cell = RUNTIME.reactive((r) => r.cell("hello world"));
 
-    expect(toHTML(text)).toBe("hello world");
-
-    output.input.update("goodbye world");
-
-    output.update(text);
-
-    expect(toHTML(text)).toBe("goodbye world");
+    SUITE.expect((text) => expect(toHTML(text)).toBe("hello world"))
+      .steps([
+        {
+          update: () => cell.update("goodbye world"),
+          andExpect: html("goodbye world"),
+        },
+      ])
+      .render(RUNTIME.text(cell));
   });
 
   test("output text node from trivial simple computation", () => {
@@ -30,15 +31,35 @@ describe("text", () => {
     );
 
     let cell = RUNTIME.reactive((r) => r.cell("hello world"));
+    let input = identity.invoke(cell);
 
-    let output = RUNTIME.text(identity.invoke(cell));
-    let text = output.render();
+    SUITE.expect(html("hello world"))
+      .steps([
+        update(() => cell.update("goodbye world")).andExpect(
+          html("goodbye world")
+        ),
+      ])
+      .render(RUNTIME.text(input));
+  });
 
-    expect(toHTML(text)).toBe("hello world");
+  test("output text node for more involved computation", () => {
+    let concat = StrictReactiveFunction.of(
+      (left: Reactive<string>, right: Reactive<string>) =>
+        `${left.current} ${right.current}`
+    );
 
-    cell.update("goodbye world");
-    output.update(text);
+    let left = RUNTIME.reactive((r) => r.cell("hello"));
+    let right = RUNTIME.reactive((r) => r.cell("world"));
 
-    expect(toHTML(text)).toBe("goodbye world");
+    let input = concat.invoke(left, right);
+
+    SUITE.expect(html("hello world"))
+      .steps([
+        update(() => left.update("goodbye")).andExpect(html("goodbye world")),
+        update(() => right.update("cruel world")).andExpect(
+          html("goodbye cruel world")
+        ),
+      ])
+      .render(RUNTIME.text(input));
   });
 });

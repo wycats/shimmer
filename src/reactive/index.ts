@@ -1,4 +1,4 @@
-export { Reactive } from "./reactive";
+export { Reactive, SomeReactive } from "./reactive";
 export {
   StrictReactiveComputation,
   StrictReactiveFunction,

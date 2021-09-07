@@ -1,4 +1,4 @@
-import { Validator } from "../validation/validator";
+import { InputValidator } from "../validation/input-validator";
 import { Cell } from "./cell";
 import { Revision } from "./revision";
 import { Static } from "./static";
@@ -14,7 +14,7 @@ export interface Reactive<T> {
 export class ReactiveValues {
   #timeline: Timeline;
 
-  constructor(timeline: Timeline = new Timeline()) {
+  constructor(timeline: Timeline) {
     this.#timeline = timeline;
   }
 
@@ -26,10 +26,10 @@ export class ReactiveValues {
     return new Cell(value, this.#timeline);
   }
 
-  validator<T>(
+  inputValidator<T>(
     reactive: Reactive<T>
-  ): () => { validator: Validator<T>; value: T } {
-    return Validator.initialize(reactive, this.#timeline);
+  ): () => { validator: InputValidator<T>; value: T } {
+    return InputValidator.initialize(reactive, this.#timeline.now);
   }
 
   get now(): Revision {

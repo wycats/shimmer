@@ -1,6 +1,5 @@
 import { Reactive } from "../reactive/reactive";
 import { Revision } from "../reactive/revision";
-import { Timeline } from "../reactive/timeline";
 
 /** @internal */
 export class AbstractUpdate<T> {
@@ -16,7 +15,7 @@ export class AbstractUpdate<T> {
 }
 
 /**
- * A `FreshUpdate` is returned by the {@link Validator#poll} method to indicate
+ * A `FreshUpdate` is returned by the {@link InputValidator#poll} method to indicate
  * that the underlying reactive variable has not changed.
  */
 export class FreshUpdate<T> extends AbstractUpdate<T> {
@@ -24,7 +23,7 @@ export class FreshUpdate<T> extends AbstractUpdate<T> {
 }
 
 /**
- * A `StaleUpdate` is returned by the {@link Validator#poll} method to indicate
+ * A `StaleUpdate` is returned by the {@link InputValidator#poll} method to indicate
  * that the underlying reactive variable *has* changed.
  */
 export class StaleUpdate<T> extends AbstractUpdate<T> {
@@ -38,7 +37,7 @@ export class StaleUpdate<T> extends AbstractUpdate<T> {
  * - {@link StaleUpdate}
  *
  * The `fresh` property of `Update` is a boolean that indicates whether the
- * {@link Validator#poll} operation that returned the `Update` is fresh or
+ * {@link InputValidator#poll} operation that returned the `Update` is fresh or
  * stale.
  *
  * The `value` property of `Update` is always the most up-to-date value of the
@@ -71,16 +70,15 @@ export const Update = {
  * Reactive variables themselves don't track consumptions, so they can be shared
  * freely across multiple variables.
  */
-export class Validator<T> {
+export class InputValidator<T> {
   static initialize<T>(
     reactive: Reactive<T>,
-    timeline: Timeline
-  ): () => { validator: Validator<T>; value: T } {
+    now: Revision
+  ): () => { validator: InputValidator<T>; value: T } {
     return () => {
       let value = reactive.current;
-      let now = timeline.now;
 
-      return { validator: new Validator(reactive, value, now), value };
+      return { validator: new InputValidator(reactive, value, now), value };
     };
   }
 

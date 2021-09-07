@@ -2,15 +2,24 @@ import { DOM, OutputNodes } from "./dom/abstract";
 import { OutputText } from "./dom/text";
 import { Reactive, ReactiveValues } from "./reactive/reactive";
 import { Revision } from "./reactive/revision";
-import { Update, Validator } from "./validation/validator";
+import { Timeline } from "./reactive/timeline";
+import { InputValidator, Update } from "./validation/input-validator";
 
 export class Runtime {
   static dom(dom: DOM): Runtime {
-    return new Runtime(new OutputNodes(dom), new ReactiveValues());
+    let timeline = new Timeline();
+    return new Runtime(
+      new OutputNodes(dom, timeline),
+      new ReactiveValues(timeline)
+    );
   }
 
   static simple(): Runtime {
-    return new Runtime(new OutputNodes(DOM.simple()), new ReactiveValues());
+    let timeline = new Timeline();
+    return new Runtime(
+      new OutputNodes(DOM.simple(), timeline),
+      new ReactiveValues(timeline)
+    );
   }
 
   #output: OutputNodes;
@@ -27,11 +36,11 @@ export class Runtime {
 
   validator<T>(
     input: Reactive<T>
-  ): () => { validator: Validator<T>; value: T } {
-    return this.#input.validator(input);
+  ): () => { validator: InputValidator<T>; value: T } {
+    return this.#input.inputValidator(input);
   }
 
-  poll<T>(validator: Validator<T>): Update<T> {
+  poll<T>(validator: InputValidator<T>): Update<T> {
     return validator.poll(this.#input.now);
   }
 
