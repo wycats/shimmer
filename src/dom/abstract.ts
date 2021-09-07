@@ -1,6 +1,6 @@
 import { createDocument } from "simple-dom";
 import { Reactive } from "../reactive/reactive";
-import { DomDocument, DomText } from "./simplest";
+import { DomDocument, DomText, opaqueToSimplest } from "./simplest";
 import { OutputText } from "./text";
 
 export class DOM {
@@ -16,7 +16,11 @@ export class DOM {
   }
 
   text(text: string): DomText {
-    return this.#document.createTextNode(text);
+    return this.#document.createTextNode(text) as unknown as DomText;
+  }
+
+  updateText(node: DomText, value: string): void {
+    opaqueToSimplest(node).nodeValue = value;
   }
 }
 

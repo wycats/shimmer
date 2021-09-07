@@ -1,5 +1,5 @@
-import { DOM } from "./abstract";
 import { Reactive } from "../reactive/reactive";
+import { DOM } from "./abstract";
 import { Output } from "./output";
 import { DomText } from "./simplest";
 
@@ -37,7 +37,7 @@ export class OutputText<R extends Reactive<string>>
     let current = this.#input.current;
 
     if (this.#current !== current) {
-      node.nodeValue = current;
+      this.#dom.updateText(node, current);
     }
   }
 }

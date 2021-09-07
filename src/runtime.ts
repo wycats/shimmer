@@ -41,10 +41,20 @@ export class Runtime {
     return input(this.#input);
   }
 
-  text<R extends Reactive<string>>(
-    input: (values: ReactiveValues) => R
-  ): OutputText<R> {
-    let reactive = input(this.#input);
+  text<R extends Reactive<string>>(input: ToInput<R>): OutputText<R> {
+    let reactive = this.#toInput(input);
     return this.#output.text(reactive);
   }
+
+  #toInput<R extends Reactive<unknown>>(input: ToInput<R>): R {
+    if (typeof input === "function") {
+      return input(this.#input);
+    } else {
+      return input;
+    }
+  }
 }
+
+export type ToInput<R extends Reactive<unknown>> =
+  | ((values: ReactiveValues) => R)
+  | R;
